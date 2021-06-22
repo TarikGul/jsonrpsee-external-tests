@@ -1,1 +1,1 @@
-export { testRpcOffChain } from './offchain';
+export { testRpcOffChain } from "./offchain";

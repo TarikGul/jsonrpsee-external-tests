@@ -1,1 +1,1 @@
-export { testRpcChain } from './chain';
+export { testRpcChain } from "./chain";

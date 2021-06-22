@@ -1,4 +1,4 @@
 export interface ITestResult {
-    methodName: string;
-    success: boolean;
+  methodName: string;
+  success: boolean;
 }
