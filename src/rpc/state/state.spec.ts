@@ -1,5 +1,3 @@
-import { RPC_STATE } from './state';
-
 describe('rpc.state', () => {
     it('Should successfully call rpc.state.call', () => {
 

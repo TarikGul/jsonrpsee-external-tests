@@ -1,5 +1,3 @@
-import { RPC_SYSTEM } from './system';
-
 describe('rpc.system', () => {
     it('Should successfully call rpc.system.accountNextIndex', () => {
 

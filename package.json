@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "substrate-exec-tsc",
+    "lint": "substrate-dev-run-lint",
+    "start": "yarn build && node ./build/src/index.js"
   },
   "keywords": [],
   "author": "",

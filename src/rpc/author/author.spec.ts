@@ -1,5 +1,3 @@
-import { RPC_AUTHOR } from './author';
-
 describe('rpc.author', () => {
     it('Should successfully call rpc.author.hasKey', () => {
 

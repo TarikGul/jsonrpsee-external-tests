@@ -1,0 +1,1 @@
+export { testRpcSystem } from './system';

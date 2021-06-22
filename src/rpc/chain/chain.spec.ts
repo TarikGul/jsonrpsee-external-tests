@@ -1,5 +1,3 @@
-import { RPC_CHAIN } from './chain';
-
 describe('rpc.chain', () => {
     it('Should successfully call rpc.chain.getBlock', () => {
 
