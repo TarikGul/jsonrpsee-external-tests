@@ -13,7 +13,7 @@ export class Logger {
       console.log(`[PASS]: ${methodName} ` + logMessage);
       this.success += 1;
     } else {
-      console.log(`[Failed]: ${methodName} ` + logMessage);
+      console.log(`[FAIL]: ${methodName} ` + logMessage);
       this.fails += 1;
     }
   }
