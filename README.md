@@ -1,3 +1,5 @@
-TODO
+## JSONRPsee External Test Suite
 
-Check chain specName and see what tests are available as all rpc methods might not be available on substrate.
+This repo aims to add external testing capabilities to all rpc methods, and functionality from substrate. 
+
+As a quick overview, the test suite is completely built from scratch. Meaning, any jest being used is to unit test local code, but for e2e tests of jsonrpsee, that will be managed by the repo itself. All initial code will be tested against the substrate-node-template, and a polkadot node. 
