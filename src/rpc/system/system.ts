@@ -2,6 +2,7 @@ import { ApiPromise } from "@polkadot/api";
 
 import { Logger } from "../../logger";
 import { ITestResult } from "../../types";
+import * as CONSTANTS from '../constants';
 
 export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
   const testSystem = await rpcSystemAccountNextIndex(api);
@@ -9,10 +10,13 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
 };
 
 const rpcSystemAccountNextIndex = async (
-  api: ApiPromise
+    api: ApiPromise
 ): Promise<ITestResult> => {
-  return {
-    methodName: "accountNextIndex",
-    success: true,
-  };
+    const accountIndex = await api.rpc.system.accountNextIndex(CONSTANTS.ALICE_ADDR)
+  
+    console.log(`RESULT: ${accountIndex}`);
+    return {
+        methodName: "accountNextIndex",
+        success: true,
+    };
 };
