@@ -10,10 +10,10 @@ export class Logger {
   logTestInfo(methodName: string, isSuccess: boolean, message?: string): void {
     const logMessage = message ? message : "";
     if (isSuccess) {
-      console.log(`[PASS]: ${methodName} ` + logMessage);
+      console.log(`    [PASS]: ${methodName} ` + logMessage);
       this.success += 1;
     } else {
-      console.log(`[FAIL]: ${methodName} ` + logMessage);
+      console.log(`    [FAIL]: ${methodName} ` + logMessage);
       this.fails += 1;
     }
   }
@@ -23,9 +23,12 @@ export class Logger {
    * the type of message that is about to be broadcasted. Example -> "[HEADER]: <Message>"
    * @param message The message to be broadcasted after the message header
    */
-  logMessage(msgHeader: string, message?: string): void {
-    const logMessage = message ? message : "";
-    console.log(`[${msgHeader}] ` + logMessage);
+  logMessage(msgHeader: string, message: string): void {
+    console.log(`[${msgHeader}]: ${message}`);
+  }
+
+  logHeader(msgHeader: string): void {
+    console.log(`[${msgHeader}]`);
   }
 
   logFinalInfo(): void {

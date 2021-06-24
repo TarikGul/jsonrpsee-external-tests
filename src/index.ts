@@ -19,6 +19,6 @@ const main = async (wsProvider: string) => {
 };
 
 if (require.main === module) {
-    // main("wss://kusama-rpc.polkadot.io").finally(() => process.exit(0));
-    main("ws://127.0.0.1:9944").finally(() => process.exit(0));
+  // main("wss://kusama-rpc.polkadot.io").finally(() => process.exit(0));
+  main("ws://127.0.0.1:9944").finally(() => process.exit(0));
 }
