@@ -18,6 +18,11 @@ export class Logger {
     }
   }
 
+  logInitialize(wsProvider: string): void {
+      console.log(`Successfully connected to ${wsProvider}`);
+      console.log(`Initializing the JSONRPsee tests`);
+  }
+
   /**
    * @param msgHeader  The msgHeader is the begining of a log message to denote
    * the type of message that is about to be broadcasted. Example -> "[HEADER]: <Message>"

@@ -37,15 +37,15 @@ const rpcSystemAccountNextIndex = async (
 
 /**
  * This rpc method has a return value of Null
- * 
+ *
  * @param api ApiPromise
- * @returns 
+ * @returns
  */
 const rpcSystemAddLogFilter = async (api: ApiPromise) => {
   const apiResult = await api.rpc.system.addLogFilter("Hello");
 
   const valueResult = expectToBe(apiResult.toJSON(), null);
-  const typeResult = expectCorrectType(apiResult.toRawType(), 'Null');
+  const typeResult = expectCorrectType(apiResult.toRawType(), "Null");
 
   return {
     methodName: "addLogFilter",
