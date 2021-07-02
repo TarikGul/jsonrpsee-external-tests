@@ -13,6 +13,7 @@
   "license": "ISC",
   "dependencies": {
     "@polkadot/api": "^4.15.1",
+    "@substrate/txwrapper-polkadot": "^1.2.5",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
