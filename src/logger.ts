@@ -1,3 +1,5 @@
+import { ILoggerTestInfoOpt } from './types'
+
 export class Logger {
   success: number;
   fails: number;
@@ -7,13 +9,17 @@ export class Logger {
     this.fails = 0;
   }
 
-  logTestInfo(methodName: string, isSuccess: boolean, message?: string): void {
+  logTestInfo(methodName: string, isSuccess: boolean, message?: string, options?: ILoggerTestInfoOpt): void {
     const logMessage = message ? message : "";
     if (isSuccess) {
       console.log(`    [PASS]: ${methodName} ` + logMessage);
       this.success += 1;
     } else {
       console.log(`    [FAIL]: ${methodName} ` + logMessage);
+      if (options?.expected && options?.received) {
+        console.log(`          expected: ${options.expected}`)
+        console.log(`          received: ${options.received}`)
+      }
       this.fails += 1;
     }
   }

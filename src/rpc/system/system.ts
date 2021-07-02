@@ -194,13 +194,19 @@ const rpcSystemName = async (api: ApiPromise): Promise<ITestResult> => {
   }
 }
 
+/**
+ * UNSTABLE Automatically fail for now.
+ * 
+ * @param api 
+ * @returns 
+ */
 const rpcSystemNetworkState = async (api: ApiPromise): Promise<ITestResult> => {
-  const res = await api.rpc.system.networkState();
+  // const res = await api.rpc.system.networkState();
 
-  const typeResult = expectCorrectType(res.toRawType(), 'NetworkState');
+  // const typeResult = expectCorrectType(res.toRawType(), 'NetworkState');
 
   return {
     methodName: 'networkState',
-    success: typeResult.success
+    success: false
   }
 }
