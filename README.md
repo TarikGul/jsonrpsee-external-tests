@@ -72,7 +72,7 @@ Note: Each rpc method should be accompanied by docs explaining the basic expecte
     - [X] rpc.system.dryRun
     - [X] rpc.system.health
     - [X] rpc.system.localListenAddresses
-    - [ ] rpc.system.localPeerId
+    - [X] rpc.system.localPeerId
     - [ ] rpc.system.name
     - [ ] rpc.system.networkState
     - [ ] rpc.system.nodeRoles

@@ -19,7 +19,8 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
     rpcSystemChainType,
     rpcSystemDryRun,
     rpcSystemHealth,
-    rpcSystemLocalListenAddresses
+    rpcSystemLocalListenAddresses,
+    rpcSystemLocalPeerId
   ];
 
   // Run all the tests above
@@ -163,6 +164,18 @@ const rpcSystemLocalListenAddresses = async (api: ApiPromise): Promise<ITestResu
 
   return {
     methodName: 'localListenAddresses',
+    success: valueResult.success && typeResult.success
+  }
+}
+
+const rpcSystemLocalPeerId = async (api: ApiPromise): Promise<ITestResult> => {
+  const res = await api.rpc.system.localPeerId();
+
+  const valueResult = expectToBe(res.toString(), '12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT');
+  const typeResult = expectCorrectType(res.toRawType(), 'Text');
+
+  return {
+    methodName: 'localPeerId',
     success: valueResult.success && typeResult.success
   }
 }
