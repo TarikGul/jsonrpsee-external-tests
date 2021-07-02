@@ -14,10 +14,11 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
   const testMethods = [
     rpcSystemAccountNextIndex,
     rpcSystemAddLogFilter,
-    // rpcSystemAddReservedPeer,
+    rpcSystemAddReservedPeer,
     rpcSystemChain,
     rpcSystemChainType,
-    rpcSystemDryRun
+    rpcSystemDryRun,
+    rpcSystemHealth
   ];
 
   // Run all the tests above
@@ -65,17 +66,17 @@ const rpcSystemAddLogFilter = async (api: ApiPromise): Promise<ITestResult> => {
   };
 };
 
-// const rpcSystemAddReservedPeer = async (api: ApiPromise): Promise<ITestResult> => {
-//   const res = await api.rpc.system.addReservedPeer('14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3');
+const rpcSystemAddReservedPeer = async (api: ApiPromise): Promise<ITestResult> => {
+  const res = await api.rpc.system.addReservedPeer(CONSTANTS.ALICE_BOOTNODE);
 
-//   const valueResult = expectToBe(res.toJSON(), null);
-//   const typeResult = expectCorrectType(res.toRawType(), "Text");
+  const valueResult = expectToBe(res.toJSON(), '');
+  const typeResult = expectCorrectType(res.toRawType(), "Text");
 
-//   return {
-//     methodName: "",
-//     success: typeResult.success && valueResult.success
-//   };
-// }
+  return {
+    methodName: "addReservedPeer",
+    success: typeResult.success && valueResult.success
+  };
+}
 
 /**
  * 
@@ -98,10 +99,10 @@ const rpcSystemChainType = async (api: ApiPromise): Promise<ITestResult> => {
   const expectedJSON = {
     development: null
   };
-  const expectedType = '{"_enum":{"Development":"Null","Local":"Null","Live":"Null","Custom":"Text"}}';
+  const enumType = '{"_enum":{"Development":"Null","Local":"Null","Live":"Null","Custom":"Text"}}';
 
   const valueResult = expectToBe(res.toJSON(), expectedJSON);
-  const enumResult = expectToBe(res.toRawType(), expectedType);
+  const enumResult = expectToBe(res.toRawType(), enumType);
 
   return {
     methodName: 'chainType',
@@ -125,5 +126,24 @@ const rpcSystemDryRun = async (api: ApiPromise): Promise<ITestResult> => {
   return {
     methodName: 'dryRun',
     success: valueResult.success && typeResult.success
+  }
+}
+
+
+const rpcSystemHealth = async (api: ApiPromise): Promise<ITestResult> => {
+  const res = await api.rpc.system.health();
+  const expectedJson = {
+    peers: 0,
+    isSyncing: false,
+    shouldHavePeers: false
+  }
+  const enumType = '{"peers":"u64","isSyncing":"bool","shouldHavePeers":"bool"}';
+
+  const valueResult = expectToBe(res.toJSON(), expectedJson);
+  const enumResult = expectToBe(res.toRawType(), enumType);
+
+  return {
+    methodName: 'health',
+    success: valueResult.success && enumResult.success
   }
 }

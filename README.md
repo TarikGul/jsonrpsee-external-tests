@@ -66,11 +66,11 @@ Note: Each rpc method should be accompanied by docs explaining the basic expecte
 - [ ] rpc.system   
     - [X] rpc.system.accountNextIndex
     - [X] rpc.system.addLogFilter
-    - [ ] rpc.system.addReservedPeer
+    - [X] rpc.system.addReservedPeer
     - [X] rpc.system.chain
     - [X] rpc.system.chainType
     - [X] rpc.system.dryRun
-    - [ ] rpc.system.health
+    - [X] rpc.system.health
     - [ ] rpc.system.localListenAddresses
     - [ ] rpc.system.localPeerId
     - [ ] rpc.system.name
