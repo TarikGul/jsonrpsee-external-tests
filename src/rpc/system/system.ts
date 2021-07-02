@@ -18,7 +18,8 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
     rpcSystemChain,
     rpcSystemChainType,
     rpcSystemDryRun,
-    rpcSystemHealth
+    rpcSystemHealth,
+    rpcSystemLocalListenAddresses
   ];
 
   // Run all the tests above
@@ -145,5 +146,23 @@ const rpcSystemHealth = async (api: ApiPromise): Promise<ITestResult> => {
   return {
     methodName: 'health',
     success: valueResult.success && enumResult.success
+  }
+}
+
+const rpcSystemLocalListenAddresses = async (api: ApiPromise): Promise<ITestResult> => {
+  const res = await api.rpc.system.localListenAddresses();
+  const expectedArray = [
+    '/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT',
+    '/ip4/192.168.86.249/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT',
+    '/ip4/192.168.2.1/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT',
+    '/ip6/::1/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT'
+  ];
+
+  const valueResult = expectToBe(res.toJSON(), expectedArray);
+  const typeResult = expectCorrectType(res.toRawType(), 'Vec<Text>');
+
+  return {
+    methodName: 'localListenAddresses',
+    success: valueResult.success && typeResult.success
   }
 }

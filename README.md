@@ -71,7 +71,7 @@ Note: Each rpc method should be accompanied by docs explaining the basic expecte
     - [X] rpc.system.chainType
     - [X] rpc.system.dryRun
     - [X] rpc.system.health
-    - [ ] rpc.system.localListenAddresses
+    - [X] rpc.system.localListenAddresses
     - [ ] rpc.system.localPeerId
     - [ ] rpc.system.name
     - [ ] rpc.system.networkState
