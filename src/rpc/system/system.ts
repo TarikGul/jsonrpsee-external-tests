@@ -3,6 +3,7 @@ import { ApiPromise } from "@polkadot/api";
 import { Logger } from "../../logger";
 import { ITestResult } from "../../types";
 import { expectCorrectType, expectToBe } from "../../util/testApi";
+import { constructTx } from '../../util/constructTx';
 import * as CONSTANTS from "../constants";
 
 export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
@@ -115,12 +116,11 @@ const rpcSystemChainType = async (api: ApiPromise): Promise<ITestResult> => {
  * @returns 
  */
 const rpcSystemDryRun = async (api: ApiPromise): Promise<ITestResult> => {
-  const hash = await api.rpc.chain.getFinalizedHead()
-  const res = await api.rpc.system.dryRun(CONSTANTS.ALICE_TX, hash);
+  const tx = await constructTx();
+  const res = await api.rpc.system.dryRun(tx);
 
-  const valueResult = expectToBe(res.toJSON(), '');
-  console.log(res.toJSON());
-  const typeResult = expectCorrectType(res.toRawType(), 'ApplyExtrinsicResult');
+  const valueResult = expectToBe(res.isOk, true);
+  const typeResult = expectToBe(res.type, 'Ok');
 
   return {
     methodName: 'dryRun',

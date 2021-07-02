@@ -69,7 +69,7 @@ Note: Each rpc method should be accompanied by docs explaining the basic expecte
     - [ ] rpc.system.addReservedPeer
     - [X] rpc.system.chain
     - [X] rpc.system.chainType
-    - [ ] rpc.system.dryRun
+    - [X] rpc.system.dryRun
     - [ ] rpc.system.health
     - [ ] rpc.system.localListenAddresses
     - [ ] rpc.system.localPeerId
