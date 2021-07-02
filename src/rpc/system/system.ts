@@ -20,7 +20,9 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
     rpcSystemDryRun,
     rpcSystemHealth,
     rpcSystemLocalListenAddresses,
-    rpcSystemLocalPeerId
+    rpcSystemLocalPeerId,
+    rpcSystemName,
+    rpcSystemNetworkState,
   ];
 
   // Run all the tests above
@@ -177,5 +179,28 @@ const rpcSystemLocalPeerId = async (api: ApiPromise): Promise<ITestResult> => {
   return {
     methodName: 'localPeerId',
     success: valueResult.success && typeResult.success
+  }
+}
+
+const rpcSystemName = async (api: ApiPromise): Promise<ITestResult> => {
+  const res = await api.rpc.system.name();
+
+  const valueResult = expectToBe(res.toString(), 'Substrate Node');
+  const typeResult = expectToBe(res.toRawType(), 'Text');
+
+  return {
+    methodName: 'name',
+    success: valueResult.success && typeResult.success
+  }
+}
+
+const rpcSystemNetworkState = async (api: ApiPromise): Promise<ITestResult> => {
+  const res = await api.rpc.system.networkState();
+
+  const typeResult = expectCorrectType(res.toRawType(), 'NetworkState');
+
+  return {
+    methodName: 'networkState',
+    success: typeResult.success
   }
 }
