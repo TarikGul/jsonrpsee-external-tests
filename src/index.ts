@@ -11,7 +11,7 @@ const main = async (wsProvider: string) => {
   });
 
   logger.logInitialize(wsProvider);
-  
+
   for (let i = 0; i < tests.length; i++) {
     const callTests = tests[i];
     await callTests(api, logger);

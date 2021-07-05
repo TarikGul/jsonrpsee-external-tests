@@ -1,4 +1,5 @@
+import { ErrorInfo } from "./";
+
 export interface ILoggerTestInfoOpt {
-    expected: string;
-    received: string;
+  errorInfo: ErrorInfo;
 }

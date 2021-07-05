@@ -86,6 +86,7 @@ Note: Each rpc method should be accompanied by docs explaining the basic expecte
 
 ### Testing API
 
-- [ ] Implement an `expect` API that works similar to Jest, but its main purpose is to deep check received vs expected values and types against each other. 
-    - [ ] expect.toBe
-    - [ ] expect.toNotBe
+- [X] Implement an `expect` API that works similar to Jest, but its main purpose is to deep check received vs expected values and types against each other. 
+    - [X] expect.toBe
+    - [X] expect.toNotBe
+- [ ] Add error handling. Expected and received results need to be correctly fitted into the workflow along with any error. 

@@ -1,4 +1,4 @@
-import { ILoggerTestInfoOpt } from './types'
+import { ErrorInfo } from "./types";
 
 export class Logger {
   success: number;
@@ -9,24 +9,29 @@ export class Logger {
     this.fails = 0;
   }
 
-  logTestInfo(methodName: string, isSuccess: boolean, message?: string, options?: ILoggerTestInfoOpt): void {
-    const logMessage = message ? message : "";
+  logTestInfo(
+    methodName: string,
+    isSuccess: boolean,
+    errorInfo?: ErrorInfo
+  ): void {
     if (isSuccess) {
-      console.log(`    [PASS]: ${methodName} ` + logMessage);
+      console.log(`    [PASS]: ${methodName}`);
       this.success += 1;
     } else {
-      console.log(`    [FAIL]: ${methodName} ` + logMessage);
-      if (options?.expected && options?.received) {
-        console.log(`          expected: ${options.expected}`)
-        console.log(`          received: ${options.received}`)
+      console.log(`    [FAIL]: ${methodName}`);
+      if (errorInfo?.expected && errorInfo?.received) {
+        console.log(`          expected: ${errorInfo.expected}`);
+        console.log(`          received: ${errorInfo.received}`);
       }
       this.fails += 1;
     }
   }
 
+  logErrors(methodName: string, error?: string): void {}
+
   logInitialize(wsProvider: string): void {
-      console.log(`Successfully connected to ${wsProvider}`);
-      console.log(`Initializing the JSONRPsee tests`);
+    console.log(`Successfully connected to ${wsProvider}`);
+    console.log(`Initializing the JSONRPsee tests`);
   }
 
   /**

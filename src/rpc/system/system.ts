@@ -1,9 +1,9 @@
 import { ApiPromise } from "@polkadot/api";
 
 import { Logger } from "../../logger";
-import { ITestResult } from "../../types";
+import { ErrorInfo, ITestResult } from "../../types";
+import { constructTx } from "../../util/constructTx";
 import { expectCorrectType, expectToBe } from "../../util/testApi";
-import { constructTx } from '../../util/constructTx';
 import * as CONSTANTS from "../constants";
 
 export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
@@ -28,20 +28,25 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
   // Run all the tests above
   for (const test of testMethods) {
     const methodCall = await test(api);
-    logger.logTestInfo(methodCall.methodName, methodCall.success);
+    logger.logTestInfo(
+      methodCall.methodName,
+      methodCall.success,
+      methodCall.errorInfo
+    );
   }
 };
 
 /**
- * 
- * @param api 
+ *
+ * @param api
  */
 const rpcSystemAccountNextIndex = async (
-  api: ApiPromise
+  api: ApiPromise,
+  errorInfo: ErrorInfo = {}
 ): Promise<ITestResult> => {
-  const accountIndex = await api.rpc.system.accountNextIndex(
-    CONSTANTS.ALICE_ADDR
-  );
+  const accountIndex = await api.rpc.system
+    .accountNextIndex(CONSTANTS.ALICE_ADDR)
+    .catch((err) => (errorInfo.error = err));
 
   const valueResult = expectToBe(accountIndex.toNumber(), 0);
   const typeResult = expectCorrectType(accountIndex.toRawType(), "u32");
@@ -49,6 +54,7 @@ const rpcSystemAccountNextIndex = async (
   return {
     methodName: "accountNextIndex",
     success: valueResult.success && typeResult.success,
+    errorInfo,
   };
 };
 
@@ -58,8 +64,13 @@ const rpcSystemAccountNextIndex = async (
  * @param api ApiPromise
  * @returns
  */
-const rpcSystemAddLogFilter = async (api: ApiPromise): Promise<ITestResult> => {
-  const apiResult = await api.rpc.system.addLogFilter("Hello");
+const rpcSystemAddLogFilter = async (
+  api: ApiPromise,
+  errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
+  const apiResult = await api.rpc.system
+    .addLogFilter("Hello")
+    .catch((err) => (errorInfo.error = err));
 
   const valueResult = expectToBe(apiResult.toJSON(), null);
   const typeResult = expectCorrectType(apiResult.toRawType(), "Null");
@@ -67,142 +78,195 @@ const rpcSystemAddLogFilter = async (api: ApiPromise): Promise<ITestResult> => {
   return {
     methodName: "addLogFilter",
     success: typeResult.success && valueResult.success,
+    errorInfo,
   };
 };
 
-const rpcSystemAddReservedPeer = async (api: ApiPromise): Promise<ITestResult> => {
-  const res = await api.rpc.system.addReservedPeer(CONSTANTS.ALICE_BOOTNODE);
+const rpcSystemAddReservedPeer = async (
+  api: ApiPromise,
+  errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
+  const res = await api.rpc.system
+    .addReservedPeer(CONSTANTS.ALICE_BOOTNODE)
+    .catch((err) => (errorInfo.error = err));
 
-  const valueResult = expectToBe(res.toJSON(), '');
+  const valueResult = expectToBe(res.toJSON(), "");
   const typeResult = expectCorrectType(res.toRawType(), "Text");
 
   return {
     methodName: "addReservedPeer",
-    success: typeResult.success && valueResult.success
+    success: typeResult.success && valueResult.success,
+    errorInfo,
   };
-}
+};
 
 /**
- * 
+ *
  * @param api ApiPromise
  */
-const rpcSystemChain = async (api: ApiPromise): Promise<ITestResult> => {
-  const res = await api.rpc.system.chain()
+const rpcSystemChain = async (
+  api: ApiPromise,
+  errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
+  const res = await api.rpc.system
+    .chain()
+    .catch((err) => (errorInfo.error = err));
 
-  const valueResult = expectToBe(res.toJSON(), 'Development');
-  const typeResult = expectCorrectType(res.toRawType(), "Text")
+  const valueResult = expectToBe(res.toJSON(), "Development");
+  const typeResult = expectCorrectType(res.toRawType(), "Text");
 
   return {
     methodName: "chain",
-    success: valueResult.success && typeResult.success
+    success: valueResult.success && typeResult.success,
+    errorInfo,
   };
-}
+};
 
-const rpcSystemChainType = async (api: ApiPromise): Promise<ITestResult> => {
-  const res = await api.rpc.system.chainType();
+const rpcSystemChainType = async (
+  api: ApiPromise,
+  errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
+  const res = await api.rpc.system
+    .chainType()
+    .catch((err) => (errorInfo.error = err));
   const expectedJSON = {
-    development: null
+    development: null,
   };
-  const enumType = '{"_enum":{"Development":"Null","Local":"Null","Live":"Null","Custom":"Text"}}';
+  const enumType =
+    '{"_enum":{"Development":"Null","Local":"Null","Live":"Null","Custom":"Text"}}';
 
   const valueResult = expectToBe(res.toJSON(), expectedJSON);
   const enumResult = expectToBe(res.toRawType(), enumType);
 
   return {
-    methodName: 'chainType',
-    success: valueResult.success && enumResult.success
-  }
-}
+    methodName: "chainType",
+    success: valueResult.success && enumResult.success,
+    errorInfo,
+  };
+};
 
 /**
  * Construct a transaction and then attempt a dry run with an extrinisic to be 'submitted'
- * 
- * @param api 
- * @returns 
+ *
+ * @param api
+ * @returns
  */
-const rpcSystemDryRun = async (api: ApiPromise): Promise<ITestResult> => {
+const rpcSystemDryRun = async (
+  api: ApiPromise,
+  errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
   const tx = await constructTx();
-  const res = await api.rpc.system.dryRun(tx);
+  const res = await api.rpc.system
+    .dryRun(tx)
+    .catch((err) => (errorInfo.error = err));
 
   const valueResult = expectToBe(res.isOk, true);
-  const typeResult = expectToBe(res.type, 'Ok');
+  const typeResult = expectToBe(res.type, "Ok");
 
   return {
-    methodName: 'dryRun',
-    success: valueResult.success && typeResult.success
-  }
-}
+    methodName: "dryRun",
+    success: valueResult.success && typeResult.success,
+    errorInfo,
+  };
+};
 
-
-const rpcSystemHealth = async (api: ApiPromise): Promise<ITestResult> => {
-  const res = await api.rpc.system.health();
+const rpcSystemHealth = async (
+  api: ApiPromise,
+  errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
+  const res = await api.rpc.system
+    .health()
+    .catch((err) => (errorInfo.error = err));
   const expectedJson = {
     peers: 0,
     isSyncing: false,
-    shouldHavePeers: false
-  }
-  const enumType = '{"peers":"u64","isSyncing":"bool","shouldHavePeers":"bool"}';
+    shouldHavePeers: false,
+  };
+  const enumType =
+    '{"peers":"u64","isSyncing":"bool","shouldHavePeers":"bool"}';
 
   const valueResult = expectToBe(res.toJSON(), expectedJson);
   const enumResult = expectToBe(res.toRawType(), enumType);
 
   return {
-    methodName: 'health',
-    success: valueResult.success && enumResult.success
-  }
-}
+    methodName: "health",
+    success: valueResult.success && enumResult.success,
+    errorInfo,
+  };
+};
 
-const rpcSystemLocalListenAddresses = async (api: ApiPromise): Promise<ITestResult> => {
-  const res = await api.rpc.system.localListenAddresses();
+const rpcSystemLocalListenAddresses = async (
+  api: ApiPromise,
+  errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
+  const res = await api.rpc.system
+    .localListenAddresses()
+    .catch((err) => (errorInfo.error = err));
   const expectedArray = [
-    '/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT',
-    '/ip4/192.168.86.249/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT',
-    '/ip4/192.168.2.1/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT',
-    '/ip6/::1/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT'
+    "/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT",
+    "/ip4/192.168.86.249/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT",
+    "/ip4/192.168.2.1/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT",
+    "/ip6/::1/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT",
   ];
 
   const valueResult = expectToBe(res.toJSON(), expectedArray);
-  const typeResult = expectCorrectType(res.toRawType(), 'Vec<Text>');
+  const typeResult = expectCorrectType(res.toRawType(), "Vec<Text>");
 
   return {
-    methodName: 'localListenAddresses',
-    success: valueResult.success && typeResult.success
-  }
-}
+    methodName: "localListenAddresses",
+    success: valueResult.success && typeResult.success,
+    errorInfo,
+  };
+};
 
-const rpcSystemLocalPeerId = async (api: ApiPromise): Promise<ITestResult> => {
-  const res = await api.rpc.system.localPeerId();
+const rpcSystemLocalPeerId = async (
+  api: ApiPromise,
+  errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
+  const res = await api.rpc.system
+    .localPeerId()
+    .catch((err) => (errorInfo.error = err));
 
-  const valueResult = expectToBe(res.toString(), '12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT');
-  const typeResult = expectCorrectType(res.toRawType(), 'Text');
-
-  return {
-    methodName: 'localPeerId',
-    success: valueResult.success && typeResult.success
-  }
-}
-
-const rpcSystemName = async (api: ApiPromise): Promise<ITestResult> => {
-  const res = await api.rpc.system.name();
-
-  const valueResult = expectToBe(res.toString(), 'Substrate Node');
-  const typeResult = expectToBe(res.toRawType(), 'Text');
+  const valueResult = expectToBe(
+    res.toString(),
+    "12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT"
+  );
+  const typeResult = expectCorrectType(res.toRawType(), "Text");
 
   return {
-    methodName: 'name',
-    success: valueResult.success && typeResult.success
-  }
-}
+    methodName: "localPeerId",
+    success: valueResult.success && typeResult.success,
+    errorInfo,
+  };
+};
+
+const rpcSystemName = async (
+  api: ApiPromise,
+  errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
+  const res = await api.rpc.system
+    .name()
+    .catch((err) => (errorInfo.error = err));
+
+  const valueResult = expectToBe(res.toString(), "Substrate Node");
+  const typeResult = expectToBe(res.toRawType(), "Text");
+
+  return {
+    methodName: "name",
+    success: valueResult.success && typeResult.success,
+    errorInfo,
+  };
+};
 
 /**
  * UNSTABLE Automatically fail for now.
- * 
- * @param api 
- * @returns 
+ *
+ * @param api
+ * @returns
  */
 const rpcSystemNetworkState = async (api: ApiPromise): Promise<ITestResult> => {
   return {
-    methodName: 'networkState',
-    success: false
-  }
-}
+    methodName: "networkState",
+    success: false,
+  };
+};
