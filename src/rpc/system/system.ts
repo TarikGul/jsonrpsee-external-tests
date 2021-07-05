@@ -201,10 +201,6 @@ const rpcSystemName = async (api: ApiPromise): Promise<ITestResult> => {
  * @returns 
  */
 const rpcSystemNetworkState = async (api: ApiPromise): Promise<ITestResult> => {
-  // const res = await api.rpc.system.networkState();
-
-  // const typeResult = expectCorrectType(res.toRawType(), 'NetworkState');
-
   return {
     methodName: 'networkState',
     success: false

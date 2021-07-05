@@ -74,7 +74,7 @@ Note: Each rpc method should be accompanied by docs explaining the basic expecte
     - [X] rpc.system.localListenAddresses
     - [X] rpc.system.localPeerId
     - [X] rpc.system.name
-    - [ ] rpc.system.networkState
+    - [ ] rpc.system.networkState (Unstable) Returns false by default
     - [ ] rpc.system.nodeRoles
     - [ ] rpc.system.peers
     - [ ] rpc.system.properties
