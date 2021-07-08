@@ -232,16 +232,18 @@ const rpcSystemLocalPeerId = async (
 	const res = await api.rpc.system
 		.localPeerId()
 		.catch((err) => (errorInfo.error = err));
+	
+	// These values are specific to running a substrate dev node
+	const expectedPrefix = '12D3KooW';
+	const expectedAddrTestValue = '12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT';
 
-	const valueResult = expectToBe(
-		res.toString(),
-		'12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT'
-	);
+	const valueResult = res.toString().startsWith(expectedPrefix);
 	const typeResult = expectCorrectType(res.toRawType(), 'Text');
+	const valueLength = expectToBe(res.toString().length, expectedAddrTestValue.length);
 
 	return {
 		methodName: 'localPeerId',
-		success: valueResult.success && typeResult.success,
+		success: valueResult && typeResult.success && valueLength.success,
 		errorInfo,
 	};
 };
@@ -298,8 +300,6 @@ const rpcSystemPeers = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promi
 	const res = await api.rpc.system
 		.peers()
 		.catch((err) => errorInfo.error = err);
-
-	console.log(res.toRawType());
 
 	const valueResult = expectToBe(res.toJSON(), []);
 	const typeResult = expectCorrectType(res.toRawType(), 'Vec<PeerInfo>');
