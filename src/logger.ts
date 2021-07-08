@@ -3,10 +3,12 @@ import { ErrorInfo } from "./types";
 export class Logger {
   success: number;
   fails: number;
+  errors: ErrorInfo[];
 
   constructor() {
     this.success = 0;
     this.fails = 0;
+    this.errors = [];
   }
 
   logTestInfo(
@@ -19,15 +21,20 @@ export class Logger {
       this.success += 1;
     } else {
       console.log(`    [FAIL]: ${methodName}`);
-      if (errorInfo?.expected && errorInfo?.received) {
+
+      if (errorInfo && errorInfo?.expected && errorInfo?.received) {
+        this.errors.push(errorInfo);
         console.log(`          expected: ${errorInfo.expected}`);
         console.log(`          received: ${errorInfo.received}`);
       }
+      
       this.fails += 1;
     }
   }
 
-  logErrors(methodName: string, error?: string): void {}
+  logErrors(methodName: string, error?: string): void {
+
+  }
 
   logInitialize(wsProvider: string): void {
     console.log(`Successfully connected to ${wsProvider}`);
