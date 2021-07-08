@@ -1,4 +1,4 @@
-import { ApiPromise } from '@polkadot/api';
+import { ApiPromise, ApiRx } from '@polkadot/api';
 
 import { Logger } from '../../logger';
 import { ErrorInfo, ITestResult } from '../../types';
@@ -32,6 +32,7 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
 		rpcSystemProperties,
 		rpcSystemReservedPeers,
 		rpcSystemRemoveReservedPeers,
+		rpcSystemResetLogFilter,
 	];
 
 	// Run all the tests above
@@ -362,7 +363,20 @@ const rpcSystemRemoveReservedPeers = async (api: ApiPromise, errorInfo: ErrorInf
 	}
 }
 
-// resetLogFilter
+const rpcSystemResetLogFilter = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+	const res = await api.rpc.system
+		.resetLogFilter()
+		.catch((err) => errorInfo.error = err);
+
+	// Value should be an empty string on a succesful call
+	const valueResult = expectToBe(res.toString(), '');
+	const typeResult = expectCorrectType(res.toRawType(), 'Null');
+
+	return {
+		methodName: 'resetLogFilter',
+		success: valueResult.success && typeResult.success
+	}
+}
 
 //syncState
 
