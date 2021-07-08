@@ -28,6 +28,7 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
 		rpcSystemName,
 		rpcSystemNetworkState,
 		rpcSystemNodeRoles,
+		rpcSystemPeers
 	];
 
 	// Run all the tests above
@@ -285,7 +286,7 @@ const rpcSystemNodeRoles = async (
 		.catch((err) => (errorInfo.error = err));
 
 	const valueResult = expectToBe(res.toString(), '[Authority]');
-	const typeResult = expectToBe(res.toRawType(), 'Vec<NodeRole>');
+	const typeResult = expectCorrectType(res.toRawType(), 'Vec<NodeRole>');
 
 	return {
 		methodName: 'nodeRoles',
@@ -293,7 +294,21 @@ const rpcSystemNodeRoles = async (
 	};
 };
 
-// peers
+const rpcSystemPeers = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+	const res = await api.rpc.system
+		.peers()
+		.catch((err) => errorInfo.error = err);
+
+	console.log(res.toRawType());
+
+	const valueResult = expectToBe(res.toJSON(), []);
+	const typeResult = expectCorrectType(res.toRawType(), 'Vec<PeerInfo>');
+
+	return {
+		methodName: 'peers',
+		success: valueResult.success && typeResult.success
+	}
+}
 
 // properties
 
