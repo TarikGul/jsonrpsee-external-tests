@@ -78,15 +78,16 @@ Note: Each rpc method should be accompanied by docs explaining the basic expecte
     - [X] rpc.system.nodeRoles
     - [X] rpc.system.peers
     - [X] rpc.system.properties
-    - [ ] rpc.system.removeReservedPeer
-    - [ ] rpc.system.reservedPeers
-    - [ ] rpc.system.resetLogFilter
-    - [ ] rpc.system.syncState
-    - [ ] rpc.system.version
+    - [X] rpc.system.removeReservedPeer
+    - [X] rpc.system.reservedPeers
+    - [X] rpc.system.resetLogFilter
+    - [X] rpc.system.syncState
+    - [X] rpc.system.version
 
 ### Testing API
 
 - [X] Implement an `expect` API that works similar to Jest, but its main purpose is to deep check received vs expected values and types against each other. 
-    - [X] expect.toBe
-    - [X] expect.toNotBe
+    - [X] expectToBe
+    - [X] expectCorrectType
+    - [X] expectToInclude
 - [ ] Add error handling. Expected and received results need to be correctly fitted into the workflow along with any error. 

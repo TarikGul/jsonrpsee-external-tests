@@ -33,6 +33,8 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
 		rpcSystemReservedPeers,
 		rpcSystemRemoveReservedPeers,
 		rpcSystemResetLogFilter,
+		rpcSystemSyncState,
+		rpcSystemVersion,
 	];
 
 	// Run all the tests above
@@ -236,14 +238,18 @@ const rpcSystemLocalPeerId = async (
 	const res = await api.rpc.system
 		.localPeerId()
 		.catch((err) => (errorInfo.error = err));
-	
+
 	// These values are specific to running a substrate dev node
 	const expectedPrefix = '12D3KooW';
-	const expectedAddrTestValue = '12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT';
+	const expectedAddrTestValue =
+		'12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT';
 
 	const valueResult = res.toString().startsWith(expectedPrefix);
 	const typeResult = expectCorrectType(res.toRawType(), 'Text');
-	const valueLength = expectToBe(res.toString().length, expectedAddrTestValue.length);
+	const valueLength = expectToBe(
+		res.toString().length,
+		expectedAddrTestValue.length
+	);
 
 	return {
 		methodName: 'localPeerId',
@@ -300,41 +306,51 @@ const rpcSystemNodeRoles = async (
 	};
 };
 
-const rpcSystemPeers = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+const rpcSystemPeers = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
 	const res = await api.rpc.system
 		.peers()
-		.catch((err) => errorInfo.error = err);
+		.catch((err) => (errorInfo.error = err));
 
 	const valueResult = expectToBe(res.toJSON(), []);
 	const typeResult = expectCorrectType(res.toRawType(), 'Vec<PeerInfo>');
 
 	return {
 		methodName: 'peers',
-		success: valueResult.success && typeResult.success
-	}
-}
+		success: valueResult.success && typeResult.success,
+	};
+};
 
-const rpcSystemProperties = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+const rpcSystemProperties = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
 	const res = await api.rpc.system
 		.properties()
-		.catch(err => errorInfo.error = err);
+		.catch((err) => (errorInfo.error = err));
 
-	const expectedResult = '{"ss58Format":null,"tokenDecimals":null,"tokenSymbol":null}';
+	const expectedResult =
+		'{"ss58Format":null,"tokenDecimals":null,"tokenSymbol":null}';
 
 	const valueResult = expectToBe(res.toString(), expectedResult);
 	const typeResult = expectCorrectType(res.toRawType(), 'Json');
 
 	return {
 		methodName: 'properties',
-		success: valueResult.success && typeResult.success
-	}
-}
+		success: valueResult.success && typeResult.success,
+	};
+};
 
-const rpcSystemReservedPeers = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+const rpcSystemReservedPeers = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
 	const res = await api.rpc.system
 		.reservedPeers()
-		.catch(err => errorInfo.error = err);
-	
+		.catch((err) => (errorInfo.error = err));
+
 	const expectedResult = '12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp';
 
 	const valueLength = res.toJSON().length > 0;
@@ -343,30 +359,36 @@ const rpcSystemReservedPeers = async (api: ApiPromise, errorInfo: ErrorInfo = {}
 
 	return {
 		methodName: 'reservedPeers',
-		success: valueLength && valueResult.success && typeResult.success
-	}
-}
+		success: valueLength && valueResult.success && typeResult.success,
+	};
+};
 
-const rpcSystemRemoveReservedPeers = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+const rpcSystemRemoveReservedPeers = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
 	// Should we store this value inside of a cache so we dont need to query is again
 	const peerAddr = (await api.rpc.system.reservedPeers())[0];
 	const res = await api.rpc.system
 		.removeReservedPeer(peerAddr)
-		.catch(err => errorInfo.error = err);
+		.catch((err) => (errorInfo.error = err));
 
-	// Having an empty string returned back denotes that the call was succesful. 
+	// Having an empty string returned back denotes that the call was succesful.
 	const valueResult = expectToBe(res.toString(), '');
 
 	return {
 		methodName: 'removeReservedPeers',
-		success: valueResult.success
-	}
-}
+		success: valueResult.success,
+	};
+};
 
-const rpcSystemResetLogFilter = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+const rpcSystemResetLogFilter = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
 	const res = await api.rpc.system
 		.resetLogFilter()
-		.catch((err) => errorInfo.error = err);
+		.catch((err) => (errorInfo.error = err));
 
 	// Value should be an empty string on a succesful call
 	const valueResult = expectToBe(res.toString(), '');
@@ -374,10 +396,53 @@ const rpcSystemResetLogFilter = async (api: ApiPromise, errorInfo: ErrorInfo = {
 
 	return {
 		methodName: 'resetLogFilter',
-		success: valueResult.success && typeResult.success
-	}
-}
+		success: valueResult.success && typeResult.success,
+	};
+};
 
-//syncState
+const rpcSystemSyncState = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
+	const res = await api.rpc.system
+		.syncState()
+		.catch((err) => (errorInfo.error = err));
 
-//version
+	const expectedType =
+		'{"startingBlock":"BlockNumber","currentBlock":"BlockNumber","highestBlock":"Option<BlockNumber>"}';
+
+	const jsonResult = res.toJSON();
+	const valueResult =
+		jsonResult['startingBlock'] === 0 &&
+		jsonResult['currentBlock'] > 0 &&
+		jsonResult['highestBlock'] === null;
+	const typeResult = expectToBe(res.toRawType(), expectedType);
+
+	return {
+		methodName: 'syncState',
+		success: valueResult && typeResult.success,
+	};
+};
+
+/**
+ * Version will check the type of local machine the node is running. Because it can change
+ * per test we make sure that we receive the correct type back from the result.
+ *
+ * @param api
+ * @param errorInfo
+ */
+const rpcSystemVersion = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
+	const res = await api.rpc.system
+		.version()
+		.catch((err) => (errorInfo.error = err));
+
+	const typeResult = expectCorrectType(res.toRawType(), 'Text');
+
+	return {
+		methodName: 'version',
+		success: typeResult.success,
+	};
+};

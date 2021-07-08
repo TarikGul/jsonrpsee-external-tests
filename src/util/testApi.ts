@@ -62,12 +62,12 @@ export const expectCorrectType = (
 };
 
 /**
- * Checks to see if all expected addresses are included within a received 
+ * Checks to see if all expected addresses are included within a received
  * array of addresses
- * 
+ *
  * @param received A received array of strings
  * @param addresses An array of addresses
- * @returns 
+ * @returns
  */
 export const expectToInclude = (
 	received: string[],
