@@ -1,7 +1,7 @@
-import { ErrorInfo } from "./";
+import { ErrorInfo } from './';
 
 export interface ITestResult {
-  methodName: string;
-  success: boolean;
-  errorInfo?: ErrorInfo;
+	methodName: string;
+	success: boolean;
+	errorInfo?: ErrorInfo;
 }

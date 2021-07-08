@@ -1,7 +1,7 @@
-import { KeyringPair } from "@polkadot/keyring/types";
-import { EXTRINSIC_VERSION } from "@polkadot/types/extrinsic/v4/Extrinsic";
-import { createMetadata, OptionsWithMeta } from "@substrate/txwrapper-polkadot";
-import fetch from "node-fetch";
+import { KeyringPair } from '@polkadot/keyring/types';
+import { EXTRINSIC_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
+import { createMetadata, OptionsWithMeta } from '@substrate/txwrapper-polkadot';
+import fetch from 'node-fetch';
 
 /**
  * Send a JSONRPC request to the node at http://localhost:9933.
@@ -10,31 +10,31 @@ import fetch from "node-fetch";
  * @param params - The JSONRPC request params.
  */
 export function rpcToLocalNode(
-  method: string,
-  params: any[] = []
+	method: string,
+	params: any[] = []
 ): Promise<any> {
-  return fetch("http://localhost:9933", {
-    body: JSON.stringify({
-      id: 1,
-      jsonrpc: "2.0",
-      method,
-      params,
-    }),
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-  })
-    .then((response) => response.json())
-    .then(({ error, result }) => {
-      if (error) {
-        throw new Error(
-          `${error.code} ${error.message}: ${JSON.stringify(error.data)}`
-        );
-      }
+	return fetch('http://localhost:9933', {
+		body: JSON.stringify({
+			id: 1,
+			jsonrpc: '2.0',
+			method,
+			params,
+		}),
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		method: 'POST',
+	})
+		.then((response) => response.json())
+		.then(({ error, result }) => {
+			if (error) {
+				throw new Error(
+					`${error.code} ${error.message}: ${JSON.stringify(error.data)}`
+				);
+			}
 
-      return result;
-    });
+			return result;
+		});
 }
 
 /**
@@ -44,20 +44,20 @@ export function rpcToLocalNode(
  * @param signingPayload - Payload to sign.
  */
 export function signWith(
-  pair: KeyringPair,
-  signingPayload: string,
-  options: OptionsWithMeta
+	pair: KeyringPair,
+	signingPayload: string,
+	options: OptionsWithMeta
 ): string {
-  const { registry, metadataRpc } = options;
-  // Important! The registry needs to be updated with latest metadata, so make
-  // sure to run `registry.setMetadata(metadata)` before signing.
-  registry.setMetadata(createMetadata(registry, metadataRpc));
+	const { registry, metadataRpc } = options;
+	// Important! The registry needs to be updated with latest metadata, so make
+	// sure to run `registry.setMetadata(metadata)` before signing.
+	registry.setMetadata(createMetadata(registry, metadataRpc));
 
-  const { signature } = registry
-    .createType("ExtrinsicPayload", signingPayload, {
-      version: EXTRINSIC_VERSION,
-    })
-    .sign(pair);
+	const { signature } = registry
+		.createType('ExtrinsicPayload', signingPayload, {
+			version: EXTRINSIC_VERSION,
+		})
+		.sign(pair);
 
-  return signature;
+	return signature;
 }

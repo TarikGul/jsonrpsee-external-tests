@@ -1,1 +1,1 @@
-export { testRpcAuthor } from "./author";
+export { testRpcAuthor } from './author';

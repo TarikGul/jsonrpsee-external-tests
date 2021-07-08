@@ -1,5 +1,5 @@
-import { ErrorInfo } from "./";
+import { ErrorInfo } from './';
 
 export interface ILoggerTestInfoOpt {
-  errorInfo: ErrorInfo;
+	errorInfo: ErrorInfo;
 }
