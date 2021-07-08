@@ -28,7 +28,8 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
 		rpcSystemName,
 		rpcSystemNetworkState,
 		rpcSystemNodeRoles,
-		rpcSystemPeers
+		rpcSystemPeers,
+		rpcSystemProperties,
 	];
 
 	// Run all the tests above
@@ -306,6 +307,22 @@ const rpcSystemPeers = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promi
 
 	return {
 		methodName: 'peers',
+		success: valueResult.success && typeResult.success
+	}
+}
+
+const rpcSystemProperties = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+	const res = await api.rpc.system
+		.properties()
+		.catch(err => errorInfo.error = err);
+
+	const expectedResult = '{"ss58Format":null,"tokenDecimals":null,"tokenSymbol":null}';
+
+	const valueResult = expectToBe(res.toString(), expectedResult);
+	const typeResult = expectCorrectType(res.toRawType(), 'Json');
+
+	return {
+		methodName: 'properties',
 		success: valueResult.success && typeResult.success
 	}
 }
