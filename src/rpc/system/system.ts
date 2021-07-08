@@ -30,6 +30,7 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
 		rpcSystemNodeRoles,
 		rpcSystemPeers,
 		rpcSystemProperties,
+		rpcSystemReservedPeers,
 	];
 
 	// Run all the tests above
@@ -324,6 +325,23 @@ const rpcSystemProperties = async (api: ApiPromise, errorInfo: ErrorInfo = {}): 
 	return {
 		methodName: 'properties',
 		success: valueResult.success && typeResult.success
+	}
+}
+
+const rpcSystemReservedPeers = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+	const res = await api.rpc.system
+		.reservedPeers()
+		.catch(err => errorInfo.error = err);
+	
+	const expectedResult = '12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp';
+
+	const valueLength = res.toJSON().length > 0;
+	const valueResult = expectToBe(res.toJSON()[0].length, expectedResult.length);
+	const typeResult = expectCorrectType(res.toRawType(), 'Vec<Text>');
+
+	return {
+		methodName: 'reservedPeers',
+		success: valueLength && valueResult.success && typeResult.success
 	}
 }
 
