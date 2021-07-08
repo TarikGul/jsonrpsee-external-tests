@@ -31,6 +31,7 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
 		rpcSystemPeers,
 		rpcSystemProperties,
 		rpcSystemReservedPeers,
+		rpcSystemRemoveReservedPeers,
 	];
 
 	// Run all the tests above
@@ -345,11 +346,21 @@ const rpcSystemReservedPeers = async (api: ApiPromise, errorInfo: ErrorInfo = {}
 	}
 }
 
-// properties
+const rpcSystemRemoveReservedPeers = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+	// Should we store this value inside of a cache so we dont need to query is again
+	const peerAddr = (await api.rpc.system.reservedPeers())[0];
+	const res = await api.rpc.system
+		.removeReservedPeer(peerAddr)
+		.catch(err => errorInfo.error = err);
 
-// removeReservedPeer
+	// Having an empty string returned back denotes that the call was succesful. 
+	const valueResult = expectToBe(res.toString(), '');
 
-// reservedPeers
+	return {
+		methodName: 'removeReservedPeers',
+		success: valueResult.success
+	}
+}
 
 // resetLogFilter
 
