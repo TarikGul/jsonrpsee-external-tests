@@ -38,6 +38,7 @@ export const expectToBe = (
 };
 
 /**
+ * Check to see if the received input is of a correct polkadot-js type
  *
  * @param received
  * @param substrateType
@@ -55,6 +56,34 @@ export const expectCorrectType = (
 	if (received !== substrateType) {
 		result.success = false;
 		result.error = `Incorrect Types: Received substrate type: ${received}, expected substrate type ${substrateType}`;
+	}
+
+	return result;
+};
+
+/**
+ * Checks to see if all expected addresses are included within a received 
+ * array of addresses
+ * 
+ * @param received A received array of strings
+ * @param addresses An array of addresses
+ * @returns 
+ */
+export const expectToInclude = (
+	received: string[],
+	addresses: string[]
+): IExpectTest => {
+	const result = {
+		success: true,
+		error: '',
+	};
+
+	const isCorrect = addresses.filter((addr) => received.includes(addr));
+
+	if (isCorrect.length > 0) {
+		result.success = false;
+		result.error =
+			'Received vector does not share the same values as the given input.';
 	}
 
 	return result;

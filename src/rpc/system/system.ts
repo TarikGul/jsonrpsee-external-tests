@@ -3,7 +3,11 @@ import { ApiPromise } from '@polkadot/api';
 import { Logger } from '../../logger';
 import { ErrorInfo, ITestResult } from '../../types';
 import { constructTx } from '../../util/constructTx';
-import { expectCorrectType, expectToBe } from '../../util/testApi';
+import {
+	expectCorrectType,
+	expectToBe,
+	expectToInclude,
+} from '../../util/testApi';
 import * as CONSTANTS from '../constants';
 
 export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
@@ -23,6 +27,7 @@ export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
 		rpcSystemLocalPeerId,
 		rpcSystemName,
 		rpcSystemNetworkState,
+		rpcSystemNodeRoles,
 	];
 
 	// Run all the tests above
@@ -209,7 +214,7 @@ const rpcSystemLocalListenAddresses = async (
 		'/ip6/::1/tcp/30333/p2p/12D3KooWSiRgzMbqZz2pA8JGd8t3SW2Eu6bVeqiETowwwrLuLznT',
 	];
 
-	const valueResult = expectToBe(res.toJSON(), expectedArray);
+	const valueResult = expectToInclude(res.toJSON(), expectedArray);
 	const typeResult = expectCorrectType(res.toRawType(), 'Vec<Text>');
 
 	return {
@@ -270,3 +275,34 @@ const rpcSystemNetworkState = async (api: ApiPromise): Promise<ITestResult> => {
 		success: false,
 	};
 };
+
+const rpcSystemNodeRoles = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
+	const res = await api.rpc.system
+		.nodeRoles()
+		.catch((err) => (errorInfo.error = err));
+
+	const valueResult = expectToBe(res.toString(), '[Authority]');
+	const typeResult = expectToBe(res.toRawType(), 'Vec<NodeRole>');
+
+	return {
+		methodName: 'nodeRoles',
+		success: valueResult.success && typeResult.success,
+	};
+};
+
+// peers
+
+// properties
+
+// removeReservedPeer
+
+// reservedPeers
+
+// resetLogFilter
+
+//syncState
+
+//version
