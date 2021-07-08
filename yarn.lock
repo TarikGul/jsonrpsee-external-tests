@@ -1868,7 +1868,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4.0.0":
+"chalk@npm:^4.0.0, chalk@npm:^4.1.1":
   version: 4.1.1
   resolution: "chalk@npm:4.1.1"
   dependencies:
@@ -3960,6 +3960,7 @@ fsevents@^2.3.2:
     "@substrate/dev": ^0.5.4
     "@substrate/txwrapper-polkadot": ^1.2.5
     "@types/lodash": ^4.14.170
+    chalk: ^4.1.1
     lodash: ^4.17.21
   languageName: unknown
   linkType: soft

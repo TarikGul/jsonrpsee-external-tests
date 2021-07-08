@@ -10,8 +10,7 @@ As a quick overview, the test suite is completely built from scratch. Meaning, a
 ### Basic
 
 - [X] Directory structure
-- [ ] Fix Eslint config
-- [ ] 
+- [X] Fix Eslint config
 
 ### Logger
 

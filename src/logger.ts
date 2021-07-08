@@ -1,4 +1,8 @@
+import chalk from 'chalk';
 import { ErrorInfo } from './types';
+
+const PASS = chalk.green('PASS');
+const FAIL = chalk.red('FAIL');
 
 export class Logger {
 	success: number;
@@ -17,10 +21,10 @@ export class Logger {
 		errorInfo?: ErrorInfo
 	): void {
 		if (isSuccess) {
-			console.log(`    [PASS]: ${methodName}`);
+			console.log(`    [${PASS}]: ${methodName}`);
 			this.success += 1;
 		} else {
-			console.log(`    [FAIL]: ${methodName}`);
+			console.log(`    [${FAIL}]: ${methodName}`);
 
 			if (errorInfo && errorInfo?.expected && errorInfo?.received) {
 				this.errors.push(errorInfo);
