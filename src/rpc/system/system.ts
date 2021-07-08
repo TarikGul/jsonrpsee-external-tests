@@ -10,7 +10,7 @@ import {
 } from '../../util/testApi';
 import * as CONSTANTS from '../constants';
 
-export const testRpcSystem = async (api: ApiPromise, logger: Logger) => {
+export const testRpcSystem = async (api: ApiPromise, logger: Logger): Promise<void> => {
 	// Set the header of the test Suite
 	logger.logHeader('SYSTEM');
 

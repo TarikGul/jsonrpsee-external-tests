@@ -62,7 +62,8 @@ Note: Each rpc method should be accompanied by docs explaining the basic expecte
     - [ ] rpc.state.subscribeRuntimeVersion
     - [ ] rpc.state.subscribeStorage
     - [ ] rpc.state.traceBlock
-- [ ] rpc.system   
+- [ ] rpc.system
+    - [ ] DOCS
     - [X] rpc.system.accountNextIndex
     - [X] rpc.system.addLogFilter
     - [X] rpc.system.addReservedPeer
