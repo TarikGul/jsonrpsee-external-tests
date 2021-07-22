@@ -91,3 +91,11 @@ Note: Each rpc method should be accompanied by docs explaining the basic expecte
     - [X] expectCorrectType
     - [X] expectToInclude
 - [ ] Add error handling. Expected and received results need to be correctly fitted into the workflow along with any error. 
+
+### TODO's
+
+- [ ] Diff between all methods the node has vs the ones we know exists. 
+
+- [ ] CLI, 
+
+
