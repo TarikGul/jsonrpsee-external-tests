@@ -1,4 +1,5 @@
 import chalk from 'chalk';
+
 import { ErrorInfo } from './types';
 
 const PASS = chalk.green('PASS');
