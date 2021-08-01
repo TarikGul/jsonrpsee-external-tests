@@ -1,4 +1,4 @@
-import { ApiPromise, ApiRx } from '@polkadot/api';
+import { ApiPromise } from '@polkadot/api';
 
 import { Logger } from '../../logger';
 import { ErrorInfo, ITestResult } from '../../types';
@@ -10,7 +10,10 @@ import {
 } from '../../util/testApi';
 import * as CONSTANTS from '../constants';
 
-export const testRpcSystem = async (api: ApiPromise, logger: Logger): Promise<void> => {
+export const testRpcSystem = async (
+	api: ApiPromise,
+	logger: Logger
+): Promise<void> => {
 	// Set the header of the test Suite
 	logger.logHeader('SYSTEM');
 

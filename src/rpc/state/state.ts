@@ -25,32 +25,44 @@ export const testRpcState = async (api: ApiPromise, logger: Logger) => {
 	}
 };
 
-const rpcStateCall = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+const rpcStateCall = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
 	return {
 		methodName: 'call',
 		success: true,
 	};
 };
 
-const rpcStateGetChildKeys = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+const rpcStateGetChildKeys = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
 	// const childKeys = await api.rpc.state.getChildKeys()
 	return {
 		methodName: 'getChildKeys',
 		success: true,
 	};
-}
+};
 
-const rpcStateGetChildReadProof = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+const rpcStateGetChildReadProof = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
 	return {
 		methodName: 'getChildReadProof',
 		success: true,
 	};
-}
+};
 
-const rpcStateChildStorage = async (api: ApiPromise, errorInfo: ErrorInfo = {}): Promise<ITestResult> => {
+const rpcStateChildStorage = async (
+	api: ApiPromise,
+	errorInfo: ErrorInfo = {}
+): Promise<ITestResult> => {
 	// const childStorage = await api.rpc.state.getChildStorage()
 	return {
 		methodName: 'getChildKeys',
 		success: true,
 	};
-}
+};
