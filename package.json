@@ -12,13 +12,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@polkadot/api": "^4.15.1",
+    "@polkadot/api": "^5.4.1",
     "@substrate/txwrapper-polkadot": "^1.2.5",
+    "argparse": "^2.0.1",
     "chalk": "^4.1.1",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@substrate/dev": "^0.5.4",
+    "@types/argparse": "^2.0.10",
     "@types/lodash": "^4.14.170"
   }
 }
