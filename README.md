@@ -98,4 +98,6 @@ Note: Each rpc method should be accompanied by docs explaining the basic expecte
 
 - [ ] CLI, 
 
+- [ ] Refactor each test suite to use one main function that can take test information from a configuration file
 
+- [ ]  
