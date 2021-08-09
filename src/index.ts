@@ -4,7 +4,7 @@ import { Namespace } from 'argparse';
 import { parseArgs } from './cli';
 import { RPC_CHAIN_CONSTS } from './config';
 import { Logger } from './logger';
-import { ITestConfig, ITestInfo } from './types/config';
+import { TestConfigTuple } from './types/config';
 
 const main = async (wsProvider: string) => {
 	const logger = new Logger();
@@ -29,7 +29,7 @@ const main = async (wsProvider: string) => {
 
 const parseArgInput = (parser: Namespace) => {
 	const { method } = parser;
-	const testMethods: [ITestInfo, ITestConfig][] = [];
+	const testMethods: TestConfigTuple[] = [];
 
 	const rpcConstsKeys = Object.keys(RPC_CHAIN_CONSTS);
 
@@ -87,7 +87,7 @@ const parseArgInput = (parser: Namespace) => {
 
 const runTest = (
 	api: ApiPromise,
-	methodTuple: [ITestInfo, ITestConfig],
+	methodTuple: TestConfigTuple,
 	logger: Logger
 ) => {};
 
