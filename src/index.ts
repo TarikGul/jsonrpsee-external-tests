@@ -4,8 +4,7 @@ import { Namespace } from 'argparse';
 import { parseArgs } from './cli';
 import { RPC_CHAIN_CONSTS } from './config';
 import { Logger } from './logger';
-import { tests } from './rpc';
-import { ITestConfig } from './types/config';
+import { ITestConfig, ITestInfo } from './types/config';
 
 const main = async (wsProvider: string) => {
 	const logger = new Logger();
@@ -15,24 +14,22 @@ const main = async (wsProvider: string) => {
 
 	// The user should input the chaintype
 	// default will be substrate dev env
+	const api = await ApiPromise.create({
+		provider: new WsProvider(wsProvider),
+	});
 
-	// const api = await ApiPromise.create({
-	// 	provider: new WsProvider(wsProvider),
-	// });
+	logger.logInitialize(wsProvider);
 
-	// logger.logInitialize(wsProvider);
+	for (const methodTuple of testMethods) {
+		runTest(api, methodTuple, logger);
+	}
 
-	// for (let i = 0; i < tests.length; i++) {
-	// 	const callTests = tests[i];
-	// 	await callTests(api, logger);
-	// }
-
-	// logger.logFinalInfo();
+	logger.logFinalInfo();
 };
 
 const parseArgInput = (parser: Namespace) => {
 	const { method } = parser;
-	const testMethods: [string, ITestConfig][] = [];
+	const testMethods: [ITestInfo, ITestConfig][] = [];
 
 	const rpcConstsKeys = Object.keys(RPC_CHAIN_CONSTS);
 
@@ -50,41 +47,49 @@ const parseArgInput = (parser: Namespace) => {
 			}
 			// The arg input is only the pallet, which will retrieve all
 			// methods inside of the pallet
-			Object.keys(RPC_CHAIN_CONSTS[splitMethod[0]]).forEach((method) => {
-				const methodConfig = RPC_CHAIN_CONSTS[splitMethod[0]][method];
+			Object.keys(RPC_CHAIN_CONSTS[pallet]).forEach((method) => {
+				const testInfo = { pallet, method };
+				const methodConfig = RPC_CHAIN_CONSTS[pallet][method];
 
-				testMethods.push([method, methodConfig]);
+				testMethods.push([testInfo, methodConfig]);
 			});
 		} else if (splitMethod.length === 2) {
 			// The arg input is a single method, which will retrieve
 			// only that one method
 
 			const [pallet, method] = splitMethod;
+			const methodInfo = { pallet, method };
 
 			const methodConfig = RPC_CHAIN_CONSTS[pallet][method];
 
 			if (!methodConfig) {
-				console.error(`${method} does not exist within pallet: ${pallet}`)
+				console.error(`${method} does not exist within pallet: ${pallet}`);
 			}
 
-			testMethods.push([method, methodConfig]);
+			testMethods.push([methodInfo, methodConfig]);
 		} else {
-			console.error(
-				`${method} is not in the correct format. ex: system.chain`
-			);
+			console.error(`${method} is not in the correct format. ex: system.chain`);
 		}
 	} else {
 		// Retrieve all methods
 		rpcConstsKeys.forEach((pallet) => {
 			Object.keys(RPC_CHAIN_CONSTS[pallet]).forEach((method) => {
 				const methodConfig = RPC_CHAIN_CONSTS[pallet][method];
+				const methodInfo = { pallet, method };
 
-				testMethods.push([method, methodConfig]);
+				testMethods.push([methodInfo, methodConfig]);
 			});
 		});
 	}
-	console.log(testMethods);
+
+	return testMethods;
 };
+
+const runTest = (
+	api: ApiPromise,
+	methodTuple: [ITestInfo, ITestConfig],
+	logger: Logger
+) => {};
 
 if (require.main === module) {
 	// main("wss://kusama-rpc.polkadot.io").finally(() => process.exit(0));
