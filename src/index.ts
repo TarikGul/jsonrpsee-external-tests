@@ -5,7 +5,11 @@ import { parseArgs } from './cli';
 import { RPC_CHAIN_CONSTS } from './config';
 import { Logger } from './logger';
 import { IExpectTestResult, ITestResult } from './types';
-import { TestConfigTuple, SubstrateInterfaceTypes, TestCounter } from './types/config';
+import {
+	SubstrateInterfaceTypes,
+	TestConfigTuple,
+	TestCounter,
+} from './types/config';
 
 const main = async (wsProvider: string) => {
 	const logger = new Logger();
@@ -22,7 +26,11 @@ const main = async (wsProvider: string) => {
 	logger.logInitialize(wsProvider);
 
 	for (const methodTuple of testMethods) {
-		const {methodName, success, errorInfo} = await runTest(api, methodTuple, logger, parser.chainType);
+		const { methodName, success, errorInfo } = await runTest(
+			api,
+			methodTuple,
+			parser.chainType
+		);
 
 		logger.logTestInfo(methodName, success, errorInfo);
 	}
@@ -37,7 +45,7 @@ const parseArgInput = (parser: Namespace): TestConfigTuple[] => {
 	const rpcConstsKeys = Object.keys(RPC_CHAIN_CONSTS);
 
 	// This will populate testMethods, and then call all the methods
-	if (method as string) {
+	if (method) {
 		// Retrieve either a whole pallet or just a single method
 
 		const splitMethod: string[] = method.split('.');
@@ -91,20 +99,19 @@ const parseArgInput = (parser: Namespace): TestConfigTuple[] => {
 const runTest = async (
 	api: ApiPromise,
 	methodTuple: TestConfigTuple,
-	logger: Logger,
 	chainType: string
 ): Promise<ITestResult> => {
 	const [methodInfo, methodConfig] = methodTuple;
 	const { pallet, method } = methodInfo;
 	const testCounter: TestCounter = {
 		success: 0,
-		error: 0
-	}
+		error: 0,
+	};
 	const logResult = {
 		methodName: method,
 		success: false,
-		errorInfo: undefined
-	}
+		errorInfo: undefined,
+	};
 
 	const chainSpecMethods = methodConfig[chainType];
 
@@ -117,8 +124,10 @@ const runTest = async (
 		result = await chainSpecMethods.apiCall(api);
 	} else {
 		// console an error, and return false, exiting the test
-		console.error(`APIcall does not exist in the configuration for ${pallet}.${method}`);
-		return logResult
+		console.error(
+			`APIcall does not exist in the configuration for ${pallet}.${method}`
+		);
+		return logResult;
 	}
 
 	/**
@@ -127,16 +136,17 @@ const runTest = async (
 	if (chainSpecMethods.callExpectToBe) {
 		const res: IExpectTestResult = chainSpecMethods.callExpectToBe(result);
 
-		res.success ? testCounter.success += 1 : testCounter.error += 1;
+		res.success ? (testCounter.success += 1) : (testCounter.error += 1);
 	}
 
 	/**
 	 * Call expectCorrectType if it exists in the configuration
 	 */
 	if (chainSpecMethods.callExpectCorrectType) {
-		const res: IExpectTestResult = chainSpecMethods.callExpectCorrectType(result);
+		const res: IExpectTestResult =
+			chainSpecMethods.callExpectCorrectType(result);
 
-		res.success ? testCounter.success += 1 : testCounter.error += 1;
+		res.success ? (testCounter.success += 1) : (testCounter.error += 1);
 	}
 
 	/**
@@ -144,18 +154,18 @@ const runTest = async (
 	 * test calls. ex: callExpectToBe, callExpectCorrectType etc.
 	 */
 	if (testCounter.success === 0 && testCounter.error === 0) {
-		console.error(`Configuration for ${pallet}.${method} has no test calls.`)
-		return logResult
+		console.error(`Configuration for ${pallet}.${method} has no test calls.`);
+		return logResult;
 	}
 
 	/**
 	 * Check the testCounter results and determine if the test was succesful or not
 	 */
-	if(testCounter.success > 0 && testCounter.error === 0) {
-		logResult.success = true
-	} 
+	if (testCounter.success > 0 && testCounter.error === 0) {
+		logResult.success = true;
+	}
 
-	return logResult
+	return logResult;
 };
 
 if (require.main === module) {
