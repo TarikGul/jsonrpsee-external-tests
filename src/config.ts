@@ -1,6 +1,9 @@
 import { ApiPromise } from '@polkadot/api';
-import { RpcConsts } from './types/config';
+import { Index } from '@polkadot/types/interfaces';
+import { Null } from '@polkadot/types'
+import { RpcConsts, SubstrateInterfaceTypes } from './types/config';
 import * as CONSTANTS from './constants';
+import { expectCorrectType, expectToBe } from './util/testApi';
 
 export const RPC_CHAIN_CONSTS: RpcConsts = {
 	author: {
@@ -150,12 +153,18 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 	system: {
 		accountNextIndex: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) =>  await api.rpc.system.accountNextIndex(CONSTANTS.ALICE_ADDR)
+				apiCall: async (api: ApiPromise) =>  await api.rpc.system.accountNextIndex(CONSTANTS.ALICE_ADDR),
+				callExpectToBe: (result: Index) => expectToBe(result.toNumber(), 0),
+				callExpectCorrectType: (result: Index) => expectCorrectType(result.toRawType(), 'u32'),
 			},
 			polkadotDev: {}
 		},
 		addLogFilter: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.addLogFilter('Hello'),
+				callExpectToBe: (result: Null) => expectToBe(result.toJSON(), null),
+				callExpectCorrectType: (result: Null) => expectCorrectType(result.toRawType(), 'Null')
+			},
 			polkadotDev: {}
 		},
 		addReservedPeer: {
