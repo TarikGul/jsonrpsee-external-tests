@@ -4,7 +4,7 @@ import { Namespace } from 'argparse';
 import { parseArgs } from './cli';
 import { RPC_CHAIN_CONSTS } from './config';
 import { Logger } from './logger';
-import { TestConfigTuple } from './types/config';
+import { TestConfigTuple, SubstrateInterfaceTypes } from './types/config';
 
 const main = async (wsProvider: string) => {
 	const logger = new Logger();
@@ -21,7 +21,7 @@ const main = async (wsProvider: string) => {
 	logger.logInitialize(wsProvider);
 
 	for (const methodTuple of testMethods) {
-		runTest(api, methodTuple, logger);
+		runTest(api, methodTuple, logger, parser.chainType);
 	}
 
 	logger.logFinalInfo();
@@ -85,13 +85,31 @@ const parseArgInput = (parser: Namespace): TestConfigTuple[] => {
 	return testMethods;
 };
 
-const runTest = (
+const runTest = async (
 	api: ApiPromise,
 	methodTuple: TestConfigTuple,
-	logger: Logger
-) => {
+	logger: Logger,
+	chainType: string
+): Promise<boolean> => {
 	const [methodInfo, methodConfig] = methodTuple;
 	const { pallet, method } = methodInfo;
+
+	const chainSpecMethods = methodConfig[chainType];
+
+	let result: Promise<SubstrateInterfaceTypes>;
+
+	/**
+	 * Run the API call
+	 */
+	if (chainSpecMethods && chainSpecMethods.apiCall) {
+		result = await chainSpecMethods.apiCall(api);
+	} else {
+		console.error('APIcall does not exist in the configuration for ${pallet}.${method}');
+
+		return false;
+	}
+
+	return true
 };
 
 if (require.main === module) {

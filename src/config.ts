@@ -1,173 +1,230 @@
+import { ApiPromise } from '@polkadot/api';
 import { RpcConsts } from './types/config';
+import * as CONSTANTS from './constants';
 
 export const RPC_CHAIN_CONSTS: RpcConsts = {
 	author: {
 		hasKey: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		hasSessionKeys: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		insertKey: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		pendingExtrinsics: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		removeExtrinsic: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		rotateKeys: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		submitAndWatchExtrinsic: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		submitExtrinsic: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 	},
 	chain: {
 		getBlock: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getBlockHash: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getFinalizedHead: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getHeader: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		subscribeAllHeads: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		subscribeFinalizedHeads: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		subscribeNewHeads: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 	},
 	offChain: {
 		localStorageGet: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		localStorageSet: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 	},
 	state: {
 		call: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getChildKeys: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getChildReadProof: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getChildStorage: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getChildStorageHash: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getChildStorageSize: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getKeys: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getKeysPaged: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getMetadata: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getPairs: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getReadProof: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getRuntimeVersion: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getStorage: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		getStorageAt: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		subscribeRuntimeVersion: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		subscribeStorage: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		traceBlock: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 	},
 	system: {
 		accountNextIndex: {
-			development: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) =>  await api.rpc.system.accountNextIndex(CONSTANTS.ALICE_ADDR)
+			},
+			polkadotDev: {}
 		},
 		addLogFilter: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		addReservedPeer: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		chain: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		chainType: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		dryRun: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		health: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		localListenAddresses: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		localPeerId: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		name: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		networkState: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		nodeRoles: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		peers: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		properties: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		removeReservedPeer: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		reservedPeers: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		resetLogFilter: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		syncState: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 		version: {
-			development: {},
+			substrateDev: {},
+			polkadotDev: {}
 		},
 	},
 };

@@ -8,7 +8,7 @@ import {
 	expectToBe,
 	expectToInclude,
 } from '../../util/testApi';
-import * as CONSTANTS from '../constants';
+import * as CONSTANTS from '../../constants';
 
 export const testRpcSystem = async (
 	api: ApiPromise,
