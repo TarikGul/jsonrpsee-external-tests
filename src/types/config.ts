@@ -25,6 +25,7 @@ export interface ITestInfo {
 
 export interface IChainSpecMethods {
 	apiCall?: Function;
+	callConstructTx?: Function;
 	callExpectToBe?: Function;
 	callExpectCorrectType?: Function;
 }

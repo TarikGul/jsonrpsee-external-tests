@@ -116,12 +116,21 @@ const runTest = async (
 	const chainSpecMethods = methodConfig[chainType];
 
 	let result: Promise<SubstrateInterfaceTypes>;
+	let tx: string | undefined;
+
+	/**
+	 * Check to see if we need to construct a tx before we make an api call.
+	 * If thats the case we run the tx and pass it into the api call.
+	 */
+	if (chainSpecMethods.callConstructTx) {
+		tx = await chainSpecMethods.callConstructTx()
+	}
 
 	/**
 	 * Run the API call
 	 */
 	if (chainSpecMethods && chainSpecMethods.apiCall) {
-		result = await chainSpecMethods.apiCall(api);
+		result = await chainSpecMethods.apiCall(api, tx);
 	} else {
 		// console an error, and return false, exiting the test
 		console.error(
