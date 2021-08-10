@@ -6,7 +6,7 @@ export interface ErrorInfo {
 	received?: string | number;
 }
 
-export interface IExpectTest {
+export interface IExpectTestResult {
 	success: boolean;
 	error?: string;
 }
