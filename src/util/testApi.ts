@@ -1,7 +1,7 @@
 import { InterfaceTypes } from '@polkadot/types/types';
 import { isEqual } from 'lodash';
 
-import { IExpectTest } from '../types';
+import { IExpectTestResult } from '../types';
 
 /**
  * @param recieved The received value from the test
@@ -11,7 +11,7 @@ import { IExpectTest } from '../types';
 export const expectToBe = (
 	recieved: unknown,
 	expected: unknown
-): IExpectTest => {
+): IExpectTestResult => {
 	const result = {
 		success: true,
 		error: '',
@@ -47,7 +47,7 @@ export const expectToBe = (
 export const expectCorrectType = (
 	received: string,
 	substrateType: keyof InterfaceTypes
-): IExpectTest => {
+): IExpectTestResult => {
 	const result = {
 		success: true,
 		error: ',',
@@ -72,7 +72,7 @@ export const expectCorrectType = (
 export const expectToInclude = (
 	received: string[],
 	addresses: string[]
-): IExpectTest => {
+): IExpectTestResult => {
 	const result = {
 		success: true,
 		error: '',
