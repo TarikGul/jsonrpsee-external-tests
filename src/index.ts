@@ -27,7 +27,7 @@ const main = async (wsProvider: string) => {
 	logger.logFinalInfo();
 };
 
-const parseArgInput = (parser: Namespace) => {
+const parseArgInput = (parser: Namespace): TestConfigTuple[] => {
 	const { method } = parser;
 	const testMethods: TestConfigTuple[] = [];
 
@@ -89,7 +89,10 @@ const runTest = (
 	api: ApiPromise,
 	methodTuple: TestConfigTuple,
 	logger: Logger
-) => {};
+) => {
+	const [methodInfo, methodConfig] = methodTuple;
+	const { pallet, method } = methodInfo;
+};
 
 if (require.main === module) {
 	// main("wss://kusama-rpc.polkadot.io").finally(() => process.exit(0));
