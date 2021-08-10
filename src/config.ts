@@ -1,6 +1,6 @@
 import { ApiPromise } from '@polkadot/api';
 import { Null, Text } from '@polkadot/types';
-import { Index, ApplyExtrinsicResult } from '@polkadot/types/interfaces';
+import { ApplyExtrinsicResult, Index } from '@polkadot/types/interfaces';
 
 import * as CONSTANTS from './constants';
 import { RpcConsts } from './types/config';
@@ -186,23 +186,28 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		chain: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.system.chain(),
-				callExpectToBe: (result: Text) => expectToBe(result.toJSON(), 'Development'),
-				callExpectCorrectType: (result: Text) => expectCorrectType(result.toRawType(), 'Text')
+				callExpectToBe: (result: Text) =>
+					expectToBe(result.toJSON(), 'Development'),
+				callExpectCorrectType: (result: Text) =>
+					expectCorrectType(result.toRawType(), 'Text'),
 			},
 			polkadotDev: {},
 		},
 		chainType: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.system.chainType(),
-				callExpectToBe: (result: Text) => expectToBe(result.toJSON(), { development: null })
+				callExpectToBe: (result: Text) =>
+					expectToBe(result.toJSON(), { development: null }),
 			},
 			polkadotDev: {},
 		},
 		dryRun: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise, tx: string) => await api.rpc.system.dryRun(tx),
+				apiCall: async (api: ApiPromise, tx: string) =>
+					await api.rpc.system.dryRun(tx),
 				callConstructTx: async () => await constructTx(),
-				callExpectToBe: (result: ApplyExtrinsicResult) => expectToBe(result.isOk, true),
+				callExpectToBe: (result: ApplyExtrinsicResult) =>
+					expectToBe(result.isOk, true),
 			},
 			polkadotDev: {},
 		},
