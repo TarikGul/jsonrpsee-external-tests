@@ -4,7 +4,8 @@ import { Namespace } from 'argparse';
 import { parseArgs } from './cli';
 import { RPC_CHAIN_CONSTS } from './config';
 import { Logger } from './logger';
-import { TestConfigTuple, SubstrateInterfaceTypes } from './types/config';
+import { IExpectTestResult, ITestResult } from './types';
+import { TestConfigTuple, SubstrateInterfaceTypes, TestCounter } from './types/config';
 
 const main = async (wsProvider: string) => {
 	const logger = new Logger();
@@ -21,7 +22,9 @@ const main = async (wsProvider: string) => {
 	logger.logInitialize(wsProvider);
 
 	for (const methodTuple of testMethods) {
-		runTest(api, methodTuple, logger, parser.chainType);
+		const {methodName, success, errorInfo} = await runTest(api, methodTuple, logger, parser.chainType);
+
+		logger.logTestInfo(methodName, success, errorInfo);
 	}
 
 	logger.logFinalInfo();
@@ -90,9 +93,18 @@ const runTest = async (
 	methodTuple: TestConfigTuple,
 	logger: Logger,
 	chainType: string
-): Promise<boolean> => {
+): Promise<ITestResult> => {
 	const [methodInfo, methodConfig] = methodTuple;
 	const { pallet, method } = methodInfo;
+	const testCounter: TestCounter = {
+		success: 0,
+		error: 0
+	}
+	const logResult = {
+		methodName: method,
+		success: false,
+		errorInfo: undefined
+	}
 
 	const chainSpecMethods = methodConfig[chainType];
 
@@ -104,12 +116,46 @@ const runTest = async (
 	if (chainSpecMethods && chainSpecMethods.apiCall) {
 		result = await chainSpecMethods.apiCall(api);
 	} else {
-		console.error('APIcall does not exist in the configuration for ${pallet}.${method}');
-
-		return false;
+		// console an error, and return false, exiting the test
+		console.error(`APIcall does not exist in the configuration for ${pallet}.${method}`);
+		return logResult
 	}
 
-	return true
+	/**
+	 * Call expecToBe if it exists in the configuration
+	 */
+	if (chainSpecMethods.callExpectToBe) {
+		const res: IExpectTestResult = chainSpecMethods.callExpectToBe(result);
+
+		res.success ? testCounter.success += 1 : testCounter.error += 1;
+	}
+
+	/**
+	 * Call expectCorrectType if it exists in the configuration
+	 */
+	if (chainSpecMethods.callExpectCorrectType) {
+		const res: IExpectTestResult = chainSpecMethods.callExpectCorrectType(result);
+
+		res.success ? testCounter.success += 1 : testCounter.error += 1;
+	}
+
+	/**
+	 * Check if no tests were ran. If that is the case, the configuration is missing
+	 * test calls. ex: callExpectToBe, callExpectCorrectType etc.
+	 */
+	if (testCounter.success === 0 && testCounter.error === 0) {
+		console.error(`Configuration for ${pallet}.${method} has no test calls.`)
+		return logResult
+	}
+
+	/**
+	 * Check the testCounter results and determine if the test was succesful or not
+	 */
+	if(testCounter.success > 0 && testCounter.error === 0) {
+		logResult.success = true
+	} 
+
+	return logResult
 };
 
 if (require.main === module) {
