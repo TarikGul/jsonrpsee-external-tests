@@ -1,5 +1,5 @@
-import { Index } from '@polkadot/types/interfaces';
 import { Null } from '@polkadot/types';
+import { Index } from '@polkadot/types/interfaces';
 
 // Nested Object, we grab all the keys and using them as string inside of the
 // test logic, therefore we save it as a Record string.
@@ -9,12 +9,12 @@ export type RpcConsts = Record<string, Record<string, ITestConfig>>;
 export type TestConfigTuple = [ITestInfo, ITestConfig];
 
 // Object will change to what the test options are going to be
-export type ITestConfig = Record<string, IChainSpecMethods>
+export type ITestConfig = Record<string, IChainSpecMethods>;
 
 // Counter used for each test that is ran
 export interface TestCounter {
-	success: number,
-	error: number
+	success: number;
+	error: number;
 }
 
 // Basic information regarding a single test
@@ -24,10 +24,10 @@ export interface ITestInfo {
 }
 
 export interface IChainSpecMethods {
-	apiCall?: Function,
-	callExpectToBe?: Function,
-	callExpectCorrectType?: Function,
+	apiCall?: Function;
+	callExpectToBe?: Function;
+	callExpectCorrectType?: Function;
 }
 
 // Union type of all potential interface && Primitive types that polkadot/api can return for rpc methods
-export type SubstrateInterfaceTypes = Index | Null
+export type SubstrateInterfaceTypes = Index | Null;

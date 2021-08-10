@@ -1,5 +1,6 @@
 import { ApiPromise } from '@polkadot/api';
 
+import * as CONSTANTS from '../../constants';
 import { Logger } from '../../logger';
 import { ErrorInfo, ITestResult } from '../../types';
 import { constructTx } from '../../util/constructTx';
@@ -8,7 +9,6 @@ import {
 	expectToBe,
 	expectToInclude,
 } from '../../util/testApi';
-import * as CONSTANTS from '../../constants';
 
 export const testRpcSystem = async (
 	api: ApiPromise,

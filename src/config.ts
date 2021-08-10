@@ -1,239 +1,250 @@
 import { ApiPromise } from '@polkadot/api';
+import { Null, Text } from '@polkadot/types';
 import { Index } from '@polkadot/types/interfaces';
-import { Null } from '@polkadot/types'
-import { RpcConsts, SubstrateInterfaceTypes } from './types/config';
+
 import * as CONSTANTS from './constants';
+import { RpcConsts } from './types/config';
 import { expectCorrectType, expectToBe } from './util/testApi';
 
 export const RPC_CHAIN_CONSTS: RpcConsts = {
 	author: {
 		hasKey: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		hasSessionKeys: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		insertKey: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		pendingExtrinsics: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		removeExtrinsic: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		rotateKeys: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		submitAndWatchExtrinsic: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		submitExtrinsic: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 	},
 	chain: {
 		getBlock: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getBlockHash: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getFinalizedHead: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getHeader: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		subscribeAllHeads: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		subscribeFinalizedHeads: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		subscribeNewHeads: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 	},
 	offChain: {
 		localStorageGet: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		localStorageSet: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 	},
 	state: {
 		call: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getChildKeys: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getChildReadProof: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getChildStorage: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getChildStorageHash: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getChildStorageSize: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getKeys: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getKeysPaged: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getMetadata: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getPairs: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getReadProof: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getRuntimeVersion: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getStorage: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		getStorageAt: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		subscribeRuntimeVersion: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		subscribeStorage: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		traceBlock: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 	},
 	system: {
 		accountNextIndex: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) =>  await api.rpc.system.accountNextIndex(CONSTANTS.ALICE_ADDR),
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.system.accountNextIndex(CONSTANTS.ALICE_ADDR),
 				callExpectToBe: (result: Index) => expectToBe(result.toNumber(), 0),
-				callExpectCorrectType: (result: Index) => expectCorrectType(result.toRawType(), 'u32'),
+				callExpectCorrectType: (result: Index) =>
+					expectCorrectType(result.toRawType(), 'u32'),
 			},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		addLogFilter: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await api.rpc.system.addLogFilter('Hello'),
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.system.addLogFilter('Hello'),
 				callExpectToBe: (result: Null) => expectToBe(result.toJSON(), null),
-				callExpectCorrectType: (result: Null) => expectCorrectType(result.toRawType(), 'Null')
+				callExpectCorrectType: (result: Null) =>
+					expectCorrectType(result.toRawType(), 'Null'),
 			},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		addReservedPeer: {
-			substrateDev: {},
-			polkadotDev: {}
+			substrateDev: {
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.system.addReservedPeer(CONSTANTS.ALICE_BOOTNODE),
+				callExpectToBe: (result: Text) => expectToBe(result.toJSON(), ''),
+				callExpectCorrectType: (result: Text) =>
+					expectCorrectType(result.toRawType(), 'Text'),
+			},
+			polkadotDev: {},
 		},
 		chain: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		chainType: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		dryRun: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		health: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		localListenAddresses: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		localPeerId: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		name: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		networkState: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		nodeRoles: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		peers: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		properties: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		removeReservedPeer: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		reservedPeers: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		resetLogFilter: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		syncState: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 		version: {
 			substrateDev: {},
-			polkadotDev: {}
+			polkadotDev: {},
 		},
 	},
 };
