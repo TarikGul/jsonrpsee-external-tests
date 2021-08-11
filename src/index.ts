@@ -1,10 +1,9 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { Namespace } from 'argparse';
 
 import { parseArgs } from './cli';
 import { RPC_CHAIN_CONSTS } from './config';
 import { Logger } from './logger';
-import { IExpectTestResult, ITestResult } from './types';
+import { IExpectTestResult, IParser, ITestResult } from './types';
 import {
 	SubstrateInterfaceTypes,
 	TestConfigTuple,
@@ -38,7 +37,7 @@ const main = async (wsProvider: string) => {
 	logger.logFinalInfo();
 };
 
-const parseArgInput = (parser: Namespace): TestConfigTuple[] => {
+const parseArgInput = (parser: IParser): TestConfigTuple[] => {
 	const { method } = parser;
 	const testMethods: TestConfigTuple[] = [];
 
@@ -107,7 +106,7 @@ const runTest = async (
 		success: 0,
 		error: 0,
 	};
-	const logResult = {
+	const logResult: ITestResult = {
 		methodName: method,
 		success: false,
 		errorInfo: undefined,

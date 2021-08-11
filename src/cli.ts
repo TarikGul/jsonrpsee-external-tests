@@ -1,11 +1,13 @@
-import { ArgumentParser, Namespace } from 'argparse';
+import { ArgumentParser } from 'argparse';
 
-export const parseArgs = (): Namespace => {
+import { IParser } from './types';
+
+export const parseArgs = (): IParser => {
 	const parser = new ArgumentParser();
 
 	parser.add_argument('-v', '--version', { action: 'store_true' });
 	parser.add_argument('-c', '--chainType', { default: 'substrateDev' });
 	parser.add_argument('-m', '--method');
 
-	return parser.parse_args() as Namespace;
+	return parser.parse_args() as IParser;
 };
