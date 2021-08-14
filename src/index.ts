@@ -158,6 +158,16 @@ const runTest = async (
 	}
 
 	/**
+	 * Call expectToInclude if it exists in the configuration
+	 */
+	if (chainSpecMethods.callExpectToInclude) {
+		const res: IExpectTestResult =
+			chainSpecMethods.callExpectToInclude(result);
+		
+		res.success ? (testCounter.success += 1) : (testCounter.error += 1);
+	}
+
+	/**
 	 * Check if no tests were ran. If that is the case, the configuration is missing
 	 * test calls. ex: callExpectToBe, callExpectCorrectType etc.
 	 */
