@@ -1,11 +1,12 @@
 import { ApiPromise } from '@polkadot/api';
-import { Null, Text } from '@polkadot/types';
-import { ApplyExtrinsicResult, Index } from '@polkadot/types/interfaces';
+import { Null, Text, Vec } from '@polkadot/types';
+import { ApplyExtrinsicResult, Index, Health } from '@polkadot/types/interfaces';
 
 import * as CONSTANTS from './constants';
+import * as RESPONSES from './responses';
 import { RpcConsts } from './types/config';
 import { constructTx } from './util/constructTx';
-import { expectCorrectType, expectToBe } from './util/testApi';
+import { expectCorrectType, expectToBe, expectToInclude } from './util/testApi';
 
 export const RPC_CHAIN_CONSTS: RpcConsts = {
 	author: {
@@ -212,11 +213,17 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			polkadotDev: {},
 		},
 		health: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.health(),
+				callExpectToBe: (result: Health) => expectToBe(result.toJSON(), RESPONSES.SubstrateDevHealthRes)
+			},
 			polkadotDev: {},
 		},
 		localListenAddresses: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.localListenAddresses(),
+				callExpectToInclude: (result: Vec<Text>) => expectToInclude(result.toJSON() as string[], RESPONSES.SubstrateDevLocalAddresses)
+			},
 			polkadotDev: {},
 		},
 		localPeerId: {
