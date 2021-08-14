@@ -161,9 +161,8 @@ const runTest = async (
 	 * Call expectToInclude if it exists in the configuration
 	 */
 	if (chainSpecMethods.callExpectToInclude) {
-		const res: IExpectTestResult =
-			chainSpecMethods.callExpectToInclude(result);
-		
+		const res: IExpectTestResult = chainSpecMethods.callExpectToInclude(result);
+
 		res.success ? (testCounter.success += 1) : (testCounter.error += 1);
 	}
 

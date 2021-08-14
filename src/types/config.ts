@@ -1,5 +1,12 @@
 import { Null, Text, Vec } from '@polkadot/types';
-import { Index, Health, ApplyExtrinsicResult, NodeRole, PeerInfo, ChainProperties } from '@polkadot/types/interfaces';
+import {
+	ApplyExtrinsicResult,
+	ChainProperties,
+	Health,
+	Index,
+	NodeRole,
+	PeerInfo,
+} from '@polkadot/types/interfaces';
 
 // Nested Object, we grab all the keys and using them as string inside of the
 // test logic, therefore we save it as a Record string.
@@ -32,4 +39,13 @@ export interface IChainSpecMethods {
 }
 
 // Union type of all potential interface && Primitive types that polkadot/api can return for rpc methods
-export type SubstrateInterfaceTypes = Index | Null | Health | ApplyExtrinsicResult | Text | Vec<Text> | Vec<NodeRole> | Vec<PeerInfo> | ChainProperties;
+export type SubstrateInterfaceTypes =
+	| Index
+	| Null
+	| Health
+	| ApplyExtrinsicResult
+	| Text
+	| Vec<Text>
+	| Vec<NodeRole>
+	| Vec<PeerInfo>
+	| ChainProperties;
