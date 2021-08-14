@@ -1,6 +1,6 @@
 import { ApiPromise } from '@polkadot/api';
 import { Null, Text, Vec } from '@polkadot/types';
-import { ApplyExtrinsicResult, Index, Health, NodeRole } from '@polkadot/types/interfaces';
+import { ApplyExtrinsicResult, Index, Health, NodeRole, PeerInfo } from '@polkadot/types/interfaces';
 
 import * as CONSTANTS from './constants';
 import * as RESPONSES from './responses';
@@ -248,7 +248,10 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			polkadotDev: {},
 		},
 		peers: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.peers(),
+				callExpectToBe: (result: Vec<PeerInfo>) => expectToBe(result.toJSON(), [])
+			},
 			polkadotDev: {},
 		},
 		properties: {
