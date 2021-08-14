@@ -7,7 +7,8 @@ import {
 	Index,
 	NodeRole,
 	PeerInfo,
-	SyncState
+	SyncState,
+	SignedBlock
 } from '@polkadot/types/interfaces';
 
 import * as CONSTANTS from './constants';
@@ -53,7 +54,10 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 	},
 	chain: {
 		getBlock: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.chain.getBlock(),
+				callExpectToBe: (result: SignedBlock) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetBlockType)
+			},
 			polkadotDev: {},
 		},
 		getBlockHash: {
