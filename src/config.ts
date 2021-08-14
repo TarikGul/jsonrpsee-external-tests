@@ -1,6 +1,6 @@
 import { ApiPromise } from '@polkadot/api';
 import { Null, Text, Vec } from '@polkadot/types';
-import { ApplyExtrinsicResult, Index, Health, NodeRole, PeerInfo } from '@polkadot/types/interfaces';
+import { ApplyExtrinsicResult, Index, Health, NodeRole, PeerInfo, ChainProperties } from '@polkadot/types/interfaces';
 
 import * as CONSTANTS from './constants';
 import * as RESPONSES from './responses';
@@ -215,14 +215,14 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		health: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.system.health(),
-				callExpectToBe: (result: Health) => expectToBe(result.toJSON(), RESPONSES.SubstrateDevHealthRes)
+				callExpectToBe: (result: Health) => expectToBe(result.toJSON(), RESPONSES.substrateDevHealthRes)
 			},
 			polkadotDev: {},
 		},
 		localListenAddresses: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.system.localListenAddresses(),
-				callExpectToInclude: (result: Vec<Text>) => expectToInclude(result.toJSON() as string[], RESPONSES.SubstrateDevLocalAddresses)
+				callExpectToInclude: (result: Vec<Text>) => expectToInclude(result.toJSON() as string[], RESPONSES.substrateDevLocalAddresses)
 			},
 			polkadotDev: {},
 		},
@@ -255,11 +255,17 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			polkadotDev: {},
 		},
 		properties: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.properties(),
+				callExpectToBe: (result: ChainProperties) => expectToBe(result.toString(), RESPONSES.substrateDevProperties),
+				callExpectCorrectType: (result: ChainProperties) => expectCorrectType(result.toRawType(), 'Json')
+			},
 			polkadotDev: {},
 		},
 		removeReservedPeer: {
-			substrateDev: {},
+			substrateDev: {
+				
+			},
 			polkadotDev: {},
 		},
 		reservedPeers: {
