@@ -281,12 +281,18 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			},
 			polkadotDev: {},
 		},
-		removeReservedPeer: {
-			substrateDev: {},
+		reservedPeers: {
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.reservedPeers(),
+				callExpectCorrectType: (result: Vec<Text>) => expectToBe(result.toRawType(), 'Vec<Text>')
+			},
 			polkadotDev: {},
 		},
-		reservedPeers: {
-			substrateDev: {},
+		removeReservedPeer: {
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.removeReservedPeer(RESPONSES.substrateDevRemovePeer),
+				callExpectToBe: (result: Text) => expectToBe(result.toString(), '') 
+			},
 			polkadotDev: {},
 		},
 		resetLogFilter: {
