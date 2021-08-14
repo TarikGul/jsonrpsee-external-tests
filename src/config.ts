@@ -2,8 +2,10 @@ import { ApiPromise } from '@polkadot/api';
 import { Null, Text, Vec } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
+	BlockHash,
 	ChainProperties,
 	Health,
+	Header,
 	Index,
 	NodeRole,
 	PeerInfo,
@@ -61,15 +63,24 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			polkadotDev: {},
 		},
 		getBlockHash: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.chain.getBlockHash(),
+				callExpectToBe: (result: BlockHash) => expectToBe(result.toRawType(), 'H256')
+			},
 			polkadotDev: {},
 		},
 		getFinalizedHead: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.chain.getFinalizedHead(),
+				callExpectToBe: (result: BlockHash) => expectToBe(result.toRawType(), 'H256')
+			},
 			polkadotDev: {},
 		},
 		getHeader: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.chain.getHeader(),
+				callExpectToBe: (result: Header) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetHeaderType)
+			},
 			polkadotDev: {},
 		},
 		subscribeAllHeads: {

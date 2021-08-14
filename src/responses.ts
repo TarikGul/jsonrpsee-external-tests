@@ -19,3 +19,5 @@ export const substrateDevRemovePeer = '12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2
 export const substrateDevSyncStateType = '{"startingBlock":"BlockNumber","currentBlock":"BlockNumber","highestBlock":"Option<BlockNumber>"}';
 
 export const substrateDevGetBlockType = '{"block":"Block","justifications":"Option<Justifications>"}';
+
+export const substrateDevGetHeaderType = '{"parentHash":"Hash","number":"Compact<BlockNumber>","stateRoot":"Hash","extrinsicsRoot":"Hash","digest":"Digest"}'
