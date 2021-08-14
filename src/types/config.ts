@@ -6,6 +6,7 @@ import {
 	Index,
 	NodeRole,
 	PeerInfo,
+	SyncState
 } from '@polkadot/types/interfaces';
 
 // Nested Object, we grab all the keys and using them as string inside of the
@@ -48,4 +49,5 @@ export type SubstrateInterfaceTypes =
 	| Vec<Text>
 	| Vec<NodeRole>
 	| Vec<PeerInfo>
-	| ChainProperties;
+	| ChainProperties
+	| SyncState;

@@ -15,3 +15,5 @@ export const substrateDevProperties =
 	'{"ss58Format":null,"tokenDecimals":null,"tokenSymbol":null}';
 
 export const substrateDevRemovePeer = '12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp';
+
+export const substrateDevSyncStateType = '{"startingBlock":"BlockNumber","currentBlock":"BlockNumber","highestBlock":"Option<BlockNumber>"}';

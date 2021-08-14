@@ -7,6 +7,7 @@ import {
 	Index,
 	NodeRole,
 	PeerInfo,
+	SyncState
 } from '@polkadot/types/interfaces';
 
 import * as CONSTANTS from './constants';
@@ -296,15 +297,25 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			polkadotDev: {},
 		},
 		resetLogFilter: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.resetLogFilter(),
+				callExpectToBe: (result: Null) => expectToBe(result.toString(), ''),
+				callExpectCorrectType: (result: Null) => expectCorrectType(result.toRawType(), 'Null')
+			},
 			polkadotDev: {},
 		},
 		syncState: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.syncState(),
+				callExpectToBe: (result: SyncState) => expectToBe(result.toRawType(), RESPONSES.substrateDevSyncStateType)
+			},
 			polkadotDev: {},
 		},
 		version: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.version(),
+				callExpectCorrectType: (result: Text) => expectCorrectType(result.toRawType(), 'Text')
+			},
 			polkadotDev: {},
 		},
 	},
