@@ -1,6 +1,6 @@
 import { ApiPromise } from '@polkadot/api';
 import { Null, Text, Vec } from '@polkadot/types';
-import { ApplyExtrinsicResult, Index, Health } from '@polkadot/types/interfaces';
+import { ApplyExtrinsicResult, Index, Health, NodeRole } from '@polkadot/types/interfaces';
 
 import * as CONSTANTS from './constants';
 import * as RESPONSES from './responses';
@@ -227,19 +227,24 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			polkadotDev: {},
 		},
 		localPeerId: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.localPeerId(),
+				callExpectCorrectType: (result: Text) => expectCorrectType(result.toRawType(), 'Text')
+			},
 			polkadotDev: {},
 		},
 		name: {
-			substrateDev: {},
-			polkadotDev: {},
-		},
-		networkState: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.name(),
+				callExpectToBe: (result: Text) => expectToBe(result.toString(), 'Substrate Node')
+			},
 			polkadotDev: {},
 		},
 		nodeRoles: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.system.nodeRoles(),
+				callExpectToBe: (result: Vec<NodeRole>) => expectToBe(result.toString(), '[Authority]')
+			},
 			polkadotDev: {},
 		},
 		peers: {
