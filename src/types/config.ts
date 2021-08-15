@@ -21,9 +21,6 @@ export type TestConfigTuple = [ITestInfo, ITestConfig];
 // Object will change to what the test options are going to be
 export type ITestConfig = Record<string, IChainSpecMethods>;
 
-// Callback type for subscriptions
-export type SubscribeFunc = (args_0: (result: Header) => void | Promise<void>) => UnsubscribePromise
-
 // Counter used for each test that is ran
 export interface TestCounter {
 	success: number;

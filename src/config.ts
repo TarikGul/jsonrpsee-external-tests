@@ -1,5 +1,6 @@
 import { ApiPromise } from '@polkadot/api';
-import { RpcPromiseResult, VoidFn, UnsubscribePromise } from '@polkadot/api/types';
+import { Observable } from 'rxjs';
+import { RpcPromiseResult, VoidFn } from '@polkadot/api/types';
 import { Null, Text, Vec } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
@@ -16,11 +17,11 @@ import {
 
 import * as CONSTANTS from './constants';
 import * as RESPONSES from './responses';
-import { RpcConsts, SubscribeFunc } from './types/config';
+import { RpcConsts } from './types/config';
 import { constructTx } from './util/constructTx';
 import { expectCorrectType, expectToBe, expectToInclude } from './util/testApi';
 
-const subscribe = async (apiFn: RpcPromiseResult<SubscribeFunc>): Promise<boolean> => {
+const subscribe = async (apiFn: RpcPromiseResult<() => Observable<Header>>): Promise<boolean> => {
 	let count: number = 0;
 	let whileCounter: number = 0;
 	let isSubscribed: boolean = true;
@@ -119,48 +120,23 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		},
 		subscribeAllHeads: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise): Promise<boolean> => {
-					let count: number = 0;
-					let whileCounter: number = 0;
-					let isSubscribed: boolean = true;
-
-					const arr: Header[] = [];
-
-					const timer = (ms: number) => new Promise(res => setTimeout(res, ms))
-					
-					const unsub = await api.rpc.chain.subscribeAllHeads(header => {
-						arr.push(header)
-
-						if (++count === 2) {
-							isSubscribed = false;
-							unsub()
-						}
-					});
-
-					// Allow a 30 second timer to fetch the subscriptions
-					while (isSubscribed) {
-						await timer(1000)
-						whileCounter += 1
-
-						// 30 Seconds has gone by so we exit the subscription
-						if (whileCounter === 30) {
-							isSubscribed = false;
-							unsub()
-						}
-					}
-
-					return arr.length === 2
-				},
+				apiCall: async (api: ApiPromise) => await subscribe(api.rpc.chain.subscribeAllHeads),
 				isSub: true
 			},
 			polkadotDev: {},
 		},
 		subscribeFinalizedHeads: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await subscribe(api.rpc.chain.subscribeFinalizedHeads),
+				isSub: true
+			},
 			polkadotDev: {},
 		},
 		subscribeNewHeads: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await subscribe(api.rpc.chain.subscribeNewHeads),
+				isSub: true
+			},
 			polkadotDev: {},
 		},
 	},
