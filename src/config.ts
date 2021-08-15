@@ -12,6 +12,7 @@ import {
 	PeerInfo,
 	SignedBlock,
 	SyncState,
+	RuntimeVersion
 } from '@polkadot/types/interfaces';
 import { Observable } from 'rxjs';
 
@@ -23,23 +24,26 @@ import { expectCorrectType, expectToBe, expectToInclude } from './util/testApi';
 
 const {
 	offChainLocalConfig: { localSetKey, localSetValue, localGetKey },
+	authorKey,
+	authorKeyType
 } = CONSTANTS;
 
 const subscribe = async (
-	apiFn: RpcPromiseResult<() => Observable<Header>>
+	apiFn: RpcPromiseResult<() => Observable<Header | RuntimeVersion>>,
+	reqCounter: number
 ): Promise<boolean> => {
 	let count = 0;
 	let whileCounter = 0;
 	let isSubscribed = true;
 
-	const arr: Header[] = [];
+	const arr: (Header | RuntimeVersion)[] = [];
 
 	const timer = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-	const unsub: VoidFn = await apiFn((header: Header) => {
-		arr.push(header);
+	const unsub: VoidFn = await apiFn((res: Header | RuntimeVersion) => {
+		arr.push(res);
 
-		if (++count === 2) {
+		if (++count === reqCounter) {
 			isSubscribed = false;
 			unsub();
 		}
@@ -57,13 +61,15 @@ const subscribe = async (
 		}
 	}
 
-	return arr.length === 2;
+	return arr.length === reqCounter;
 };
 
 export const RPC_CHAIN_CONSTS: RpcConsts = {
 	author: {
 		hasKey: {
-			substrateDev: {},
+			substrateDev: {
+				// apiCall: async (api: ApiPromise) => await api.rpc.author.hasKey(authorKey, authorKeyType)
+			},
 			polkadotDev: {},
 		},
 		hasSessionKeys: {
@@ -132,7 +138,7 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		subscribeAllHeads: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) =>
-					await subscribe(api.rpc.chain.subscribeAllHeads),
+					await subscribe(api.rpc.chain.subscribeAllHeads, 2),
 				isSub: true,
 			},
 			polkadotDev: {},
@@ -140,7 +146,7 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		subscribeFinalizedHeads: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) =>
-					await subscribe(api.rpc.chain.subscribeFinalizedHeads),
+					await subscribe(api.rpc.chain.subscribeFinalizedHeads, 2),
 				isSub: true,
 			},
 			polkadotDev: {},
@@ -148,7 +154,7 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		subscribeNewHeads: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) =>
-					await subscribe(api.rpc.chain.subscribeNewHeads),
+					await subscribe(api.rpc.chain.subscribeNewHeads, 2),
 				isSub: true,
 			},
 			polkadotDev: {},
@@ -236,7 +242,11 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			polkadotDev: {},
 		},
 		subscribeRuntimeVersion: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) =>
+					await subscribe(api.rpc.state.subscribeRuntimeVersion, 1),
+				isSub: true,
+			},
 			polkadotDev: {},
 		},
 		subscribeStorage: {

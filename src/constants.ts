@@ -1,4 +1,5 @@
 import { substrateRegistry } from './util/registry';
+import { blake2AsHex } from '@polkadot/util-crypto';
 
 export const ALICE_ADDR = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
@@ -13,3 +14,7 @@ export const offChainLocalConfig = {
 	localSetKey: substrateRegistry.createType('Bytes', 'Test'),
 	localSetValue: substrateRegistry.createType('Bytes', 'asd'),
 };
+
+export const authorKey = substrateRegistry.createType('Bytes', );
+
+export const authorKeyType = substrateRegistry.createType('Text', 'Sr25519');
