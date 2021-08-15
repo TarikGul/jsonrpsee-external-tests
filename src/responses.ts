@@ -14,10 +14,14 @@ export const substrateDevLocalAddresses = [
 export const substrateDevProperties =
 	'{"ss58Format":null,"tokenDecimals":null,"tokenSymbol":null}';
 
-export const substrateDevRemovePeer = '12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp';
+export const substrateDevRemovePeer =
+	'12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp';
 
-export const substrateDevSyncStateType = '{"startingBlock":"BlockNumber","currentBlock":"BlockNumber","highestBlock":"Option<BlockNumber>"}';
+export const substrateDevSyncStateType =
+	'{"startingBlock":"BlockNumber","currentBlock":"BlockNumber","highestBlock":"Option<BlockNumber>"}';
 
-export const substrateDevGetBlockType = '{"block":"Block","justifications":"Option<Justifications>"}';
+export const substrateDevGetBlockType =
+	'{"block":"Block","justifications":"Option<Justifications>"}';
 
-export const substrateDevGetHeaderType = '{"parentHash":"Hash","number":"Compact<BlockNumber>","stateRoot":"Hash","extrinsicsRoot":"Hash","digest":"Digest"}'
+export const substrateDevGetHeaderType =
+	'{"parentHash":"Hash","number":"Compact<BlockNumber>","stateRoot":"Hash","extrinsicsRoot":"Hash","digest":"Digest"}';

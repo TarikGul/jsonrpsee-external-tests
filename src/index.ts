@@ -132,14 +132,14 @@ const runTest = async (
 		const subResult: boolean = await chainSpecMethods.apiCall(api, tx);
 
 		if (subResult) {
-			testCounter.success += 1
-			logResult.success = true
+			testCounter.success += 1;
+			logResult.success = true;
 		} else {
-			testCounter.error += 1
+			testCounter.error += 1;
 
 			// Should log the test failed in the errorInfo
 		}
-		
+
 		return logResult;
 	} else if (chainSpecMethods && chainSpecMethods.apiCall) {
 		result = await chainSpecMethods.apiCall(api, tx);

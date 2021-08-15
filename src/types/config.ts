@@ -1,14 +1,14 @@
-import { Null, Text, Vec } from '@polkadot/types';
 import { UnsubscribePromise } from '@polkadot/api/types';
+import { Null, Text, Vec } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
 	ChainProperties,
-	Health,
 	Header,
+	Health,
 	Index,
 	NodeRole,
 	PeerInfo,
-	SyncState
+	SyncState,
 } from '@polkadot/types/interfaces';
 
 // Nested Object, we grab all the keys and using them as string inside of the

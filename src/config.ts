@@ -1,19 +1,19 @@
 import { ApiPromise } from '@polkadot/api';
-import { Observable } from 'rxjs';
 import { RpcPromiseResult, VoidFn } from '@polkadot/api/types';
 import { Null, Text, Vec } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
 	BlockHash,
 	ChainProperties,
-	Health,
 	Header,
+	Health,
 	Index,
 	NodeRole,
 	PeerInfo,
+	SignedBlock,
 	SyncState,
-	SignedBlock
 } from '@polkadot/types/interfaces';
+import { Observable } from 'rxjs';
 
 import * as CONSTANTS from './constants';
 import * as RESPONSES from './responses';
@@ -21,38 +21,40 @@ import { RpcConsts } from './types/config';
 import { constructTx } from './util/constructTx';
 import { expectCorrectType, expectToBe, expectToInclude } from './util/testApi';
 
-const subscribe = async (apiFn: RpcPromiseResult<() => Observable<Header>>): Promise<boolean> => {
-	let count: number = 0;
-	let whileCounter: number = 0;
-	let isSubscribed: boolean = true;
+const subscribe = async (
+	apiFn: RpcPromiseResult<() => Observable<Header>>
+): Promise<boolean> => {
+	let count = 0;
+	let whileCounter = 0;
+	let isSubscribed = true;
 
 	const arr: Header[] = [];
 
-	const timer = (ms: number) => new Promise(res => setTimeout(res, ms))
+	const timer = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 	const unsub: VoidFn = await apiFn((header: Header) => {
-		arr.push(header)
+		arr.push(header);
 
 		if (++count === 2) {
 			isSubscribed = false;
-			unsub()
+			unsub();
 		}
 	});
 
 	// Allow a 30 second timer to fetch the subscriptions
 	while (isSubscribed) {
-		await timer(1000)
-		whileCounter += 1
+		await timer(1000);
+		whileCounter += 1;
 
 		// 30 Seconds has gone by so we exit the subscription
 		if (whileCounter === 30) {
 			isSubscribed = false;
-			unsub()
+			unsub();
 		}
 	}
 
-	return arr.length === 2
-}
+	return arr.length === 2;
+};
 
 export const RPC_CHAIN_CONSTS: RpcConsts = {
 	author: {
@@ -93,49 +95,57 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		getBlock: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.chain.getBlock(),
-				callExpectToBe: (result: SignedBlock) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetBlockType)
+				callExpectToBe: (result: SignedBlock) =>
+					expectToBe(result.toRawType(), RESPONSES.substrateDevGetBlockType),
 			},
 			polkadotDev: {},
 		},
 		getBlockHash: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.chain.getBlockHash(),
-				callExpectToBe: (result: BlockHash) => expectToBe(result.toRawType(), 'H256')
+				callExpectToBe: (result: BlockHash) =>
+					expectToBe(result.toRawType(), 'H256'),
 			},
 			polkadotDev: {},
 		},
 		getFinalizedHead: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await api.rpc.chain.getFinalizedHead(),
-				callExpectToBe: (result: BlockHash) => expectToBe(result.toRawType(), 'H256')
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.chain.getFinalizedHead(),
+				callExpectToBe: (result: BlockHash) =>
+					expectToBe(result.toRawType(), 'H256'),
 			},
 			polkadotDev: {},
 		},
 		getHeader: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.chain.getHeader(),
-				callExpectToBe: (result: Header) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetHeaderType)
+				callExpectToBe: (result: Header) =>
+					expectToBe(result.toRawType(), RESPONSES.substrateDevGetHeaderType),
 			},
 			polkadotDev: {},
 		},
 		subscribeAllHeads: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await subscribe(api.rpc.chain.subscribeAllHeads),
-				isSub: true
+				apiCall: async (api: ApiPromise) =>
+					await subscribe(api.rpc.chain.subscribeAllHeads),
+				isSub: true,
 			},
 			polkadotDev: {},
 		},
 		subscribeFinalizedHeads: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await subscribe(api.rpc.chain.subscribeFinalizedHeads),
-				isSub: true
+				apiCall: async (api: ApiPromise) =>
+					await subscribe(api.rpc.chain.subscribeFinalizedHeads),
+				isSub: true,
 			},
 			polkadotDev: {},
 		},
 		subscribeNewHeads: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await subscribe(api.rpc.chain.subscribeNewHeads),
-				isSub: true
+				apiCall: async (api: ApiPromise) =>
+					await subscribe(api.rpc.chain.subscribeNewHeads),
+				isSub: true,
 			},
 			polkadotDev: {},
 		},
@@ -343,37 +353,46 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		},
 		reservedPeers: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await api.rpc.system.reservedPeers(),
-				callExpectCorrectType: (result: Vec<Text>) => expectToBe(result.toRawType(), 'Vec<Text>')
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.system.reservedPeers(),
+				callExpectCorrectType: (result: Vec<Text>) =>
+					expectToBe(result.toRawType(), 'Vec<Text>'),
 			},
 			polkadotDev: {},
 		},
 		removeReservedPeer: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await api.rpc.system.removeReservedPeer(RESPONSES.substrateDevRemovePeer),
-				callExpectToBe: (result: Text) => expectToBe(result.toString(), '') 
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.system.removeReservedPeer(
+						RESPONSES.substrateDevRemovePeer
+					),
+				callExpectToBe: (result: Text) => expectToBe(result.toString(), ''),
 			},
 			polkadotDev: {},
 		},
 		resetLogFilter: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await api.rpc.system.resetLogFilter(),
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.system.resetLogFilter(),
 				callExpectToBe: (result: Null) => expectToBe(result.toString(), ''),
-				callExpectCorrectType: (result: Null) => expectCorrectType(result.toRawType(), 'Null')
+				callExpectCorrectType: (result: Null) =>
+					expectCorrectType(result.toRawType(), 'Null'),
 			},
 			polkadotDev: {},
 		},
 		syncState: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.system.syncState(),
-				callExpectToBe: (result: SyncState) => expectToBe(result.toRawType(), RESPONSES.substrateDevSyncStateType)
+				callExpectToBe: (result: SyncState) =>
+					expectToBe(result.toRawType(), RESPONSES.substrateDevSyncStateType),
 			},
 			polkadotDev: {},
 		},
 		version: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.system.version(),
-				callExpectCorrectType: (result: Text) => expectCorrectType(result.toRawType(), 'Text')
+				callExpectCorrectType: (result: Text) =>
+					expectCorrectType(result.toRawType(), 'Text'),
 			},
 			polkadotDev: {},
 		},
