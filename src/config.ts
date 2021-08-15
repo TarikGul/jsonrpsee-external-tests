@@ -1,4 +1,5 @@
 import { ApiPromise } from '@polkadot/api';
+import { RpcPromiseResult, VoidFn, UnsubscribePromise } from '@polkadot/api/types';
 import { Null, Text, Vec } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
@@ -15,9 +16,42 @@ import {
 
 import * as CONSTANTS from './constants';
 import * as RESPONSES from './responses';
-import { RpcConsts } from './types/config';
+import { RpcConsts, SubscribeFunc } from './types/config';
 import { constructTx } from './util/constructTx';
 import { expectCorrectType, expectToBe, expectToInclude } from './util/testApi';
+
+const subscribe = async (apiFn: RpcPromiseResult<SubscribeFunc>): Promise<boolean> => {
+	let count: number = 0;
+	let whileCounter: number = 0;
+	let isSubscribed: boolean = true;
+
+	const arr: Header[] = [];
+
+	const timer = (ms: number) => new Promise(res => setTimeout(res, ms))
+
+	const unsub: VoidFn = await apiFn((header: Header) => {
+		arr.push(header)
+
+		if (++count === 2) {
+			isSubscribed = false;
+			unsub()
+		}
+	});
+
+	// Allow a 30 second timer to fetch the subscriptions
+	while (isSubscribed) {
+		await timer(1000)
+		whileCounter += 1
+
+		// 30 Seconds has gone by so we exit the subscription
+		if (whileCounter === 30) {
+			isSubscribed = false;
+			unsub()
+		}
+	}
+
+	return arr.length === 2
+}
 
 export const RPC_CHAIN_CONSTS: RpcConsts = {
 	author: {
@@ -84,7 +118,41 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			polkadotDev: {},
 		},
 		subscribeAllHeads: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise): Promise<boolean> => {
+					let count: number = 0;
+					let whileCounter: number = 0;
+					let isSubscribed: boolean = true;
+
+					const arr: Header[] = [];
+
+					const timer = (ms: number) => new Promise(res => setTimeout(res, ms))
+					
+					const unsub = await api.rpc.chain.subscribeAllHeads(header => {
+						arr.push(header)
+
+						if (++count === 2) {
+							isSubscribed = false;
+							unsub()
+						}
+					});
+
+					// Allow a 30 second timer to fetch the subscriptions
+					while (isSubscribed) {
+						await timer(1000)
+						whileCounter += 1
+
+						// 30 Seconds has gone by so we exit the subscription
+						if (whileCounter === 30) {
+							isSubscribed = false;
+							unsub()
+						}
+					}
+
+					return arr.length === 2
+				},
+				isSub: true
+			},
 			polkadotDev: {},
 		},
 		subscribeFinalizedHeads: {

@@ -128,7 +128,20 @@ const runTest = async (
 	/**
 	 * Run the API call
 	 */
-	if (chainSpecMethods && chainSpecMethods.apiCall) {
+	if (chainSpecMethods.apiCall && chainSpecMethods.isSub) {
+		const subResult: boolean = await chainSpecMethods.apiCall(api, tx);
+
+		if (subResult) {
+			testCounter.success += 1
+			logResult.success = true
+		} else {
+			testCounter.error += 1
+
+			// Should log the test failed in the errorInfo
+		}
+		
+		return logResult;
+	} else if (chainSpecMethods && chainSpecMethods.apiCall) {
 		result = await chainSpecMethods.apiCall(api, tx);
 	} else {
 		// console an error, and return false, exiting the test
