@@ -1,3 +1,5 @@
+import { substrateRegistry } from './util/registry';
+
 export const ALICE_ADDR = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
 export const ALICE_TX =
@@ -6,11 +8,8 @@ export const ALICE_TX =
 export const ALICE_BOOTNODE =
 	'/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp';
 
-export const RPC_CHAIN_CONSTS = {
-	system: {
-		localPeerId: {
-			development: {},
-			polkadot: {},
-		},
-	},
-};
+export const offChainLocalConfig = {
+	localGetKey: substrateRegistry.createType('Bytes', 'Test'),
+	localSetKey: substrateRegistry.createType('Bytes', 'Test'),
+	localSetValue: substrateRegistry.createType('Bytes', 'asd')
+}

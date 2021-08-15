@@ -1,6 +1,6 @@
 import { ApiPromise } from '@polkadot/api';
 import { RpcPromiseResult, VoidFn } from '@polkadot/api/types';
-import { Null, Text, Vec } from '@polkadot/types';
+import { Null, Text, Vec, Option, Bytes } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
 	BlockHash,
@@ -20,6 +20,8 @@ import * as RESPONSES from './responses';
 import { RpcConsts } from './types/config';
 import { constructTx } from './util/constructTx';
 import { expectCorrectType, expectToBe, expectToInclude } from './util/testApi';
+
+const { offChainLocalConfig: { localSetKey, localSetValue, localGetKey }} = CONSTANTS;
 
 const subscribe = async (
 	apiFn: RpcPromiseResult<() => Observable<Header>>
@@ -152,11 +154,17 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 	},
 	offChain: {
 		localStorageGet: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.offchain.localStorageGet('PERSISTENT', localGetKey),
+				callExpectToBe: (result: Option<Bytes>) => expectToBe(result.toRawType(), 'Option<Bytes>')
+			},
 			polkadotDev: {},
 		},
 		localStorageSet: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.offchain.localStorageSet('PERSISTENT', localSetKey, localSetValue),
+				callExpectToBe: (result: Null) => expectToBe(result.toRawType(), 'Null')
+			},
 			polkadotDev: {},
 		},
 	},

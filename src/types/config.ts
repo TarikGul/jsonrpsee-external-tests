@@ -1,5 +1,4 @@
-import { UnsubscribePromise } from '@polkadot/api/types';
-import { Null, Text, Vec } from '@polkadot/types';
+import { Null, Text, Vec, Option, Bytes } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
 	ChainProperties,
@@ -54,4 +53,5 @@ export type SubstrateInterfaceTypes =
 	| Vec<NodeRole>
 	| Vec<PeerInfo>
 	| ChainProperties
+	| Option<Bytes>
 	| SyncState;
