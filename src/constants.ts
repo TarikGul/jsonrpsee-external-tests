@@ -11,5 +11,5 @@ export const ALICE_BOOTNODE =
 export const offChainLocalConfig = {
 	localGetKey: substrateRegistry.createType('Bytes', 'Test'),
 	localSetKey: substrateRegistry.createType('Bytes', 'Test'),
-	localSetValue: substrateRegistry.createType('Bytes', 'asd')
-}
+	localSetValue: substrateRegistry.createType('Bytes', 'asd'),
+};

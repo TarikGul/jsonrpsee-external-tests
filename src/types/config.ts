@@ -1,4 +1,4 @@
-import { Null, Text, Vec, Option, Bytes } from '@polkadot/types';
+import { Bytes, Null, Option, Text, Vec } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
 	ChainProperties,

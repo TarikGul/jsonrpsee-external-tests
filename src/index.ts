@@ -127,10 +127,10 @@ const runTest = async (
 
 	/**
 	 * Run the API call
-	 * 
+	 *
 	 * This first checks if the api call is a subscription which is then called
 	 * and the log result for that subscription is returned
-	 * 
+	 *
 	 * If its not a subscription, then we run the api call and set it to our result
 	 */
 	if (chainSpecMethods.apiCall && chainSpecMethods.isSub) {
