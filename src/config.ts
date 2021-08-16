@@ -20,7 +20,7 @@ import { Observable } from 'rxjs';
 
 import * as CONSTANTS from './constants';
 import * as RESPONSES from './responses';
-import { RpcConsts } from './types/config';
+import { RpcConsts, SubstrateInterfaceTypes } from './types/config';
 import { constructTx } from './util/constructTx';
 import { expectCorrectType, expectToBe, expectToInclude } from './util/testApi';
 
@@ -199,9 +199,7 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 	},
 	state: {
 		call: {
-			substrateDev: {
-				// apiCall: async (api: ApiPromise) => await api.rpc.state.call('submit_extrinsic', '')
-			},
+			substrateDev: {},
 			polkadotDev: {},
 		},
 		getKeys: {
@@ -248,13 +246,8 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		},
 		getStorage: {
 			substrateDev: {
-
-			},
-			polkadotDev: {},
-		},
-		getStorageAt: {
-			substrateDev: {
-
+				apiCall: async (api: ApiPromise) => await api.rpc.state.getStorage(stateKey),
+				callExpectToBe: (result: SubstrateInterfaceTypes) => expectToBe(result.toJSON(), null)
 			},
 			polkadotDev: {},
 		},
@@ -267,7 +260,10 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			polkadotDev: {},
 		},
 		subscribeStorage: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await subscribe(api.rpc.state.subscribeStorage, 2),
+				isSub: true,
+			},
 			polkadotDev: {},
 		},
 		traceBlock: {

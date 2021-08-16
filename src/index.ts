@@ -147,6 +147,7 @@ const runTest = async (
 		return logResult;
 	} else if (chainSpecMethods && chainSpecMethods.apiCall) {
 		result = await chainSpecMethods.apiCall(api, tx);
+		console.log('result: ', (await result).toJSON())
 	} else {
 		// console an error, and return false, exiting the test
 		logResult.errorInfo = { error: `apiCall does not exist in the configuration for ${pallet}.${method}`}
