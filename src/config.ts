@@ -219,9 +219,7 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		getMetadata: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.state.getMetadata(),
-				// callExpectCorrectType: (result: Metadata) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetMetadataType),
-				callExpectCorrectType: (result: Metadata) => expectToBe(result.toRawType(), 'Metadata')
-
+				callExpectCorrectType: (result: Metadata) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetMetadataType)
 			},
 			polkadotDev: {},
 		},
