@@ -19,5 +19,5 @@ export const authorKey = substrateRegistry.createType('Bytes');
 export const authorKeyType = substrateRegistry.createType('Text', 'Sr25519');
 
 export const stateConsts = {
-	stateKey: substrateRegistry.createType('Bytes', 'mock')
-}
+	stateKey: substrateRegistry.createType('Bytes', 'mock'),
+};

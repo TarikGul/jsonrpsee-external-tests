@@ -42,8 +42,6 @@ export class Logger {
 		}
 	}
 
-	logErrors(methodName: string, error?: string): void {}
-
 	logInitialize(wsProvider: string): void {
 		console.log(`Successfully connected to ${wsProvider}`);
 		console.log(`Initializing the JSONRPsee tests`);

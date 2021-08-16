@@ -17,7 +17,7 @@ export const expectToBe = (
 		errorInfo: {
 			error: '',
 			received,
-			expected, 
+			expected,
 		},
 	};
 
@@ -86,7 +86,7 @@ export const expectToInclude = (
 		errorInfo: {
 			error: '',
 			received,
-			expected: addresses
+			expected: addresses,
 		},
 	};
 

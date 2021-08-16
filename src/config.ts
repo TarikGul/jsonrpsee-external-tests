@@ -1,6 +1,14 @@
 import { ApiPromise } from '@polkadot/api';
 import { RpcPromiseResult, VoidFn } from '@polkadot/api/types';
-import { Bytes, Null, Option, Text, Vec, StorageKey, Metadata } from '@polkadot/types';
+import {
+	Bytes,
+	Metadata,
+	Null,
+	Option,
+	StorageKey,
+	Text,
+	Vec,
+} from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
 	BlockHash,
@@ -28,22 +36,22 @@ const {
 	authorKey,
 	authorKeyType,
 	offChainLocalConfig: { localSetKey, localSetValue, localGetKey },
-	stateConsts: { stateKey }
+	stateConsts: { stateKey },
 } = CONSTANTS;
 
 /**
- * Helper function for any subscriptions that are tested. 
- * 
- * @param apiFn The substrate subscription rpc method to be passed in 
+ * Helper function for any subscriptions that are tested.
+ *
+ * @param apiFn The substrate subscription rpc method to be passed in
  * @param reqCounter How many req's to test for, when the number is met the test
  * will return true
  * @param timeCounter How many seconds to wait for the subscriptions before timing
- * out and return false 
+ * out and return false
  */
 const subscribe = async (
 	apiFn: RpcPromiseResult<() => Observable<Header | RuntimeVersion>>,
 	reqCounter: number,
-	timeCounter: number = 30
+	timeCounter = 30
 ): Promise<boolean> => {
 	let count = 0;
 	let whileCounter = 0;
@@ -204,50 +212,68 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		},
 		getKeys: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await api.rpc.state.getKeys(stateKey),
-				callExpectToBe: (result: Vec<StorageKey>) => expectToBe(result.toRawType(), 'Vec<StorageKey>') 
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.state.getKeys(stateKey),
+				callExpectToBe: (result: Vec<StorageKey>) =>
+					expectToBe(result.toRawType(), 'Vec<StorageKey>'),
 			},
 			polkadotDev: {},
 		},
 		getKeysPaged: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await api.rpc.state.getKeysPaged(stateKey, 0),
-				callExpectToBe: (result: Vec<StorageKey>) => expectToBe(result.toRawType(), 'Vec<StorageKey>')
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.state.getKeysPaged(stateKey, 0),
+				callExpectToBe: (result: Vec<StorageKey>) =>
+					expectToBe(result.toRawType(), 'Vec<StorageKey>'),
 			},
 			polkadotDev: {},
 		},
 		getMetadata: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.state.getMetadata(),
-				callExpectCorrectType: (result: Metadata) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetMetadataType)
+				callExpectCorrectType: (result: Metadata) =>
+					expectToBe(result.toRawType(), RESPONSES.substrateDevGetMetadataType),
 			},
 			polkadotDev: {},
 		},
 		getPairs: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) => await api.rpc.state.getPairs('0x'),
-				callExpectToBe: (result: Vec<KeyValue>) => expectToBe(result.toRawType(), 'Vec<KeyValue>')
+				callExpectToBe: (result: Vec<KeyValue>) =>
+					expectToBe(result.toRawType(), 'Vec<KeyValue>'),
 			},
 			polkadotDev: {},
 		},
 		getReadProof: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await api.rpc.state.getReadProof([stateKey]),
-				callExpectToBe: (result: ReadProof) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetReadProofType)
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.state.getReadProof([stateKey]),
+				callExpectToBe: (result: ReadProof) =>
+					expectToBe(
+						result.toRawType(),
+						RESPONSES.substrateDevGetReadProofType
+					),
 			},
 			polkadotDev: {},
 		},
 		getRuntimeVersion: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await api.rpc.state.getRuntimeVersion(),
-				callExpectToBe: (result: RuntimeVersion) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetRuntimeVersionType)
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.state.getRuntimeVersion(),
+				callExpectToBe: (result: RuntimeVersion) =>
+					expectToBe(
+						result.toRawType(),
+						RESPONSES.substrateDevGetRuntimeVersionType
+					),
 			},
 			polkadotDev: {},
 		},
 		getStorage: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await api.rpc.state.getStorage(stateKey),
-				callExpectToBe: (result: SubstrateInterfaceTypes) => expectToBe(result.toJSON(), null)
+				apiCall: async (api: ApiPromise) =>
+					await api.rpc.state.getStorage(stateKey),
+				callExpectToBe: (result: SubstrateInterfaceTypes) =>
+					expectToBe(result.toJSON(), null),
 			},
 			polkadotDev: {},
 		},
@@ -261,7 +287,8 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		},
 		subscribeStorage: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) => await subscribe(api.rpc.state.subscribeStorage, 2),
+				apiCall: async (api: ApiPromise) =>
+					await subscribe(api.rpc.state.subscribeStorage, 2),
 				isSub: true,
 			},
 			polkadotDev: {},

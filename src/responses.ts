@@ -26,8 +26,11 @@ export const substrateDevGetBlockType =
 export const substrateDevGetHeaderType =
 	'{"parentHash":"Hash","number":"Compact<BlockNumber>","stateRoot":"Hash","extrinsicsRoot":"Hash","digest":"Digest"}';
 
-export const substrateDevGetMetadataType = '{"magicNumber":"u32","metadata":"MetadataAll"}';
+export const substrateDevGetMetadataType =
+	'{"magicNumber":"u32","metadata":"MetadataAll"}';
 
-export const substrateDevGetReadProofType = '{"at":"Hash","proof":"Vec<Bytes>"}';
+export const substrateDevGetReadProofType =
+	'{"at":"Hash","proof":"Vec<Bytes>"}';
 
-export const substrateDevGetRuntimeVersionType = '{"specName":"Text","implName":"Text","authoringVersion":"u32","specVersion":"u32","implVersion":"u32","apis":"Vec<RuntimeVersionApi>","transactionVersion":"u32"}';
+export const substrateDevGetRuntimeVersionType =
+	'{"specName":"Text","implName":"Text","authoringVersion":"u32","specVersion":"u32","implVersion":"u32","apis":"Vec<RuntimeVersionApi>","transactionVersion":"u32"}';

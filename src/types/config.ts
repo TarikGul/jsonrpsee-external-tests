@@ -1,4 +1,12 @@
-import { Bytes, Null, Option, Text, Vec, StorageKey, Metadata } from '@polkadot/types';
+import {
+	Bytes,
+	Metadata,
+	Null,
+	Option,
+	StorageKey,
+	Text,
+	Vec,
+} from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
 	BlockHash,
@@ -63,5 +71,5 @@ export type SubstrateInterfaceTypes =
 	| ChainProperties
 	| Option<Bytes>
 	| SyncState
-    | RuntimeVersion
+	| RuntimeVersion
 	| SignedBlock;
