@@ -10,6 +10,8 @@ import {
 	TestCounter,
 } from './types/config';
 
+const MAX_FRAME_SIZE = '20000000';
+
 const main = async (wsProvider: string) => {
 	const logger = new Logger();
 	const parser = parseArgs();
@@ -19,7 +21,7 @@ const main = async (wsProvider: string) => {
 	// The user should input the chaintype
 	// default will be substrate dev env
 	const api = await ApiPromise.create({
-		provider: new WsProvider(wsProvider),
+		provider: new WsProvider(wsProvider, 2500, { maxPayload: MAX_FRAME_SIZE }),
 	});
 
 	logger.logInitialize(wsProvider);
