@@ -29,8 +29,11 @@ export class Logger {
 
 			if (errorInfo && errorInfo?.expected && errorInfo?.received) {
 				this.errors.push(errorInfo);
+				console.log(`          ErrorInfo: ${errorInfo.error}`);
 				console.log(`          expected: ${errorInfo.expected}`);
 				console.log(`          received: ${errorInfo.received}`);
+			} else if (errorInfo && errorInfo.error) {
+				console.log(`          ErrorInfo: ${errorInfo.error}`)
 			}
 
 			this.fails += 1;

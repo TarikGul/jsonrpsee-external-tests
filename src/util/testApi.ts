@@ -14,13 +14,17 @@ export const expectToBe = (
 ): IExpectTestResult => {
 	const result = {
 		success: true,
-		error: '',
+		errorInfo: {
+			error: '',
+			recieved,
+			expected, 
+		},
 	};
 
 	// Check primitive types
 	if (typeof recieved !== typeof expected) {
 		result.success = false;
-		result.error = `Invalid Types: Recieved is of type ${typeof recieved}, and Expected is type ${typeof expected}`;
+		result.errorInfo.error = `Invalid Types: Recieved is of type ${typeof recieved}, and Expected is type ${typeof expected}`;
 
 		return result;
 	}
@@ -28,7 +32,7 @@ export const expectToBe = (
 	// Check if the values are equal
 	if (!isEqual(recieved, expected)) {
 		result.success = false;
-		result.error = `Values do not equal eachother! Received: ${recieved} Expected: ${expected}`;
+		result.errorInfo.error = `Values do not equal eachother! Received: ${recieved} Expected: ${expected}`;
 
 		return result;
 	}
@@ -46,16 +50,20 @@ export const expectToBe = (
  */
 export const expectCorrectType = (
 	received: string,
-	substrateType: keyof InterfaceTypes
+	expected: keyof InterfaceTypes
 ): IExpectTestResult => {
 	const result = {
 		success: true,
-		error: ',',
+		errorInfo: {
+			error: '',
+			received,
+			expected,
+		},
 	};
 
-	if (received !== substrateType) {
+	if (received !== expected) {
 		result.success = false;
-		result.error = `Incorrect Types: Received substrate type: ${received}, expected substrate type ${substrateType}`;
+		result.errorInfo.error = `Incorrect Types: Received substrate type: ${received}, expected substrate type ${expected}`;
 	}
 
 	return result;
@@ -75,14 +83,18 @@ export const expectToInclude = (
 ): IExpectTestResult => {
 	const result = {
 		success: true,
-		error: '',
+		errorInfo: {
+			error: '',
+			received,
+			expected: addresses
+		},
 	};
 
 	const isCorrect = addresses.filter((addr) => received.includes(addr));
 
 	if (isCorrect.length > 0) {
 		result.success = false;
-		result.error =
+		result.errorInfo.error =
 			'Received vector does not share the same values as the given input.';
 	}
 

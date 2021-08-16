@@ -141,8 +141,7 @@ const runTest = async (
 			logResult.success = true;
 		} else {
 			testCounter.error += 1;
-
-			// Should log the test failed in the errorInfo
+			logResult.errorInfo = { error: 'Subscriptions failed to receive expected results.' }
 		}
 
 		return logResult;
@@ -150,9 +149,7 @@ const runTest = async (
 		result = await chainSpecMethods.apiCall(api, tx);
 	} else {
 		// console an error, and return false, exiting the test
-		console.error(
-			`APIcall does not exist in the configuration for ${pallet}.${method}`
-		);
+		logResult.errorInfo = { error: `apiCall does not exist in the configuration for ${pallet}.${method}`}
 		return logResult;
 	}
 
@@ -162,7 +159,12 @@ const runTest = async (
 	if (chainSpecMethods.callExpectToBe) {
 		const res: IExpectTestResult = chainSpecMethods.callExpectToBe(result);
 
-		res.success ? (testCounter.success += 1) : (testCounter.error += 1);
+		if (res.success) {
+			testCounter.success += 1
+		} else {
+			testCounter.error += 1
+			logResult.errorInfo = res.errorInfo
+		}
 	}
 
 	/**
@@ -172,7 +174,12 @@ const runTest = async (
 		const res: IExpectTestResult =
 			chainSpecMethods.callExpectCorrectType(result);
 
-		res.success ? (testCounter.success += 1) : (testCounter.error += 1);
+		if (res.success) {
+			testCounter.success += 1
+		} else {
+			testCounter.error += 1
+			logResult.errorInfo = res.errorInfo
+		}
 	}
 
 	/**
@@ -182,6 +189,12 @@ const runTest = async (
 		const res: IExpectTestResult = chainSpecMethods.callExpectToInclude(result);
 
 		res.success ? (testCounter.success += 1) : (testCounter.error += 1);
+		if (res.success) {
+			testCounter.success += 1
+		} else {
+			testCounter.error += 1
+			logResult.errorInfo = res.errorInfo
+		} 
 	}
 
 	/**
@@ -189,7 +202,7 @@ const runTest = async (
 	 * test calls. ex: callExpectToBe, callExpectCorrectType etc.
 	 */
 	if (testCounter.success === 0 && testCounter.error === 0) {
-		console.error(`Configuration for ${pallet}.${method} has no test calls.`);
+		logResult.errorInfo = { error: `Configuration for ${pallet}.${method} has no test calls.` };
 		return logResult;
 	}
 
