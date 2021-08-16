@@ -10,9 +10,9 @@ import {
 	Index,
 	NodeRole,
 	PeerInfo,
+	RuntimeVersion,
 	SignedBlock,
 	SyncState,
-	RuntimeVersion
 } from '@polkadot/types/interfaces';
 import { Observable } from 'rxjs';
 
@@ -25,7 +25,7 @@ import { expectCorrectType, expectToBe, expectToInclude } from './util/testApi';
 const {
 	offChainLocalConfig: { localSetKey, localSetValue, localGetKey },
 	authorKey,
-	authorKeyType
+	authorKeyType,
 } = CONSTANTS;
 
 const subscribe = async (

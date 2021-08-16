@@ -1,1 +1,0 @@
-export { testRpcAuthor } from './author';

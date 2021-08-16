@@ -1,1 +1,0 @@
-export { testRpcChain } from './chain';
