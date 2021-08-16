@@ -4,35 +4,35 @@ import { isEqual } from 'lodash';
 import { IExpectTestResult } from '../types';
 
 /**
- * @param recieved The received value from the test
+ * @param received The received value from the test
  * @param expected What the received value is expected to equal
  * @returns
  */
 export const expectToBe = (
-	recieved: unknown,
+	received: unknown,
 	expected: unknown
 ): IExpectTestResult => {
 	const result = {
 		success: true,
 		errorInfo: {
 			error: '',
-			recieved,
+			received,
 			expected, 
 		},
 	};
 
 	// Check primitive types
-	if (typeof recieved !== typeof expected) {
+	if (typeof received !== typeof expected) {
 		result.success = false;
-		result.errorInfo.error = `Invalid Types: Recieved is of type ${typeof recieved}, and Expected is type ${typeof expected}`;
+		result.errorInfo.error = `Invalid Types: Received is of type ${typeof received}, and Expected is type ${typeof expected}`;
 
 		return result;
 	}
 
 	// Check if the values are equal
-	if (!isEqual(recieved, expected)) {
+	if (!isEqual(received, expected)) {
 		result.success = false;
-		result.errorInfo.error = `Values do not equal eachother! Received: ${recieved} Expected: ${expected}`;
+		result.errorInfo.error = `Values do not equal eachother! Received: ${received} Expected: ${expected}`;
 
 		return result;
 	}
