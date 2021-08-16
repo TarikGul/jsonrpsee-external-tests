@@ -23,7 +23,6 @@ export class Logger {
 		isSuccess: boolean,
 		errorInfo?: ErrorInfo
 	): void {
-		console.log(errorInfo)
 		if (isSuccess) {
 			console.log(`    [${PASS}]: ${methodName}`);
 			this.success += 1;
