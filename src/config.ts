@@ -8,8 +8,10 @@ import {
 	Header,
 	Health,
 	Index,
+	KeyValue,
 	NodeRole,
 	PeerInfo,
+	ReadProof,
 	RuntimeVersion,
 	SignedBlock,
 	SyncState,
@@ -224,23 +226,36 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			polkadotDev: {},
 		},
 		getPairs: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.state.getPairs('0x'),
+				callExpectToBe: (result: Vec<KeyValue>) => expectToBe(result.toRawType(), 'Vec<KeyValue>')
+			},
 			polkadotDev: {},
 		},
 		getReadProof: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.state.getReadProof([stateKey]),
+				callExpectToBe: (result: ReadProof) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetReadProofType)
+			},
 			polkadotDev: {},
 		},
 		getRuntimeVersion: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.state.getRuntimeVersion(),
+				callExpectToBe: (result: RuntimeVersion) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetRuntimeVersionType)
+			},
 			polkadotDev: {},
 		},
 		getStorage: {
-			substrateDev: {},
+			substrateDev: {
+
+			},
 			polkadotDev: {},
 		},
 		getStorageAt: {
-			substrateDev: {},
+			substrateDev: {
+
+			},
 			polkadotDev: {},
 		},
 		subscribeRuntimeVersion: {

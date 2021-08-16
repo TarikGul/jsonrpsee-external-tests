@@ -6,6 +6,7 @@ import {
 	Header,
 	Health,
 	Index,
+	KeyValue,
 	NodeRole,
 	PeerInfo,
 	RuntimeVersion,
@@ -58,6 +59,7 @@ export type SubstrateInterfaceTypes =
 	| Vec<NodeRole>
 	| Vec<PeerInfo>
 	| Vec<StorageKey>
+	| Vec<KeyValue>
 	| ChainProperties
 	| Option<Bytes>
 	| SyncState
