@@ -6,7 +6,7 @@
   "scripts": {
     "build": "substrate-exec-tsc",
     "lint": "substrate-dev-run-lint",
-    "start": "yarn build && node ./build/src/index.js"
+    "start": "yarn build && node ./build/index.js"
   },
   "keywords": [],
   "author": "",

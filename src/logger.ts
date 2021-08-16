@@ -31,7 +31,7 @@ export class Logger {
 		} else {
 			console.log(`    [${FAIL}]: ${methodName}`);
 
-			if (errorInfo && errorInfo?.expected && errorInfo?.received) {
+			if (errorInfo && (errorInfo?.expected || errorInfo?.expected === '') && errorInfo?.received) {
 				this.errors.push(errorInfo);
 				console.log(`          ErrorInfo: ${errorInfo.error}`);
 				console.log(`          ${EXPECTED}: ${errorInfo.expected}`);
