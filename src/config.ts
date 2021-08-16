@@ -28,9 +28,19 @@ const {
 	authorKeyType,
 } = CONSTANTS;
 
+/**
+ * Helper function for any subscriptions that are tested. 
+ * 
+ * @param apiFn The substrate subscription rpc method to be passed in 
+ * @param reqCounter How many req's to test for, when the number is met the test
+ * will return true
+ * @param timeCounter How many seconds to wait for the subscriptions before timing
+ * out and return false 
+ */
 const subscribe = async (
 	apiFn: RpcPromiseResult<() => Observable<Header | RuntimeVersion>>,
-	reqCounter: number
+	reqCounter: number,
+	timeCounter: number = 30
 ): Promise<boolean> => {
 	let count = 0;
 	let whileCounter = 0;
@@ -55,7 +65,7 @@ const subscribe = async (
 		whileCounter += 1;
 
 		// 30 Seconds has gone by so we exit the subscription
-		if (whileCounter === 30) {
+		if (whileCounter === timeCounter) {
 			isSubscribed = false;
 			unsub();
 		}
@@ -244,7 +254,7 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		subscribeRuntimeVersion: {
 			substrateDev: {
 				apiCall: async (api: ApiPromise) =>
-					await subscribe(api.rpc.state.subscribeRuntimeVersion, 1),
+					await subscribe(api.rpc.state.subscribeRuntimeVersion, 1, 60),
 				isSub: true,
 			},
 			polkadotDev: {},
