@@ -2,6 +2,7 @@ import { ApiPromise } from '@polkadot/api';
 import { RpcPromiseResult, VoidFn } from '@polkadot/api/types';
 import {
 	Bytes,
+	bool,
 	Metadata,
 	Null,
 	Option,
@@ -94,7 +95,10 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 			polkadotDev: {},
 		},
 		hasSessionKeys: {
-			substrateDev: {},
+			substrateDev: {
+				// apiCall: async (api: ApiPromise) => await api.rpc.author.hasSessionKeys(stateKey),
+				// callExpectToBe: (result: bool) => expectToBe(result.toRawType(), 'bool')
+			},
 			polkadotDev: {},
 		},
 		insertKey: {
