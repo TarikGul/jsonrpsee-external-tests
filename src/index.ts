@@ -31,6 +31,7 @@ const main = async (wsProvider: string) => {
 			parser.chainType
 		);
 
+		logger.logPallet(methodTuple[0].pallet);
 		logger.logTestInfo(methodName, success, errorInfo);
 	}
 

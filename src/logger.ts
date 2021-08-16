@@ -11,11 +11,13 @@ export class Logger {
 	success: number;
 	fails: number;
 	errors: ErrorInfo[];
+	pallets: Record<string, boolean>;
 
 	constructor() {
 		this.success = 0;
 		this.fails = 0;
 		this.errors = [];
+		this.pallets = {};
 	}
 
 	logTestInfo(
@@ -39,6 +41,14 @@ export class Logger {
 			}
 
 			this.fails += 1;
+		}
+	}
+
+	logPallet(pallet: string): void {
+		if(!this.pallets[pallet]) {
+			console.log(`[${pallet.toUpperCase()}]`);
+
+			this.pallets[pallet] = true;
 		}
 	}
 
