@@ -25,3 +25,5 @@ export const substrateDevGetBlockType =
 
 export const substrateDevGetHeaderType =
 	'{"parentHash":"Hash","number":"Compact<BlockNumber>","stateRoot":"Hash","extrinsicsRoot":"Hash","digest":"Digest"}';
+
+export const substrateDevGetMetadataType = '{"magicNumber":"u32","metadata":"MetadataAll"}';

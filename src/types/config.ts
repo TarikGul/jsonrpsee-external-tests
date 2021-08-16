@@ -1,12 +1,15 @@
-import { Bytes, Null, Option, Text, Vec } from '@polkadot/types';
+import { Bytes, Null, Option, Text, Vec, StorageKey, Metadata } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
+	BlockHash,
 	ChainProperties,
 	Header,
 	Health,
 	Index,
 	NodeRole,
 	PeerInfo,
+	RuntimeVersion,
+	SignedBlock,
 	SyncState,
 } from '@polkadot/types/interfaces';
 
@@ -43,15 +46,20 @@ export interface IChainSpecMethods {
 
 // Union type of all potential interface && Primitive types that polkadot/api can return for rpc methods
 export type SubstrateInterfaceTypes =
+	| BlockHash
 	| Index
 	| Null
 	| Health
 	| Header
 	| ApplyExtrinsicResult
 	| Text
+	| Metadata
 	| Vec<Text>
 	| Vec<NodeRole>
 	| Vec<PeerInfo>
+	| Vec<StorageKey>
 	| ChainProperties
 	| Option<Bytes>
-	| SyncState;
+	| SyncState
+    | RuntimeVersion
+	| SignedBlock;

@@ -1,6 +1,6 @@
 import { ApiPromise } from '@polkadot/api';
 import { RpcPromiseResult, VoidFn } from '@polkadot/api/types';
-import { Bytes, Null, Option, Text, Vec } from '@polkadot/types';
+import { Bytes, Null, Option, Text, Vec, StorageKey, Metadata } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
 	BlockHash,
@@ -23,9 +23,10 @@ import { constructTx } from './util/constructTx';
 import { expectCorrectType, expectToBe, expectToInclude } from './util/testApi';
 
 const {
-	offChainLocalConfig: { localSetKey, localSetValue, localGetKey },
 	authorKey,
 	authorKeyType,
+	offChainLocalConfig: { localSetKey, localSetValue, localGetKey },
+	stateConsts: { stateKey }
 } = CONSTANTS;
 
 /**
@@ -196,39 +197,32 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 	},
 	state: {
 		call: {
-			substrateDev: {},
-			polkadotDev: {},
-		},
-		getChildKeys: {
-			substrateDev: {},
-			polkadotDev: {},
-		},
-		getChildReadProof: {
-			substrateDev: {},
-			polkadotDev: {},
-		},
-		getChildStorage: {
-			substrateDev: {},
-			polkadotDev: {},
-		},
-		getChildStorageHash: {
-			substrateDev: {},
-			polkadotDev: {},
-		},
-		getChildStorageSize: {
-			substrateDev: {},
+			substrateDev: {
+				// apiCall: async (api: ApiPromise) => await api.rpc.state.call('submit_extrinsic', '')
+			},
 			polkadotDev: {},
 		},
 		getKeys: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.state.getKeys(stateKey),
+				callExpectToBe: (result: Vec<StorageKey>) => expectToBe(result.toRawType(), 'Vec<StorageKey>') 
+			},
 			polkadotDev: {},
 		},
 		getKeysPaged: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.state.getKeysPaged(stateKey, 0),
+				callExpectToBe: (result: Vec<StorageKey>) => expectToBe(result.toRawType(), 'Vec<StorageKey>')
+			},
 			polkadotDev: {},
 		},
 		getMetadata: {
-			substrateDev: {},
+			substrateDev: {
+				apiCall: async (api: ApiPromise) => await api.rpc.state.getMetadata(),
+				// callExpectCorrectType: (result: Metadata) => expectToBe(result.toRawType(), RESPONSES.substrateDevGetMetadataType),
+				callExpectCorrectType: (result: Metadata) => expectToBe(result.toRawType(), 'Metadata')
+
+			},
 			polkadotDev: {},
 		},
 		getPairs: {

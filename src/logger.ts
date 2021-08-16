@@ -5,7 +5,7 @@ import { ErrorInfo } from './types';
 const PASS = chalk.green('PASS');
 const FAIL = chalk.red('FAIL');
 const EXPECTED = chalk.red('expected');
-const RECIEVED = chalk.green('recieved');
+const RECEIVED = chalk.green('received');
 
 export class Logger {
 	success: number;
@@ -23,6 +23,7 @@ export class Logger {
 		isSuccess: boolean,
 		errorInfo?: ErrorInfo
 	): void {
+		console.log(errorInfo)
 		if (isSuccess) {
 			console.log(`    [${PASS}]: ${methodName}`);
 			this.success += 1;
@@ -33,7 +34,7 @@ export class Logger {
 				this.errors.push(errorInfo);
 				console.log(`          ErrorInfo: ${errorInfo.error}`);
 				console.log(`          ${EXPECTED}: ${errorInfo.expected}`);
-				console.log(`          ${RECIEVED}: ${errorInfo.received}`);
+				console.log(`          ${RECEIVED}: ${errorInfo.received}`);
 			} else if (errorInfo && errorInfo.error) {
 				console.log(`          ErrorInfo: ${errorInfo.error}`);
 			}
