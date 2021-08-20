@@ -1,4 +1,5 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
+import { Null } from '@polkadot/types'
 
 import { parseArgs } from './cli';
 import { RPC_CHAIN_CONSTS } from './config';
@@ -119,7 +120,7 @@ const runTest = async (
 
 	const chainSpecMethods = methodConfig[chainType];
 
-	let result: Promise<SubstrateInterfaceTypes>;
+	let result: SubstrateInterfaceTypes;
 	let tx: string | undefined;
 
 	/**
@@ -138,8 +139,8 @@ const runTest = async (
 	 *
 	 * If its not a subscription, then we run the api call and set it to our result
 	 */
-	if (chainSpecMethods.apiCall && chainSpecMethods.isSub) {
-		const subResult: boolean = await chainSpecMethods.apiCall(api, tx);
+	if (chainSpecMethods.apiCallSub && chainSpecMethods.isSub) {
+		const subResult = await chainSpecMethods.apiCallSub(api);
 
 		if (subResult) {
 			testCounter.success += 1;
@@ -153,7 +154,14 @@ const runTest = async (
 
 		return logResult;
 	} else if (chainSpecMethods && chainSpecMethods.apiCall) {
-		result = await chainSpecMethods.apiCall(api, tx);
+		// Regular api Call
+		result = await chainSpecMethods.apiCall(api);
+	} else if (chainSpecMethods && chainSpecMethods.apiCallTx && tx) {
+		// Api call that sends a transaction
+		result = await chainSpecMethods.apiCallTx(api, tx);
+	} else if (chainSpecMethods && chainSpecMethods.apiCallUnknown) {
+		// Regular api Call
+		result = (await chainSpecMethods.apiCallUnknown(api)) as Null;
 	} else {
 		// console an error, and return false, exiting the test
 		logResult.errorInfo = {

@@ -9,6 +9,7 @@ import {
 	Text,
 	Vec,
 } from '@polkadot/types';
+import { Codec } from '@polkadot/types/types'
 import {
 	ApplyExtrinsicResult,
 	BlockHash,
@@ -28,7 +29,7 @@ import { Observable } from 'rxjs';
 
 import * as CONSTANTS from './constants';
 import * as RESPONSES from './responses';
-import { RpcConsts, SubstrateInterfaceTypes } from './types/config';
+import { RpcConsts } from './types/config';
 import { constructTx } from './util/constructTx';
 import { expectCorrectType, expectToBe, expectToInclude } from './util/testApi';
 
@@ -159,7 +160,7 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		},
 		subscribeAllHeads: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) =>
+				apiCallSub: async (api: ApiPromise) =>
 					await subscribe(api.rpc.chain.subscribeAllHeads, 2),
 				isSub: true,
 			},
@@ -167,7 +168,7 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		},
 		subscribeFinalizedHeads: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) =>
+				apiCallSub: async (api: ApiPromise) =>
 					await subscribe(api.rpc.chain.subscribeFinalizedHeads, 2),
 				isSub: true,
 			},
@@ -175,7 +176,7 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		},
 		subscribeNewHeads: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) =>
+				apiCallSub: async (api: ApiPromise) =>
 					await subscribe(api.rpc.chain.subscribeNewHeads, 2),
 				isSub: true,
 			},
@@ -271,16 +272,15 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		},
 		getStorage: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) =>
+				apiCallUnknown: async (api: ApiPromise) =>
 					await api.rpc.state.getStorage(stateKey),
-				callExpectToBe: (result: SubstrateInterfaceTypes) =>
-					expectToBe(result.toJSON(), null),
+				callExpectToBe: (result: Null) => expectToBe(result.toJSON(), null),
 			},
 			polkadotDev: {},
 		},
 		subscribeRuntimeVersion: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) =>
+				apiCallSub: async (api: ApiPromise) =>
 					await subscribe(api.rpc.state.subscribeRuntimeVersion, 1, 60),
 				isSub: true,
 			},
@@ -288,7 +288,7 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		},
 		subscribeStorage: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise) =>
+				apiCallSub: async (api: ApiPromise) =>
 					await subscribe(api.rpc.state.subscribeStorage, 2),
 				isSub: true,
 			},
@@ -350,7 +350,7 @@ export const RPC_CHAIN_CONSTS: RpcConsts = {
 		},
 		dryRun: {
 			substrateDev: {
-				apiCall: async (api: ApiPromise, tx: string) =>
+				apiCallTx: async (api: ApiPromise, tx: string) =>
 					await api.rpc.system.dryRun(tx),
 				callConstructTx: async () => await constructTx(),
 				callExpectToBe: (result: ApplyExtrinsicResult) =>
