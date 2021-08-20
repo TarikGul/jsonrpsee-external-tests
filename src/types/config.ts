@@ -1,3 +1,4 @@
+import { ApiPromise } from '@polkadot/api';
 import {
 	Bytes,
 	Metadata,
@@ -11,16 +12,23 @@ import {
 	ApplyExtrinsicResult,
 	BlockHash,
 	ChainProperties,
+	ChainType,
 	Header,
 	Health,
 	Index,
 	KeyValue,
 	NodeRole,
 	PeerInfo,
+	ReadProof,
 	RuntimeVersion,
 	SignedBlock,
 	SyncState,
 } from '@polkadot/types/interfaces';
+import {
+	InterfaceTypes,
+	Codec
+} from '@polkadot/types/types';
+import { IExpectTestResult } from './testApi';
 
 // Nested Object, we grab all the keys and using them as string inside of the
 // test logic, therefore we save it as a Record string.
@@ -45,9 +53,12 @@ export interface ITestInfo {
 }
 
 export interface IChainSpecMethods {
-	apiCall?: Function;
+	apiCall?: (api: ApiPromise) => Promise<SubstrateInterfaceTypes>;
+	apiCallSub?: (api: ApiPromise) => Promise<boolean>;
+	apiCallTx?: (api: ApiPromise, tx: string) => Promise<SubstrateInterfaceTypes>;
+	apiCallUnknown?: (api: ApiPromise) => Promise<unknown>;
 	isSub?: boolean;
-	callConstructTx?: Function;
+	callConstructTx?: () => Promise<string>;
 	callExpectToBe?: Function;
 	callExpectToInclude?: Function;
 	callExpectCorrectType?: Function;
@@ -56,6 +67,7 @@ export interface IChainSpecMethods {
 // Union type of all potential interface && Primitive types that polkadot/api can return for rpc methods
 export type SubstrateInterfaceTypes =
 	| BlockHash
+	| ChainType
 	| Index
 	| Null
 	| Health
@@ -71,5 +83,6 @@ export type SubstrateInterfaceTypes =
 	| ChainProperties
 	| Option<Bytes>
 	| SyncState
+	| ReadProof
 	| RuntimeVersion
 	| SignedBlock;
