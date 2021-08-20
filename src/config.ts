@@ -2,7 +2,6 @@ import { ApiPromise } from '@polkadot/api';
 import { RpcPromiseResult, VoidFn } from '@polkadot/api/types';
 import {
 	Bytes,
-	bool,
 	Metadata,
 	Null,
 	Option,
@@ -34,8 +33,6 @@ import { constructTx } from './util/constructTx';
 import { expectCorrectType, expectToBe, expectToInclude } from './util/testApi';
 
 const {
-	authorKey,
-	authorKeyType,
 	offChainLocalConfig: { localSetKey, localSetValue, localGetKey },
 	stateConsts: { stateKey },
 } = CONSTANTS;

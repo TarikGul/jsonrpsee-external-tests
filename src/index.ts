@@ -21,7 +21,9 @@ const main = async (wsProvider: string) => {
 	// The user should input the chaintype
 	// default will be substrate dev env
 	const api = await ApiPromise.create({
-		provider: new WsProvider(wsProvider, 2500, { maxReceivedMessageSize: MAX_FRAME_SIZE }),
+		provider: new WsProvider(wsProvider, 2500, {
+			maxReceivedMessageSize: MAX_FRAME_SIZE,
+		}),
 	});
 
 	logger.logInitialize(wsProvider);
