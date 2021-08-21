@@ -136,6 +136,20 @@ describe('Run TestApi', () => {
 			);
 		});
 
-		it('Should return a successful response when the received array includes the given addrs', () => {});
+		it('Should return a successful response when the received array includes the given addrs', () => {
+			const received = ['ws://abc'],
+				addresses = ['ws://'];
+
+			const expectedResponse = {
+				success: true,
+				errorInfo: {
+					error: '',
+					received,
+					expected: addresses
+				}
+			};
+
+			expect(expectToInclude(received, addresses)).toStrictEqual(expectedResponse);
+		});
 	});
 });
