@@ -27,7 +27,10 @@ import {
 
 // Nested Object, we grab all the keys and using them as string inside of the
 // test logic, therefore we save it as a Record string.
-export type RpcConsts = Record<string, Record<string, ITestConfig>>;
+export type RpcConsts = Record<string, RpcMethods>;
+
+// Rpc methods for a pallet
+export type RpcMethods = Record<string, ITestConfig>;
 
 // Configuration tuple
 export type TestConfigTuple = [ITestInfo, ITestConfig];
