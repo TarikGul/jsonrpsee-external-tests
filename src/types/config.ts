@@ -24,11 +24,6 @@ import {
 	SignedBlock,
 	SyncState,
 } from '@polkadot/types/interfaces';
-import {
-	InterfaceTypes,
-	Codec
-} from '@polkadot/types/types';
-import { IExpectTestResult } from './testApi';
 
 // Nested Object, we grab all the keys and using them as string inside of the
 // test logic, therefore we save it as a Record string.

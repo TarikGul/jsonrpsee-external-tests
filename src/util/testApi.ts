@@ -32,7 +32,7 @@ export const expectToBe = (
 	// Check if the values are equal
 	if (!isEqual(received, expected)) {
 		result.success = false;
-		result.errorInfo.error = `Values do not equal eachother! Received: ${received} Expected: ${expected}`;
+		result.errorInfo.error = `Values do not equal eachother!`;
 
 		return result;
 	}
@@ -95,9 +95,9 @@ export const expectToInclude = (
 	addresses.forEach((addr) => {
 		received.forEach((res) => {
 			if (res.includes(addr)) {
-				 isCorrect = true
+				isCorrect = true;
 			}
-		})
+		});
 	});
 
 	if (!isCorrect) {

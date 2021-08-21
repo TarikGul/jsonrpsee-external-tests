@@ -1,5 +1,5 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { Null } from '@polkadot/types'
+import { Null } from '@polkadot/types';
 
 import { parseArgs } from './cli';
 import { RPC_CHAIN_CONSTS } from './config';

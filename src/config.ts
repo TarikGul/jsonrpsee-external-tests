@@ -9,7 +9,6 @@ import {
 	Text,
 	Vec,
 } from '@polkadot/types';
-import { Codec } from '@polkadot/types/types'
 import {
 	ApplyExtrinsicResult,
 	BlockHash,
