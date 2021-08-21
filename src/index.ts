@@ -1,16 +1,10 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import { Null } from '@polkadot/types';
 
 import { parseArgs } from './cli';
 import { RPC_CHAIN_CONSTS } from './config';
 import { Logger } from './logger';
-import { IExpectTestResult, IParser, ITestResult } from './types';
-import {
-	SubstrateInterfaceTypes,
-	TestConfigTuple,
-	TestCounter,
-} from './types/config';
-
+import { IParser } from './types';
+import { TestConfigTuple } from './types/config';
 import { runTest } from './util/testApi';
 
 const MAX_FRAME_SIZE = '20000000';

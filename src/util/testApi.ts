@@ -4,12 +4,11 @@ import { InterfaceTypes } from '@polkadot/types/types';
 import { isEqual } from 'lodash';
 
 import { IExpectTestResult } from '../types';
-
 import {
+	ITestResult,
 	SubstrateInterfaceTypes,
 	TestConfigTuple,
 	TestCounter,
-	ITestResult,
 } from '../types';
 
 /**
