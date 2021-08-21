@@ -145,11 +145,13 @@ describe('Run TestApi', () => {
 				errorInfo: {
 					error: '',
 					received,
-					expected: addresses
-				}
+					expected: addresses,
+				},
 			};
 
-			expect(expectToInclude(received, addresses)).toStrictEqual(expectedResponse);
+			expect(expectToInclude(received, addresses)).toStrictEqual(
+				expectedResponse
+			);
 		});
 	});
 });
