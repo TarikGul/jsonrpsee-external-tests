@@ -19,6 +19,23 @@ describe('Run TestApi', () => {
 
 			expect(expectToBe(received, expected)).toStrictEqual(expectedResponse);
 		});
+
+		it('Result should be unsuccessful when values are not equal', () => {
+			const received = 'mock',
+				expected = 'test',
+				errorMessage = 'Values do not equal eachother!';
+
+			const expectedResponse = {
+				success: false,
+				errorInfo: {
+					error: errorMessage,
+					expected,
+					received,
+				},
+			};
+
+			expect(expectToBe(received, expected)).toStrictEqual(expectedResponse);
+		});
 	});
 
 	describe('expectCorrectType', () => {
@@ -33,6 +50,26 @@ describe('Run TestApi', () => {
 				success: false,
 				errorInfo: {
 					error: errorMessage,
+					expected,
+					received,
+				},
+			};
+
+			expect(expectCorrectType(received, expected)).toStrictEqual(
+				expectedResponse
+			);
+		});
+
+		it('Should return a succesful response when Interface types match', () => {
+			const index = substrateRegistry.createType('Index', 10);
+
+			const received = index.toRawType(),
+				expected = 'u32';
+
+			const expectedResponse = {
+				success: true,
+				errorInfo: {
+					error: '',
 					expected,
 					received,
 				},

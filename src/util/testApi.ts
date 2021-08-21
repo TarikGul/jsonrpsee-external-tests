@@ -1,7 +1,16 @@
+import { ApiPromise } from '@polkadot/api';
+import { Null } from '@polkadot/types';
 import { InterfaceTypes } from '@polkadot/types/types';
 import { isEqual } from 'lodash';
 
 import { IExpectTestResult } from '../types';
+
+import {
+	SubstrateInterfaceTypes,
+	TestConfigTuple,
+	TestCounter,
+	ITestResult,
+} from '../types';
 
 /**
  * @param received The received value from the test
@@ -107,4 +116,138 @@ export const expectToInclude = (
 	}
 
 	return result;
+};
+
+export const runTest = async (
+	api: ApiPromise,
+	methodTuple: TestConfigTuple,
+	chainType: string
+): Promise<ITestResult> => {
+	const [methodInfo, methodConfig] = methodTuple;
+	const { pallet, method } = methodInfo;
+	const testCounter: TestCounter = {
+		success: 0,
+		error: 0,
+	};
+	const logResult: ITestResult = {
+		methodName: method,
+		success: false,
+		errorInfo: undefined,
+	};
+
+	const chainSpecMethods = methodConfig[chainType];
+
+	let result: SubstrateInterfaceTypes;
+	let tx: string | undefined;
+
+	/**
+	 * Check to see if we need to construct a tx before we make an api call.
+	 * If thats the case we run the tx and pass it into the api call.
+	 */
+	if (chainSpecMethods.callConstructTx) {
+		tx = await chainSpecMethods.callConstructTx();
+	}
+
+	/**
+	 * Run the API call
+	 *
+	 * This first checks if the api call is a subscription which is then called
+	 * and the log result for that subscription is returned
+	 *
+	 * If its not a subscription, then we run the api call and set it to our result
+	 */
+	if (chainSpecMethods.apiCallSub && chainSpecMethods.isSub) {
+		const subResult = await chainSpecMethods.apiCallSub(api);
+
+		if (subResult) {
+			testCounter.success += 1;
+			logResult.success = true;
+		} else {
+			testCounter.error += 1;
+			logResult.errorInfo = {
+				error: 'Subscriptions failed to receive expected results.',
+			};
+		}
+
+		return logResult;
+	} else if (chainSpecMethods && chainSpecMethods.apiCall) {
+		// Regular api Call
+		result = await chainSpecMethods.apiCall(api);
+	} else if (chainSpecMethods && chainSpecMethods.apiCallTx && tx) {
+		// Api call that sends a transaction
+		result = await chainSpecMethods.apiCallTx(api, tx);
+	} else if (chainSpecMethods && chainSpecMethods.apiCallUnknown) {
+		// Regular api Call
+		result = (await chainSpecMethods.apiCallUnknown(api)) as Null;
+	} else {
+		// console an error, and return false, exiting the test
+		logResult.errorInfo = {
+			error: `apiCall does not exist in the configuration for ${pallet}.${method}`,
+		};
+		return logResult;
+	}
+
+	/**
+	 * Call expecToBe if it exists in the configuration
+	 */
+	if (chainSpecMethods.callExpectToBe) {
+		const res: IExpectTestResult = chainSpecMethods.callExpectToBe(result);
+
+		if (res.success) {
+			testCounter.success += 1;
+		} else {
+			testCounter.error += 1;
+			logResult.errorInfo = res.errorInfo;
+		}
+	}
+
+	/**
+	 * Call expectCorrectType if it exists in the configuration
+	 */
+	if (chainSpecMethods.callExpectCorrectType) {
+		const res: IExpectTestResult =
+			chainSpecMethods.callExpectCorrectType(result);
+
+		if (res.success) {
+			testCounter.success += 1;
+		} else {
+			testCounter.error += 1;
+			logResult.errorInfo = res.errorInfo;
+		}
+	}
+
+	/**
+	 * Call expectToInclude if it exists in the configuration
+	 */
+	if (chainSpecMethods.callExpectToInclude) {
+		const res: IExpectTestResult = chainSpecMethods.callExpectToInclude(result);
+
+		res.success ? (testCounter.success += 1) : (testCounter.error += 1);
+		if (res.success) {
+			testCounter.success += 1;
+		} else {
+			testCounter.error += 1;
+			logResult.errorInfo = res.errorInfo;
+		}
+	}
+
+	/**
+	 * Check if no tests were ran. If that is the case, the configuration is missing
+	 * test calls. ex: callExpectToBe, callExpectCorrectType etc.
+	 */
+	if (testCounter.success === 0 && testCounter.error === 0) {
+		logResult.errorInfo = {
+			error: `Configuration for ${pallet}.${method} has no test calls.`,
+		};
+		return logResult;
+	}
+
+	/**
+	 * Check the testCounter results and determine if the test was succesful or not
+	 */
+	if (testCounter.success > 0 && testCounter.error === 0) {
+		logResult.success = true;
+	}
+
+	return logResult;
 };
