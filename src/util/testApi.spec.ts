@@ -36,6 +36,40 @@ describe('Run TestApi', () => {
 
 			expect(expectToBe(received, expected)).toStrictEqual(expectedResponse);
 		});
+
+		it('Result should be successful given matching string args', () => {
+			const testArg = 'mock';
+
+			const expectedResponse = {
+				success: true,
+				errorInfo: {
+					error: '',
+					received: testArg,
+					expected: testArg,
+				},
+			};
+
+			expect(expectToBe(testArg, testArg)).toStrictEqual(expectedResponse);
+		});
+
+		it('Result should be successful given matching objects', () => {
+			const testArg = {
+				a: 10,
+				b: 'hello',
+				c: true,
+			};
+
+			const expectedResponse = {
+				success: true,
+				errorInfo: {
+					error: '',
+					received: testArg,
+					expected: testArg,
+				},
+			};
+
+			expect(expectToBe(testArg, testArg)).toStrictEqual(expectedResponse);
+		});
 	});
 
 	describe('expectCorrectType', () => {
@@ -101,5 +135,7 @@ describe('Run TestApi', () => {
 				expectedResponse
 			);
 		});
+
+		it('Should return a successful response when the received array includes the given addrs', () => {});
 	});
 });

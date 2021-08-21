@@ -1,4 +1,5 @@
 import { KeyringPair } from '@polkadot/keyring/types';
+import { Metadata } from '@polkadot/types';
 import { EXTRINSIC_VERSION } from '@polkadot/types/extrinsic/v4/Extrinsic';
 import { createMetadata, OptionsWithMeta } from '@substrate/txwrapper-polkadot';
 import fetch from 'node-fetch';
@@ -49,9 +50,11 @@ export function signWith(
 	options: OptionsWithMeta
 ): string {
 	const { registry, metadataRpc } = options;
+	const generatedMetadata: Metadata = createMetadata(registry, metadataRpc);
+
 	// Important! The registry needs to be updated with latest metadata, so make
 	// sure to run `registry.setMetadata(metadata)` before signing.
-	registry.setMetadata(createMetadata(registry, metadataRpc));
+	registry.setMetadata(generatedMetadata);
 
 	const { signature } = registry
 		.createType('ExtrinsicPayload', signingPayload, {
