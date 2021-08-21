@@ -1,7 +1,7 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 
 import { parseArgs } from './cli';
-import { RPC_CHAIN_CONSTS } from './config';
+import { RPC_TEST_CONFIG } from './rpc-config';
 import { Logger } from './logger';
 import { IParser } from './types';
 import { TestConfigTuple } from './types/config';
@@ -43,7 +43,7 @@ const parseArgInput = (parser: IParser): TestConfigTuple[] => {
 	const { method } = parser;
 	const testMethods: TestConfigTuple[] = [];
 
-	const rpcConstsKeys = Object.keys(RPC_CHAIN_CONSTS);
+	const rpcConstsKeys = Object.keys(RPC_TEST_CONFIG);
 
 	// This will populate testMethods, and then call all the methods
 	if (method) {
@@ -59,9 +59,9 @@ const parseArgInput = (parser: IParser): TestConfigTuple[] => {
 			}
 			// The arg input is only the pallet, which will retrieve all
 			// methods inside of the pallet
-			Object.keys(RPC_CHAIN_CONSTS[pallet]).forEach((method) => {
+			Object.keys(RPC_TEST_CONFIG[pallet]).forEach((method) => {
 				const testInfo = { pallet, method };
-				const methodConfig = RPC_CHAIN_CONSTS[pallet][method];
+				const methodConfig = RPC_TEST_CONFIG[pallet][method];
 
 				testMethods.push([testInfo, methodConfig]);
 			});
@@ -72,7 +72,7 @@ const parseArgInput = (parser: IParser): TestConfigTuple[] => {
 			const [pallet, method] = splitMethod;
 			const methodInfo = { pallet, method };
 
-			const methodConfig = RPC_CHAIN_CONSTS[pallet][method];
+			const methodConfig = RPC_TEST_CONFIG[pallet][method];
 
 			if (!methodConfig) {
 				console.error(`${method} does not exist within pallet: ${pallet}`);
@@ -85,8 +85,8 @@ const parseArgInput = (parser: IParser): TestConfigTuple[] => {
 	} else {
 		// Retrieve all methods
 		rpcConstsKeys.forEach((pallet) => {
-			Object.keys(RPC_CHAIN_CONSTS[pallet]).forEach((method) => {
-				const methodConfig = RPC_CHAIN_CONSTS[pallet][method];
+			Object.keys(RPC_TEST_CONFIG[pallet]).forEach((method) => {
+				const methodConfig = RPC_TEST_CONFIG[pallet][method];
 				const methodInfo = { pallet, method };
 
 				testMethods.push([methodInfo, methodConfig]);
