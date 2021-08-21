@@ -1,8 +1,8 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 
 import { parseArgs } from './cli';
-import { RPC_TEST_CONFIG } from './rpc-config';
 import { Logger } from './logger';
+import { RPC_TEST_CONFIG } from './rpc-config';
 import { IParser } from './types';
 import { TestConfigTuple } from './types/config';
 import { runTest } from './util/testApi';
