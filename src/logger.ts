@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import chalk from 'chalk';
 
 import { ErrorInfo } from './types';
