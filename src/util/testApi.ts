@@ -90,9 +90,17 @@ export const expectToInclude = (
 		},
 	};
 
-	const isCorrect = addresses.filter((addr) => received.includes(addr));
+	let isCorrect = false;
 
-	if (isCorrect.length > 0) {
+	addresses.forEach((addr) => {
+		received.forEach((res) => {
+			if (res.includes(addr)) {
+				 isCorrect = true
+			}
+		})
+	});
+
+	if (!isCorrect) {
 		result.success = false;
 		result.errorInfo.error =
 			'Received vector does not share the same values as the given input.';
