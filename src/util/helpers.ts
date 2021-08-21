@@ -11,7 +11,7 @@ import fetch from 'node-fetch';
  */
 export function rpcToLocalNode(
 	method: string,
-	params: any[] = []
+	params: (string | number)[] = []
 ): Promise<any> {
 	return fetch('http://localhost:9933', {
 		body: JSON.stringify({
