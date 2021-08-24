@@ -1,5 +1,5 @@
 import { ApiPromise } from '@polkadot/api';
-import { bool } from '@polkadot/types';
+import { bool, Bytes } from '@polkadot/types';
 
 import { authorKey, authorKeyType, stateConsts } from '../constants';
 import { RpcMethods } from '../types';
@@ -23,7 +23,12 @@ export const author: RpcMethods = {
 		polkadotDev: {},
 	},
 	insertKey: {
-		substrateDev: {},
+		substrateDev: {
+			apiCall: async (api: ApiPromise) =>
+				await api.rpc.author.insertKey('ed25', '//Alice', authorKey),
+			callExpectToBe: (result: Bytes) =>
+				expectToBe(result.toRawType(), 'Bytes'),
+		},
 		polkadotDev: {},
 	},
 	pendingExtrinsics: {
