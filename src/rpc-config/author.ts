@@ -2,7 +2,7 @@ import { ApiPromise } from '@polkadot/api';
 import { bool } from '@polkadot/types'
 import { RpcMethods } from '../types';
 
-import { authorKey, authorKeyType } from '../constants';
+import { authorKey, authorKeyType, stateConsts } from '../constants';
 import { expectToBe } from '../util/testApi';
 
 export const author: RpcMethods = {
@@ -15,8 +15,8 @@ export const author: RpcMethods = {
 	},
 	hasSessionKeys: {
 		substrateDev: {
-			// apiCall: async (api: ApiPromise) => await api.rpc.author.hasSessionKeys(stateKey),
-			// callExpectToBe: (result: bool) => expectToBe(result.toRawType(), 'bool')
+			apiCall: async (api: ApiPromise) => await api.rpc.author.hasSessionKeys(stateConsts.stateKey),
+			callExpectToBe: (result: bool) => expectToBe(result.toRawType(), 'bool')
 		},
 		polkadotDev: {},
 	},
