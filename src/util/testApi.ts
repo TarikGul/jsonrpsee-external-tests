@@ -221,7 +221,6 @@ export const runTest = async (
 	if (chainSpecMethods.callExpectToInclude) {
 		const res: IExpectTestResult = chainSpecMethods.callExpectToInclude(result);
 
-		res.success ? (testCounter.success += 1) : (testCounter.error += 1);
 		if (res.success) {
 			testCounter.success += 1;
 		} else {
