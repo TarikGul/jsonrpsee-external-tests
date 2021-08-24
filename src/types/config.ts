@@ -7,6 +7,7 @@ import {
 	StorageKey,
 	Text,
 	Vec,
+	bool,
 } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
@@ -64,6 +65,7 @@ export interface IChainSpecMethods {
 
 // Union type of all potential interface && Primitive types that polkadot/api can return for rpc methods
 export type SubstrateInterfaceTypes =
+	| bool
 	| BlockHash
 	| ChainType
 	| Index

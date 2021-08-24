@@ -14,9 +14,9 @@ export const offChainLocalConfig = {
 	localSetValue: substrateRegistry.createType('Bytes', 'asd'),
 };
 
-export const authorKey = substrateRegistry.createType('Bytes');
+export const authorKey = substrateRegistry.createType('Bytes', 'b7a3c12dc0c8c748ab07525b701122b88bd78f600c76342d27f25e5f92444cde');
 
-export const authorKeyType = substrateRegistry.createType('Text', 'Sr25519');
+export const authorKeyType = substrateRegistry.createType('Text', 'ed25');
 
 export const stateConsts = {
 	stateKey: substrateRegistry.createType('Bytes', 'mock'),
