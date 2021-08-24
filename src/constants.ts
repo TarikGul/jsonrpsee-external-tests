@@ -1,6 +1,7 @@
 import { substrateRegistry } from './util/registry';
 
-const authorRawKey = 'b7a3c12dc0c8c748ab07525b701122b88bd78f600c76342d27f25e5f92444cde';
+const authorRawKey =
+	'b7a3c12dc0c8c748ab07525b701122b88bd78f600c76342d27f25e5f92444cde';
 
 export const ALICE_ADDR = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
 
@@ -21,5 +22,8 @@ export const authorKey = substrateRegistry.createType('Bytes', authorRawKey);
 export const authorKeyType = substrateRegistry.createType('Text', 'ed25');
 
 export const stateConsts = {
-	stateKey: substrateRegistry.createType('Bytes', authorRawKey + authorRawKey + authorRawKey + authorRawKey),
+	stateKey: substrateRegistry.createType(
+		'Bytes',
+		authorRawKey + authorRawKey + authorRawKey + authorRawKey
+	),
 };

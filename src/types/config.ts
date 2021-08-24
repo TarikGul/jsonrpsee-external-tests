@@ -1,5 +1,6 @@
 import { ApiPromise } from '@polkadot/api';
 import {
+	bool,
 	Bytes,
 	Metadata,
 	Null,
@@ -7,7 +8,6 @@ import {
 	StorageKey,
 	Text,
 	Vec,
-	bool,
 } from '@polkadot/types';
 import {
 	ApplyExtrinsicResult,
