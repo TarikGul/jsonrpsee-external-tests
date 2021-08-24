@@ -1,9 +1,10 @@
 import { ApiPromise } from '@polkadot/api';
-import { bool, Bytes } from '@polkadot/types';
+import { bool, Bytes, Vec } from '@polkadot/types';
+import { Extrinsic } from '@polkadot/types/interfaces';
 
 import { authorKey, authorKeyType, stateConsts } from '../constants';
 import { RpcMethods } from '../types';
-import { expectToBe } from '../util/testApi';
+import { expectCorrectType, expectToBe } from '../util/testApi';
 
 export const author: RpcMethods = {
 	hasKey: {
@@ -32,7 +33,10 @@ export const author: RpcMethods = {
 		polkadotDev: {},
 	},
 	pendingExtrinsics: {
-		substrateDev: {},
+		substrateDev: {
+			apiCall: async (api: ApiPromise) => await api.rpc.author.pendingExtrinsics(),
+			callExpectToBe: (result: Vec<Extrinsic>) => expectToBe(result.toRawType(), 'Vec<Extrinsic>')
+		},
 		polkadotDev: {},
 	},
 	removeExtrinsic: {

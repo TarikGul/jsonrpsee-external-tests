@@ -14,6 +14,7 @@ import {
 	BlockHash,
 	ChainProperties,
 	ChainType,
+	Extrinsic,
 	Header,
 	Health,
 	Index,
@@ -80,6 +81,7 @@ export type SubstrateInterfaceTypes =
 	| Vec<PeerInfo>
 	| Vec<StorageKey>
 	| Vec<KeyValue>
+	| Vec<Extrinsic>
 	| ChainProperties
 	| Option<Bytes>
 	| SyncState
