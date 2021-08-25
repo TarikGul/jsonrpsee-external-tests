@@ -4,7 +4,7 @@ import { Extrinsic } from '@polkadot/types/interfaces';
 
 import { authorKey, authorKeyType, stateConsts } from '../constants';
 import { RpcMethods } from '../types';
-import { expectCorrectType, expectToBe } from '../util/testApi';
+import { expectToBe } from '../util/testApi';
 
 export const author: RpcMethods = {
 	hasKey: {
@@ -44,7 +44,10 @@ export const author: RpcMethods = {
 		polkadotDev: {},
 	},
 	rotateKeys: {
-		substrateDev: {},
+		substrateDev: {
+			apiCall: async (api: ApiPromise) => await api.rpc.author.rotateKeys(),
+			callExpectToBe: (result: Bytes) => expectToBe(result.toRawType(), 'Bytes')
+		},
 		polkadotDev: {},
 	},
 	submitAndWatchExtrinsic: {
