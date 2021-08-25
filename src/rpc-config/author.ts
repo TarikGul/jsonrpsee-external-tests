@@ -34,8 +34,10 @@ export const author: RpcMethods = {
 	},
 	pendingExtrinsics: {
 		substrateDev: {
-			apiCall: async (api: ApiPromise) => await api.rpc.author.pendingExtrinsics(),
-			callExpectToBe: (result: Vec<Extrinsic>) => expectToBe(result.toRawType(), 'Vec<Extrinsic>')
+			apiCall: async (api: ApiPromise) =>
+				await api.rpc.author.pendingExtrinsics(),
+			callExpectToBe: (result: Vec<Extrinsic>) =>
+				expectToBe(result.toRawType(), 'Vec<Extrinsic>'),
 		},
 		polkadotDev: {},
 	},
@@ -46,7 +48,8 @@ export const author: RpcMethods = {
 	rotateKeys: {
 		substrateDev: {
 			apiCall: async (api: ApiPromise) => await api.rpc.author.rotateKeys(),
-			callExpectToBe: (result: Bytes) => expectToBe(result.toRawType(), 'Bytes')
+			callExpectToBe: (result: Bytes) =>
+				expectToBe(result.toRawType(), 'Bytes'),
 		},
 		polkadotDev: {},
 	},
