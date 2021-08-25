@@ -1,6 +1,7 @@
-import { RpcPromiseResult, VoidFn } from '@polkadot/api/types';
-import { Header, RuntimeVersion } from '@polkadot/types/interfaces';
+import { RpcPromiseResult } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
+
+import { SubscribeReturnTypes } from '../types';
 
 /**
  * Helper function for any subscriptions that are tested.
@@ -12,7 +13,7 @@ import { Observable } from 'rxjs';
  * out and return false
  */
 export const subscribe = async (
-	apiFn: RpcPromiseResult<() => Observable<Header | RuntimeVersion>>,
+	apiFn: RpcPromiseResult<() => Observable<SubscribeReturnTypes>>,
 	reqCounter: number,
 	timeCounter = 30
 ): Promise<boolean> => {
@@ -20,11 +21,14 @@ export const subscribe = async (
 	let whileCounter = 0;
 	let isSubscribed = true;
 
-	const arr: (Header | RuntimeVersion)[] = [];
+	const arr: SubscribeReturnTypes[] = [];
 
 	const timer = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
-	const unsub: VoidFn = await apiFn((res: Header | RuntimeVersion) => {
+	/**
+	 * Subscribe to an api call.
+	 */
+	const unsub = await apiFn((res: SubscribeReturnTypes) => {
 		arr.push(res);
 
 		if (++count === reqCounter) {
@@ -33,7 +37,13 @@ export const subscribe = async (
 		}
 	});
 
-	// Allow a 30 second timer to fetch the subscriptions
+	/**
+	 * Timer: DEFAULT 30s
+	 *
+	 * This is a timer that keeps the subscription alive for a given maximum amount of time.
+	 * If the `reqCounter` does not equal the `count` in this given amount of time, then it will exit
+	 * the subscription with a fail.
+	 */
 	while (isSubscribed) {
 		await timer(1000);
 		whileCounter += 1;
