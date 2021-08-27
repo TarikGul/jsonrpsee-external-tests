@@ -117,6 +117,13 @@ export const expectToInclude = (
 	return result;
 };
 
+/**
+ * 
+ * @param api ApiPromise
+ * @param methodTuple Contains a Tuple, where the first index holds information regarding the 
+ * passed in method, and the second index holds the config for the 
+ * @param chainType The type of chain we are targeting. 
+ */
 export const runTest = async (
 	api: ApiPromise,
 	methodTuple: TestConfigTuple,
@@ -176,7 +183,7 @@ export const runTest = async (
 		// Api call that sends a transaction
 		result = await chainSpecMethods.apiCallTx(api, tx);
 	} else if (chainSpecMethods && chainSpecMethods.apiCallUnknown) {
-		// Regular api Call
+		// Regular api Call when the return type is unknown
 		result = (await chainSpecMethods.apiCallUnknown(api)) as Null;
 	} else {
 		// console an error, and return false, exiting the test
