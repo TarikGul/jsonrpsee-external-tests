@@ -15,6 +15,7 @@ import {
 	ChainProperties,
 	ChainType,
 	Extrinsic,
+	Hash,
 	Header,
 	Health,
 	Index,
@@ -52,6 +53,7 @@ export interface ITestInfo {
 	pallet: string;
 }
 
+// Chain spec methods that are assigned to a methods config
 export interface IChainSpecMethods {
 	apiCall?: (api: ApiPromise) => Promise<SubstrateInterfaceTypes>;
 	apiCallSub?: (api: ApiPromise) => Promise<boolean>;
@@ -64,7 +66,7 @@ export interface IChainSpecMethods {
 	callExpectCorrectType?: Function;
 }
 
-// Union type of all potential interface && Primitive types that polkadot/api can return for rpc methods
+// Union type of all potential interface types that polkadot/api can return for rpc methods
 export type SubstrateInterfaceTypes =
 	| bool
 	| BlockHash
@@ -75,6 +77,7 @@ export type SubstrateInterfaceTypes =
 	| Header
 	| ApplyExtrinsicResult
 	| Text
+	| Hash
 	| Metadata
 	| Vec<Text>
 	| Vec<NodeRole>
