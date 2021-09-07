@@ -1,9 +1,10 @@
 import { ApiPromise } from '@polkadot/api';
-import { Metadata, Null, StorageKey, Vec } from '@polkadot/types';
+import { Metadata, Null, StorageKey, Vec, Bytes } from '@polkadot/types';
 import {
 	KeyValue,
 	ReadProof,
 	RuntimeVersion,
+	TraceBlockResponse,
 } from '@polkadot/types/interfaces';
 
 import * as CONSTANTS from '../constants';
@@ -13,12 +14,19 @@ import { expectToBe } from '../util/testApi';
 import { subscribe } from './subscribe';
 
 const {
+	authorCallBytes,
 	stateConsts: { stateKey },
+	DEFAULT_TARGETS,
+	DEFAULT_KEYS
 } = CONSTANTS;
 
 export const state: RpcMethods = {
 	call: {
-		substrateDev: {},
+		substrateDev: {
+			// apiCall: async (api: ApiPromise) => await api.rpc.state.call('contracts_call', authorCallBytes),
+			// callConstructContract: async (api: ApiPromise) => await api.tx.contracts, 
+			// callExpectToBe: (result: Bytes) => expectToBe(result.toRawType(), 'Bytes')
+		},
 		polkadotDev: {},
 	},
 	getKeys: {
@@ -100,7 +108,15 @@ export const state: RpcMethods = {
 		polkadotDev: {},
 	},
 	traceBlock: {
-		substrateDev: {},
+		substrateDev: {
+			apiCall: async (api: ApiPromise) => {
+				const hash = await api.rpc.chain.getBlockHash();
+				const res = await api.rpc.state.traceBlock(hash, DEFAULT_TARGETS, DEFAULT_KEYS);
+
+				return res;
+			},
+			callExpectToBe: (result: TraceBlockResponse) => expectToBe(result.toRawType(), RESPONSES.substrateTraceBlockEnum)
+		},
 		polkadotDev: {},
 	},
 };

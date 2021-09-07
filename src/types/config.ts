@@ -28,6 +28,7 @@ import {
 	RuntimeVersion,
 	SignedBlock,
 	SyncState,
+	TraceBlockResponse,
 } from '@polkadot/types/interfaces';
 
 // Nested Object, we grab all the keys and using them as string inside of the
@@ -95,4 +96,5 @@ export type SubstrateInterfaceTypes =
 	| SyncState
 	| ReadProof
 	| RuntimeVersion
-	| SignedBlock;
+	| SignedBlock
+	| TraceBlockResponse;

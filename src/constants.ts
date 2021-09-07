@@ -21,9 +21,16 @@ export const authorKey = substrateRegistry.createType('Bytes', authorRawKey);
 
 export const authorKeyType = substrateRegistry.createType('Text', 'ed25');
 
+export const authorCallBytes = substrateRegistry.createType('Bytes', 'mock');
+
 export const stateConsts = {
 	stateKey: substrateRegistry.createType(
 		'Bytes',
 		authorRawKey + authorRawKey + authorRawKey + authorRawKey
 	),
 };
+
+export const DEFAULT_TARGETS = 'pallet,frame,state';
+
+export const DEFAULT_KEYS =
+	'3a65787472696e7369635f696e646578,26aa394eea5630e07c48ae0c9558cef7b99d880ec681799c0cf30e8886371da9';
