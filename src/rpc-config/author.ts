@@ -1,9 +1,10 @@
 import { ApiPromise } from '@polkadot/api';
 import { bool, Bytes, Vec } from '@polkadot/types';
-import { Extrinsic, H256 } from '@polkadot/types/interfaces';
+import { Extrinsic, H256, ExtrinsicStatus } from '@polkadot/types/interfaces';
 import { IExtrinsic, AnyTuple } from '@polkadot/types/types';
 
 import { authorKey, authorKeyType, stateConsts } from '../constants';
+import { substrateExtrinsicStatusEnum } from '../responses';
 import { RpcMethods } from '../types';
 import { expectToBe } from '../util/testApi';
 import { constructTx } from '../util/constructTx';
@@ -56,7 +57,14 @@ export const author: RpcMethods = {
 		polkadotDev: {},
 	},
 	submitAndWatchExtrinsic: {
-		substrateDev: {},
+		substrateDev: {
+			apiCallTx: async (api: ApiPromise, tx: string) =>
+				await api.rpc.author.submitAndWatchExtrinsic(
+					(tx as unknown) as IExtrinsic<AnyTuple>
+				),
+			callConstructTx: async () => await constructTx(),
+			callExpectCorrectType: (result: ExtrinsicStatus) => expectToBe(result.toRawType(), substrateExtrinsicStatusEnum)
+		},
 		polkadotDev: {},
 	},
 	submitExtrinsic: {
