@@ -1,10 +1,12 @@
 import { ApiPromise } from '@polkadot/api';
 import { bool, Bytes, Vec } from '@polkadot/types';
-import { Extrinsic } from '@polkadot/types/interfaces';
+import { Extrinsic, H256 } from '@polkadot/types/interfaces';
+import { IExtrinsic, AnyTuple } from '@polkadot/types/types';
 
 import { authorKey, authorKeyType, stateConsts } from '../constants';
 import { RpcMethods } from '../types';
 import { expectToBe } from '../util/testApi';
+import { constructTx } from '../util/constructTx';
 
 export const author: RpcMethods = {
 	hasKey: {
@@ -58,7 +60,14 @@ export const author: RpcMethods = {
 		polkadotDev: {},
 	},
 	submitExtrinsic: {
-		substrateDev: {},
+		substrateDev: {
+			apiCallTx: async (api: ApiPromise, tx: string) =>
+				await api.rpc.author.submitExtrinsic(
+					(tx as unknown) as IExtrinsic<AnyTuple>
+				),
+			callConstructTx: async () => await constructTx(),
+			callExpectCorrectType: (result: H256) => expectToBe(result.toRawType(), 'H256')
+		},
 		polkadotDev: {},
 	},
 };
