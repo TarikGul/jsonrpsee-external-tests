@@ -24,7 +24,7 @@ export const system: RpcMethods = {
 	accountNextIndex: {
 		substrateDev: {
 			apiCall: async (api: ApiPromise) =>
-				await api.rpc.system.accountNextIndex(CONSTANTS.ALICE_ADDR),
+				await api.rpc.system.accountNextIndex(CONSTANTS.CHARLIE_ADDR),
 			callExpectToBe: (result: Index) => expectToBe(result.toNumber(), 0),
 			callExpectCorrectType: (result: Index) =>
 				expectCorrectType(result.toRawType(), 'u32'),

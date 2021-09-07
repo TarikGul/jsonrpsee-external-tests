@@ -11,6 +11,8 @@ export const ALICE_TX =
 export const ALICE_BOOTNODE =
 	'/ip4/127.0.0.1/tcp/30333/p2p/12D3KooWEyoppNCUx8Yx66oV9fJnriXwCcXwDDUA2kj6vnc6iDEp';
 
+export const CHARLIE_ADDR = '5FLSigC9HGRKVhB9FiEo4Y3koPsNmBmLJbpXg2mp1hXcS59Y';
+
 export const offChainLocalConfig = {
 	localGetKey: substrateRegistry.createType('Bytes', 'Test'),
 	localSetKey: substrateRegistry.createType('Bytes', 'Test'),
