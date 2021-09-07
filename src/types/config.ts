@@ -15,6 +15,7 @@ import {
 	ChainProperties,
 	ChainType,
 	Extrinsic,
+	ExtrinsicStatus,
 	H256,
 	Header,
 	Health,
@@ -75,6 +76,7 @@ export type SubstrateInterfaceTypes =
 	| Index
 	| Null
 	| Health
+	| ExtrinsicStatus
 	| Header
 	| ApplyExtrinsicResult
 	| Text
