@@ -40,7 +40,8 @@ export class Logger {
 				errorInfo &&
 				(errorInfo?.expected || errorInfo?.expected === '') &&
 				errorInfo?.received ||
-				typeof errorInfo?.expected === 'number'
+				typeof errorInfo?.expected === 'number' ||
+				typeof errorInfo?.received === 'boolean'
 			) {
 				this.errors.push(errorInfo);
 				console.log(`          ErrorInfo: ${errorInfo.error}`);
