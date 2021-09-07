@@ -1,4 +1,4 @@
-import { Keyring } from '@polkadot/api';
+import { Keyring, ApiPromise } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import {
 	construct,
@@ -8,37 +8,44 @@ import {
 	PolkadotSS58Format,
 } from '@substrate/txwrapper-polkadot';
 
-import { rpcToLocalNode, signWith } from './helpers';
+import { signWith } from './helpers';
+
+type Chains = "kusama" | "polkadot" | "westend" | "statemint" | "statemine";
 
 /**
  * Entry point of the script. This script assumes a Polkadot node is running
  * locally on `http://localhost:9933`.
  */
-export const constructTx = async (): Promise<string> => {
+export const constructTx = async (api: ApiPromise): Promise<string> => {
 	// Wait for the promise to resolve async WASM
 	await cryptoWaitReady();
 	// Create a new keyring, and add an "Alice" account
 	const keyring = new Keyring();
 	const alice = keyring.addFromUri('//Alice', { name: 'Alice' }, 'sr25519');
+	const bobAddr = '14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3';
 
 	// Construct a balance transfer transaction offline.
 	// To construct the tx, we need some up-to-date information from the node.
 	// `txwrapper` is offline-only, so does not care how you retrieve this info.
 	// In this tutorial, we simply send RPC requests to the node.
-	const { block } = await rpcToLocalNode('chain_getBlock');
-	const blockHash = await rpcToLocalNode('chain_getBlockHash');
-	const genesisHash = await rpcToLocalNode('chain_getBlockHash', [0]);
-	const metadataRpc = await rpcToLocalNode('state_getMetadata');
-	const { specVersion, transactionVersion, specName } = await rpcToLocalNode(
-		'state_getRuntimeVersion'
-	);
+	const [signedBlock, blockHash, genesisHash, metadataRpc, runtimeVersion, nonce] = await Promise.all([
+		await api.rpc.chain.getBlock(),
+		await api.rpc.chain.getBlockHash(),
+		await api.rpc.chain.getBlockHash(0),
+		await api.rpc.state.getMetadata(),
+		await api.rpc.state.getRuntimeVersion(),
+		await api.rpc.system.accountNextIndex(alice.address)
+	])
+
+	const number = signedBlock.block.header.number.toNumber();
+	const { specVersion, transactionVersion, specName } = runtimeVersion;
 
 	// Create Polkadot's type registry.
 	const registry = getRegistry({
 		chainName: 'Polkadot',
-		specName,
-		specVersion,
-		metadataRpc,
+		specName: specName.toString() as Chains,
+		specVersion: specVersion.toNumber(),
+		metadataRpc: metadataRpc.toHex(),
 	});
 
 	// Now we can create our `balances.transferKeepAlive` unsigned tx. The following
@@ -47,24 +54,22 @@ export const constructTx = async (): Promise<string> => {
 	const unsigned = methods.balances.transferKeepAlive(
 		{
 			value: '20071992547409910',
-			dest: '14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3', // Bob
+			dest: bobAddr, // Bob
 		},
 		{
 			address: deriveAddress(alice.publicKey, PolkadotSS58Format.polkadot),
-			blockHash,
-			blockNumber: registry
-				.createType('BlockNumber', block.header.number)
-				.toNumber(),
+			blockHash: blockHash.toString(),
+			blockNumber: number,
 			eraPeriod: 64,
-			genesisHash,
-			metadataRpc,
-			nonce: 0, // Assuming this is Alice's first tx on the chain
-			specVersion,
+			genesisHash: genesisHash.toString(),
+			metadataRpc: metadataRpc.toHex(),
+			nonce: nonce.toNumber(), // Assuming this is Alice's first tx on the chain
+			specVersion: specVersion.toNumber(),
 			tip: 0,
-			transactionVersion,
+			transactionVersion: transactionVersion.toNumber(),
 		},
 		{
-			metadataRpc,
+			metadataRpc: metadataRpc.toHex(),
 			registry,
 		}
 	);
@@ -74,13 +79,13 @@ export const constructTx = async (): Promise<string> => {
 
 	// Sign a payload. This operation should be performed on an offline device.
 	const signature = signWith(alice, signingPayload, {
-		metadataRpc,
+		metadataRpc: metadataRpc.toHex(),
 		registry,
 	});
 
 	// Serialize a signed transaction.
 	const tx = construct.signedTx(unsigned, signature, {
-		metadataRpc,
+		metadataRpc: metadataRpc.toHex(),
 		registry,
 	});
 
