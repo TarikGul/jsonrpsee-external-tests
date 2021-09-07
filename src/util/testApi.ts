@@ -151,7 +151,7 @@ export const runTest = async (
 	 * If thats the case we run the tx and pass it into the api call.
 	 */
 	if (chainSpecMethods.callConstructTx) {
-		tx = await chainSpecMethods.callConstructTx();
+		tx = await chainSpecMethods.callConstructTx(api);
 	}
 
 	/**
