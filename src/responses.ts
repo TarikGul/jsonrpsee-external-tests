@@ -34,3 +34,6 @@ export const substrateDevGetReadProofType =
 
 export const substrateDevGetRuntimeVersionType =
 	'{"specName":"Text","implName":"Text","authoringVersion":"u32","specVersion":"u32","implVersion":"u32","apis":"Vec<RuntimeVersionApi>","transactionVersion":"u32"}';
+
+export const substrateExtrinsicStatusEnum = 
+	'{"_enum":{"Future":"Null","Ready":"Null","Broadcast":"Vec<Text>","InBlock":"Hash","Retracted":"Hash","FinalityTimeout":"Hash","Finalized":"Hash","Usurped":"Hash","Dropped":"Null","Invalid":"Null"}}'
