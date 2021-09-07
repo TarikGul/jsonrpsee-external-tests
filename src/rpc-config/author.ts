@@ -1,12 +1,12 @@
 import { ApiPromise } from '@polkadot/api';
 import { bool, Bytes, Vec } from '@polkadot/types';
-import { Extrinsic, H256, ExtrinsicStatus } from '@polkadot/types/interfaces';
+import { Extrinsic, H256, ExtrinsicStatus, Hash } from '@polkadot/types/interfaces';
 import { IExtrinsic, AnyTuple } from '@polkadot/types/types';
 
 import { authorKey, authorKeyType, stateConsts } from '../constants';
 import { substrateExtrinsicStatusEnum } from '../responses';
 import { RpcMethods } from '../types';
-import { expectToBe } from '../util/testApi';
+import { expectCorrectType, expectToBe } from '../util/testApi';
 import { constructTx } from '../util/constructTx';
 
 export const author: RpcMethods = {
@@ -44,15 +44,37 @@ export const author: RpcMethods = {
 		},
 		polkadotDev: {},
 	},
-	removeExtrinsic: {
-		substrateDev: {},
-		polkadotDev: {},
-	},
 	rotateKeys: {
 		substrateDev: {
 			apiCall: async (api: ApiPromise) => await api.rpc.author.rotateKeys(),
 			callExpectToBe: (result: Bytes) =>
 				expectToBe(result.toRawType(), 'Bytes'),
+		},
+		polkadotDev: {},
+	},
+	submitExtrinsic: {
+		substrateDev: {
+			apiCallTx: async (api: ApiPromise, tx: string) => 
+				await api.rpc.author.submitExtrinsic(
+					(tx as unknown) as IExtrinsic<AnyTuple>
+				),
+			callConstructTx: async (api: ApiPromise) => await constructTx(api),
+			callExpectCorrectType: (result: H256) => expectCorrectType(result.toRawType(), 'H256')
+		},
+		polkadotDev: {},
+	},
+	removeExtrinsic: {
+		substrateDev: {
+			apiCallTx: async (api: ApiPromise, tx: string) => {
+				const extrinsicHash = await api.rpc.author.submitExtrinsic(
+					(tx as unknown) as IExtrinsic<AnyTuple>
+				);
+				const res = await api.rpc.author.removeExtrinsic([{Hash: extrinsicHash}]);
+
+				return res;
+			},
+			callConstructTx: async (api: ApiPromise) => await constructTx(api),
+			callExpectToBe: (result: Vec<Hash>) => expectToBe(result.toRawType(), 'Vec<Hash>')
 		},
 		polkadotDev: {},
 	},
@@ -62,19 +84,8 @@ export const author: RpcMethods = {
 				await api.rpc.author.submitAndWatchExtrinsic(
 					(tx as unknown) as IExtrinsic<AnyTuple>
 				),
-			callConstructTx: async () => await constructTx(),
+			callConstructTx: async (api: ApiPromise) => await constructTx(api),
 			callExpectCorrectType: (result: ExtrinsicStatus) => expectToBe(result.toRawType(), substrateExtrinsicStatusEnum)
-		},
-		polkadotDev: {},
-	},
-	submitExtrinsic: {
-		substrateDev: {
-			apiCallTx: async (api: ApiPromise, tx: string) =>
-				await api.rpc.author.submitExtrinsic(
-					(tx as unknown) as IExtrinsic<AnyTuple>
-				),
-			callConstructTx: async () => await constructTx(),
-			callExpectCorrectType: (result: H256) => expectToBe(result.toRawType(), 'H256')
 		},
 		polkadotDev: {},
 	},
