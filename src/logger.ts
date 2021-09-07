@@ -32,10 +32,15 @@ export class Logger {
 		} else {
 			console.log(`    [${FAIL}]: ${methodName}`);
 
+			/**
+			 * TODO, this needs to be fixed. I dont think anyone will understand this
+			 * logic nor is it good code. It gets the job done but should be updated.
+			 */
 			if (
 				errorInfo &&
 				(errorInfo?.expected || errorInfo?.expected === '') &&
-				errorInfo?.received
+				errorInfo?.received ||
+				typeof errorInfo?.expected === 'number'
 			) {
 				this.errors.push(errorInfo);
 				console.log(`          ErrorInfo: ${errorInfo.error}`);
