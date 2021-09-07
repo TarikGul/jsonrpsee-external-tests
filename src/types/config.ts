@@ -17,6 +17,7 @@ import {
 	Extrinsic,
 	ExtrinsicStatus,
 	H256,
+	Hash,
 	Header,
 	Health,
 	Index,
@@ -61,7 +62,7 @@ export interface IChainSpecMethods {
 	apiCallTx?: (api: ApiPromise, tx: string) => Promise<SubstrateInterfaceTypes>;
 	apiCallUnknown?: (api: ApiPromise) => Promise<unknown>;
 	isSub?: boolean;
-	callConstructTx?: () => Promise<string>;
+	callConstructTx?: (api: ApiPromise) => Promise<string>;
 	callConstructContract?: (api: ApiPromise) => Promise<any>;
 	callExpectToBe?: Function;
 	callExpectToInclude?: Function;
@@ -88,6 +89,7 @@ export type SubstrateInterfaceTypes =
 	| Vec<StorageKey>
 	| Vec<KeyValue>
 	| Vec<Extrinsic>
+	| Vec<Hash>
 	| ChainProperties
 	| Option<Bytes>
 	| SyncState
