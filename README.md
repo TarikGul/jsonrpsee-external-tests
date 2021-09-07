@@ -39,8 +39,6 @@ The available pallets are currently as follows
 - state
 - system
 
-Currently Author is not complete as some of the tests are causing type issues with substrate (I am not testing them correctly).
-
-Also `state.call`, and `state.traceBlock` both need a rework. 
+`state.call`, and `state.traceBlock` both need a rework and are currently disabled. 
 
 This readme is subject to changes as it is a rough draft. 
