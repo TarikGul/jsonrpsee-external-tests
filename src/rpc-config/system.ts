@@ -73,7 +73,7 @@ export const system: RpcMethods = {
 		substrateDev: {
 			apiCallTx: async (api: ApiPromise, tx: string) =>
 				await api.rpc.system.dryRun(tx),
-			callConstructTx: async () => await constructTx(),
+			callConstructTx: async (api: ApiPromise) => await constructTx(api),
 			callExpectToBe: (result: ApplyExtrinsicResult) =>
 				expectToBe(result.isOk, true),
 		},
