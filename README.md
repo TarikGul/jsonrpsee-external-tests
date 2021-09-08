@@ -39,6 +39,6 @@ The available pallets are currently as follows
 - state
 - system
 
-`state.call`, and `state.traceBlock` both need a rework and are currently disabled. 
+`state.call` needs a rework and is currently disabled. 
 
 This readme is subject to changes as it is a rough draft. 
