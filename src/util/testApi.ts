@@ -118,11 +118,11 @@ export const expectToInclude = (
 };
 
 /**
- * 
+ *
  * @param api ApiPromise
- * @param methodTuple Contains a Tuple, where the first index holds information regarding the 
- * passed in method, and the second index holds the config for the 
- * @param chainType The type of chain we are targeting. 
+ * @param methodTuple Contains a Tuple, where the first index holds information regarding the
+ * passed in method, and the second index holds the config for the
+ * @param chainType The type of chain we are targeting.
  */
 export const runTest = async (
 	api: ApiPromise,

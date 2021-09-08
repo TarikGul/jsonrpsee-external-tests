@@ -1,13 +1,18 @@
 import { ApiPromise } from '@polkadot/api';
 import { bool, Bytes, Vec } from '@polkadot/types';
-import { Extrinsic, H256, ExtrinsicStatus, Hash } from '@polkadot/types/interfaces';
-import { IExtrinsic, AnyTuple } from '@polkadot/types/types';
+import {
+	Extrinsic,
+	ExtrinsicStatus,
+	H256,
+	Hash,
+} from '@polkadot/types/interfaces';
+import { AnyTuple, IExtrinsic } from '@polkadot/types/types';
 
 import { authorKey, authorKeyType, stateConsts } from '../constants';
 import { substrateExtrinsicStatusEnum } from '../responses';
 import { RpcMethods } from '../types';
-import { expectCorrectType, expectToBe } from '../util/testApi';
 import { constructTx } from '../util/constructTx';
+import { expectCorrectType, expectToBe } from '../util/testApi';
 
 export const author: RpcMethods = {
 	hasKey: {
@@ -54,12 +59,13 @@ export const author: RpcMethods = {
 	},
 	submitExtrinsic: {
 		substrateDev: {
-			apiCallTx: async (api: ApiPromise, tx: string) => 
+			apiCallTx: async (api: ApiPromise, tx: string) =>
 				await api.rpc.author.submitExtrinsic(
-					(tx as unknown) as IExtrinsic<AnyTuple>
+					tx as unknown as IExtrinsic<AnyTuple>
 				),
 			callConstructTx: async (api: ApiPromise) => await constructTx(api),
-			callExpectCorrectType: (result: H256) => expectCorrectType(result.toRawType(), 'H256')
+			callExpectCorrectType: (result: H256) =>
+				expectCorrectType(result.toRawType(), 'H256'),
 		},
 		polkadotDev: {},
 	},
@@ -67,14 +73,17 @@ export const author: RpcMethods = {
 		substrateDev: {
 			apiCallTx: async (api: ApiPromise, tx: string) => {
 				const extrinsicHash = await api.rpc.author.submitExtrinsic(
-					(tx as unknown) as IExtrinsic<AnyTuple>
+					tx as unknown as IExtrinsic<AnyTuple>
 				);
-				const res = await api.rpc.author.removeExtrinsic([{Hash: extrinsicHash}]);
+				const res = await api.rpc.author.removeExtrinsic([
+					{ Hash: extrinsicHash },
+				]);
 
 				return res;
 			},
 			callConstructTx: async (api: ApiPromise) => await constructTx(api),
-			callExpectToBe: (result: Vec<Hash>) => expectToBe(result.toRawType(), 'Vec<Hash>')
+			callExpectToBe: (result: Vec<Hash>) =>
+				expectToBe(result.toRawType(), 'Vec<Hash>'),
 		},
 		polkadotDev: {},
 	},
@@ -82,10 +91,11 @@ export const author: RpcMethods = {
 		substrateDev: {
 			apiCallTx: async (api: ApiPromise, tx: string) =>
 				await api.rpc.author.submitAndWatchExtrinsic(
-					(tx as unknown) as IExtrinsic<AnyTuple>
+					tx as unknown as IExtrinsic<AnyTuple>
 				),
 			callConstructTx: async (api: ApiPromise) => await constructTx(api),
-			callExpectCorrectType: (result: ExtrinsicStatus) => expectToBe(result.toRawType(), substrateExtrinsicStatusEnum)
+			callExpectCorrectType: (result: ExtrinsicStatus) =>
+				expectToBe(result.toRawType(), substrateExtrinsicStatusEnum),
 		},
 		polkadotDev: {},
 	},

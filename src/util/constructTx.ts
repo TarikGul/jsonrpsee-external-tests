@@ -1,4 +1,4 @@
-import { Keyring, ApiPromise } from '@polkadot/api';
+import { ApiPromise, Keyring } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import {
 	construct,
@@ -10,7 +10,7 @@ import {
 
 import { signWith } from './helpers';
 
-type Chains = "kusama" | "polkadot" | "westend" | "statemint" | "statemine";
+type Chains = 'kusama' | 'polkadot' | 'westend' | 'statemint' | 'statemine';
 
 /**
  * Entry point of the script. This script assumes a Polkadot node is running
@@ -28,14 +28,21 @@ export const constructTx = async (api: ApiPromise): Promise<string> => {
 	// To construct the tx, we need some up-to-date information from the node.
 	// `txwrapper` is offline-only, so does not care how you retrieve this info.
 	// In this tutorial, we simply send RPC requests to the node.
-	const [signedBlock, blockHash, genesisHash, metadataRpc, runtimeVersion, nonce] = await Promise.all([
+	const [
+		signedBlock,
+		blockHash,
+		genesisHash,
+		metadataRpc,
+		runtimeVersion,
+		nonce,
+	] = await Promise.all([
 		await api.rpc.chain.getBlock(),
 		await api.rpc.chain.getBlockHash(),
 		await api.rpc.chain.getBlockHash(0),
 		await api.rpc.state.getMetadata(),
 		await api.rpc.state.getRuntimeVersion(),
-		await api.rpc.system.accountNextIndex(alice.address)
-	])
+		await api.rpc.system.accountNextIndex(alice.address),
+	]);
 
 	const number = signedBlock.block.header.number.toNumber();
 	const { specVersion, transactionVersion, specName } = runtimeVersion;

@@ -37,9 +37,9 @@ export class Logger {
 			 * logic nor is it good code. It gets the job done but should be updated.
 			 */
 			if (
-				errorInfo &&
-				(errorInfo?.expected || errorInfo?.expected === '') &&
-				errorInfo?.received ||
+				(errorInfo &&
+					(errorInfo?.expected || errorInfo?.expected === '') &&
+					errorInfo?.received) ||
 				typeof errorInfo?.expected === 'number' ||
 				typeof errorInfo?.received === 'boolean'
 			) {
