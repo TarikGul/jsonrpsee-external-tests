@@ -13,22 +13,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@polkadot/api": "^6.1.1",
-    "@substrate/txwrapper-polkadot": "^1.2.16",
+    "@polkadot/api": "^6.5.2",
+    "@substrate/txwrapper-polkadot": "^1.2.19",
     "argparse": "^2.0.1",
     "chalk": "^4.1.2",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
-    "@substrate/dev": "^0.5.5",
+    "@substrate/dev": "^0.5.6",
     "@types/argparse": "^2.0.10",
     "@types/lodash": "^4.14.170"
   },
   "resolutions": {
-    "@polkadot/api": "^6.1.1",
+    "@polkadot/api": "^6.5.2",
     "@polkadot/keyring": "^7.4.1",
     "@polkadot/networks": "^7.4.1",
-    "@polkadot/types": "^6.1.1",
+    "@polkadot/types": "^6.5.2",
     "@polkadot/util": "^7.4.1",
     "@polkadot/util-crypto": "^7.4.1",
     "@polkadot/wasm-crypto": "^4.1.2"
