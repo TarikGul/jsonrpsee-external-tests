@@ -13,7 +13,7 @@ export function signWith(
 	pair: KeyringPair,
 	signingPayload: string,
 	options: OptionsWithMeta
-): string {
+): `0x${string}` {
 	const { registry, metadataRpc } = options;
 	const generatedMetadata: Metadata = createMetadata(registry, metadataRpc);
 
@@ -27,5 +27,5 @@ export function signWith(
 		})
 		.sign(pair);
 
-	return signature;
+	return signature as `0x${string}`;
 }

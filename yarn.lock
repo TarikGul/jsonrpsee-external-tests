@@ -1247,32 +1247,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@substrate/txwrapper-core@npm:^1.2.19":
-  version: 1.2.19
-  resolution: "@substrate/txwrapper-core@npm:1.2.19"
+"@substrate/txwrapper-core@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "@substrate/txwrapper-core@npm:1.3.2"
   dependencies:
-    "@polkadot/api": ^6.5.2
+    "@polkadot/api": ^6.11.1
     memoizee: 0.4.15
-  checksum: 12eaaf10ffaa1b6a9d74368f9f2fb75d16ff98456fb053c73c838dee0f05630b4c32ae002200c6d8778ee505d4fad355b460f5f864001a79adf0f4d1124d439d
+  checksum: 8573acd9d9795f00773f3e4e034c5ac400521db6d55733e1ea82674ac8f5752bb07b88332540fd2fd81be3bfa2d56ea2d6c0af7838b78e2d85a6064f9a1c947a
   languageName: node
   linkType: hard
 
-"@substrate/txwrapper-polkadot@npm:^1.2.19":
-  version: 1.2.19
-  resolution: "@substrate/txwrapper-polkadot@npm:1.2.19"
+"@substrate/txwrapper-polkadot@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "@substrate/txwrapper-polkadot@npm:1.3.2"
   dependencies:
-    "@substrate/txwrapper-core": ^1.2.19
-    "@substrate/txwrapper-substrate": ^1.2.19
-  checksum: f69f8907fab7c0104f3a29d47cfe3e0b1b56f542e414b571855d198c254bb7636bd26090fdc26c27e9564735c28b8adf1991c42e9a0b47008da1cb7d9366a788
+    "@substrate/txwrapper-core": ^1.3.2
+    "@substrate/txwrapper-substrate": ^1.3.2
+  checksum: ca2f56d803d6281b3e14645b2019e7555542d50a4c35879a019852c8b51b8f20167a7963631f34f152dd1b59ffda4e0a31916408a919985f16980414f83d8026
   languageName: node
   linkType: hard
 
-"@substrate/txwrapper-substrate@npm:^1.2.19":
-  version: 1.2.19
-  resolution: "@substrate/txwrapper-substrate@npm:1.2.19"
+"@substrate/txwrapper-substrate@npm:^1.3.2":
+  version: 1.3.2
+  resolution: "@substrate/txwrapper-substrate@npm:1.3.2"
   dependencies:
-    "@substrate/txwrapper-core": ^1.2.19
-  checksum: d015b39ac0d392c064ae45c02aa7e1679f8b6368406bcf607121b0bce803363727e4f055a787f2d4aa28d8285711a02706959c3aa602184daddc2025389806e2
+    "@substrate/txwrapper-core": ^1.3.2
+  checksum: 042ed80e778ea3807b97a7f2edb9720ba8ebc4f41ce28e333fb955276d4422711cdca69908db5d75084b4c441ce86893f7c68b7df0d897c93c6516592a3e7acf
   languageName: node
   linkType: hard
 
@@ -4176,9 +4176,9 @@ fsevents@^2.3.2:
   version: 0.0.0-use.local
   resolution: "jsonrpsee-external-tests@workspace:."
   dependencies:
-    "@polkadot/api": ^6.5.2
+    "@polkadot/api": ^7.0.2
     "@substrate/dev": ^0.5.6
-    "@substrate/txwrapper-polkadot": ^1.2.19
+    "@substrate/txwrapper-polkadot": ^1.3.2
     "@types/argparse": ^2.0.10
     "@types/lodash": ^4.14.170
     argparse: ^2.0.1
