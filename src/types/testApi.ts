@@ -4,6 +4,7 @@ export interface ErrorInfo {
 	error?: Error;
 	expected?: string | number | unknown;
 	received?: string | number | unknown;
+	isSkipped?: boolean;
 }
 
 export interface IExpectTestResult {
