@@ -5,18 +5,21 @@ import { ErrorInfo } from './types';
 
 const PASS = chalk.green('PASS');
 const FAIL = chalk.red('FAIL');
+const SKIP = chalk.yellow('SKIP')
 const EXPECTED = chalk.red('expected');
 const RECEIVED = chalk.green('received');
 
 export class Logger {
 	success: number;
 	fails: number;
+	skipped: number;
 	errors: ErrorInfo[];
 	pallets: Record<string, boolean>;
 
 	constructor() {
 		this.success = 0;
 		this.fails = 0;
+		this.skipped = 0;
 		this.errors = [];
 		this.pallets = {};
 	}
@@ -26,7 +29,10 @@ export class Logger {
 		isSuccess: boolean,
 		errorInfo?: ErrorInfo
 	): void {
-		if (isSuccess) {
+		if(errorInfo && errorInfo.isSkipped) {
+			console.log(`    [${SKIP}]: ${methodName}`);
+			this.skipped += 1;
+		} else if (isSuccess) {
 			console.log(`    [${PASS}]: ${methodName}`);
 			this.success += 1;
 		} else {
@@ -84,5 +90,6 @@ export class Logger {
 	logFinalInfo(): void {
 		console.log(`Total Passed: ${this.success}`);
 		console.log(`Total Failed: ${this.fails}`);
+		console.log(`Total Skipped: ${this.skipped}`);
 	}
 }
