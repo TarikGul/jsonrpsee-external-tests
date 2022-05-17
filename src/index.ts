@@ -3,7 +3,8 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 import { parseArgs } from './cli';
 import { skipMethods } from './config.skip';
 import { Logger } from './logger';
-import { RPC_TEST_CONFIG } from './rpc-config';
+import { rpcTestConfig } from './rpc-config';
+import { RpcConsts } from './types';
 import { IParser } from './types';
 import { TestConfigTuple } from './types/config';
 import { runTest } from './util/testApi';
@@ -39,13 +40,16 @@ const main = async (ws: string) => {
 	}
 
 	logger.logFinalInfo();
+
+	const unsupportedRpcs = findUnsupportedRpcs(api, rpcTestConfig);
+	logger.logUnsupportedRpcs(unsupportedRpcs);
 };
 
 const parseArgInput = (parser: IParser): TestConfigTuple[] => {
 	const { method } = parser;
 	const testMethods: TestConfigTuple[] = [];
 
-	const rpcConstsKeys = Object.keys(RPC_TEST_CONFIG);
+	const rpcConstsKeys = Object.keys(rpcTestConfig);
 
 	// This will populate testMethods, and then call all the methods
 	if (method) {
@@ -61,9 +65,9 @@ const parseArgInput = (parser: IParser): TestConfigTuple[] => {
 			}
 			// The arg input is only the pallet, which will retrieve all
 			// methods inside of the pallet
-			Object.keys(RPC_TEST_CONFIG[pallet]).forEach((method) => {
+			Object.keys(rpcTestConfig[pallet]).forEach((method) => {
 				const testInfo = { pallet, method };
-				const methodConfig = RPC_TEST_CONFIG[pallet][method];
+				const methodConfig = rpcTestConfig[pallet][method];
 
 				testMethods.push([testInfo, methodConfig]);
 			});
@@ -74,7 +78,7 @@ const parseArgInput = (parser: IParser): TestConfigTuple[] => {
 			const [pallet, method] = splitMethod;
 			const methodInfo = { pallet, method };
 
-			const methodConfig = RPC_TEST_CONFIG[pallet][method];
+			const methodConfig = rpcTestConfig[pallet][method];
 
 			if (!methodConfig) {
 				console.error(`${method} does not exist within pallet: ${pallet}`);
@@ -87,8 +91,8 @@ const parseArgInput = (parser: IParser): TestConfigTuple[] => {
 	} else {
 		// Retrieve all methods
 		rpcConstsKeys.forEach((pallet) => {
-			Object.keys(RPC_TEST_CONFIG[pallet]).forEach((method) => {
-				const methodConfig = RPC_TEST_CONFIG[pallet][method];
+			Object.keys(rpcTestConfig[pallet]).forEach((method) => {
+				const methodConfig = rpcTestConfig[pallet][method];
 				const methodInfo = { pallet, method };
 
 				testMethods.push([methodInfo, methodConfig]);
@@ -97,6 +101,33 @@ const parseArgInput = (parser: IParser): TestConfigTuple[] => {
 	}
 
 	return testMethods;
+};
+
+const findUnsupportedRpcs = (
+	api: ApiPromise,
+	rpcMethods: RpcConsts
+): string[] => {
+	const untested = [];
+	const apiRpcKeys = Object.keys(api.rpc);
+
+	for (const pallet of apiRpcKeys) {
+		const palletKeys = Object.keys((api.rpc as any)[pallet]);
+		// The pallet isnt being tested for so all methods are untested
+		if (!rpcMethods[pallet]) {
+			for (const method of palletKeys) {
+				untested.push(`${pallet}::${method}`);
+			}
+			continue;
+		}
+
+		for (const method of palletKeys) {
+			if (!rpcMethods[pallet][method]) {
+				untested.push(`${pallet}::${method}`);
+			}
+		}
+	}
+
+	return untested;
 };
 
 if (require.main === module) {

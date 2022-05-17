@@ -61,6 +61,13 @@ export class Logger {
 		}
 	}
 
+	logUnsupportedRpcs(rpcs: string[]): void {
+		console.log(`The following rpc calls are not supported for testing:`);
+		for (const rpc of rpcs) {
+			console.log(`    ${rpc}`);
+		}
+	}
+
 	logPallet(pallet: string): void {
 		if (!this.pallets[pallet]) {
 			console.log(`[${pallet.toUpperCase()}]`);
