@@ -1,11 +1,11 @@
 import { Metadata } from '@polkadot/types';
 import { TypeRegistry } from '@polkadot/types';
-import substrateMetadataRpc from '@polkadot/types/metadata/v13/toV14';
+import { polkadotV9220 } from './metadata/polkadotV9220';
 
 const createSubstrateRegistry = () => {
 	const registry = new TypeRegistry();
 
-	registry.setMetadata(new Metadata(registry, substrateMetadataRpc));
+	registry.setMetadata(new Metadata(registry, polkadotV9220));
 
 	return registry;
 };

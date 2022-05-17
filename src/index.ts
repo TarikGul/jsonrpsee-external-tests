@@ -10,21 +10,18 @@ import { runTest } from './util/testApi';
 
 const MAX_FRAME_SIZE = '20000000';
 
-const main = async (wsProvider: string) => {
+const main = async (ws: string) => {
 	const logger = new Logger();
 	const parser = parseArgs();
 
 	const testMethods = parseArgInput(parser);
-
 	// The user should input the chaintype
 	// default will be substrate dev env
 	const api = await ApiPromise.create({
-		provider: new WsProvider(wsProvider, 2500, {
-			maxReceivedMessageSize: MAX_FRAME_SIZE,
-		}),
+		provider: new WsProvider(ws),
 	});
 
-	logger.logInitialize(wsProvider);
+	logger.logInitialize(ws);
 
 	for (const methodTuple of testMethods) {
 		let methodName, success, errorInfo;
