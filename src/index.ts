@@ -8,8 +8,6 @@ import { IParser } from './types';
 import { TestConfigTuple } from './types/config';
 import { runTest } from './util/testApi';
 
-const MAX_FRAME_SIZE = '20000000';
-
 const main = async (ws: string) => {
 	const logger = new Logger();
 	const parser = parseArgs();
