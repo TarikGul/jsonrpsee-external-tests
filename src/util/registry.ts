@@ -1,5 +1,6 @@
 import { Metadata } from '@polkadot/types';
 import { TypeRegistry } from '@polkadot/types';
+
 import { polkadotV9220 } from './metadata/polkadotV9220';
 
 const createSubstrateRegistry = () => {

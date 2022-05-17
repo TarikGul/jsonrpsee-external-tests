@@ -7,7 +7,7 @@ import { system } from './system';
 
 export * from './subscribe';
 
-export const RPC_TEST_CONFIG: RpcConsts = {
+export const rpcTestConfig: RpcConsts = {
 	author,
 	chain,
 	offChain,
