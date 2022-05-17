@@ -27,5 +27,5 @@ export function signWith(
 		})
 		.sign(pair);
 
-	return signature as `0x${string}`;
+	return signature;
 }

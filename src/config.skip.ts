@@ -1,7 +1,4 @@
 /**
  * Rpc methods to skip
  */
-export const skipMethods = [
-    'addLogFilter',
-    'resetLogFilter',
-];
+export const skipMethods = ['addLogFilter', 'resetLogFilter'];

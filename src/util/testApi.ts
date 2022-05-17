@@ -58,7 +58,7 @@ export const expectToBe = (
  */
 export const expectCorrectType = (
 	received: string,
-	expected: keyof InterfaceTypes
+	expected: keyof InterfaceTypes | string
 ): IExpectTestResult => {
 	const result = {
 		success: true,

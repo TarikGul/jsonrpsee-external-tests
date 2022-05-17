@@ -1,12 +1,12 @@
 import { ApiPromise, WsProvider } from '@polkadot/api';
 
 import { parseArgs } from './cli';
+import { skipMethods } from './config.skip';
 import { Logger } from './logger';
 import { RPC_TEST_CONFIG } from './rpc-config';
 import { IParser } from './types';
 import { TestConfigTuple } from './types/config';
 import { runTest } from './util/testApi';
-import { skipMethods } from './config.skip';
 
 const MAX_FRAME_SIZE = '20000000';
 
@@ -33,11 +33,7 @@ const main = async (wsProvider: string) => {
 			success = false;
 			errorInfo = { isSkipped: true };
 		} else {
-			const testResult = await runTest(
-				api,
-				methodTuple,
-				parser.chainType
-			);
+			const testResult = await runTest(api, methodTuple, parser.chainType);
 			methodName = testResult.methodName;
 			success = testResult.success;
 			errorInfo = testResult.errorInfo;

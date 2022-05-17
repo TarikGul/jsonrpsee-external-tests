@@ -1,4 +1,4 @@
-import { RpcPromiseResult } from '@polkadot/api/types';
+import { PromiseRpcResult } from '@polkadot/api/types';
 import { Observable } from 'rxjs';
 
 import { SubscribeReturnTypes } from '../types';
@@ -13,7 +13,7 @@ import { SubscribeReturnTypes } from '../types';
  * out and return false
  */
 export const subscribe = async (
-	apiFn: RpcPromiseResult<() => Observable<SubscribeReturnTypes>>,
+	apiFn: PromiseRpcResult<() => Observable<SubscribeReturnTypes>>,
 	reqCounter: number,
 	timeCounter = 30
 ): Promise<boolean> => {

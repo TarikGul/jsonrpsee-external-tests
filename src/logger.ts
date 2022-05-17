@@ -5,7 +5,7 @@ import { ErrorInfo } from './types';
 
 const PASS = chalk.green('PASS');
 const FAIL = chalk.red('FAIL');
-const SKIP = chalk.yellow('SKIP')
+const SKIP = chalk.yellow('SKIP');
 const EXPECTED = chalk.red('expected');
 const RECEIVED = chalk.green('received');
 
@@ -29,7 +29,7 @@ export class Logger {
 		isSuccess: boolean,
 		errorInfo?: ErrorInfo
 	): void {
-		if(errorInfo && errorInfo.isSkipped) {
+		if (errorInfo && errorInfo.isSkipped) {
 			console.log(`    [${SKIP}]: ${methodName}`);
 			this.skipped += 1;
 		} else if (isSuccess) {

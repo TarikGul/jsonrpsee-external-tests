@@ -1,5 +1,5 @@
 import { ApiPromise } from '@polkadot/api';
-import { Bytes, Metadata, Null, StorageKey, Vec } from '@polkadot/types';
+import { Metadata, Null, StorageKey, Vec } from '@polkadot/types';
 import {
 	KeyValue,
 	ReadProof,
@@ -14,7 +14,6 @@ import { expectToBe } from '../util/testApi';
 import { subscribe } from './subscribe';
 
 const {
-	authorCallBytes,
 	stateConsts: { stateKey },
 	DEFAULT_TARGETS,
 	DEFAULT_KEYS,
@@ -114,7 +113,8 @@ export const state: RpcMethods = {
 				const res = await api.rpc.state.traceBlock(
 					hash,
 					DEFAULT_TARGETS,
-					DEFAULT_KEYS
+					DEFAULT_KEYS,
+					'transfer'
 				);
 
 				return res;
