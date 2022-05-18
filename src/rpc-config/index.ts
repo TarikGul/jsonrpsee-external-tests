@@ -4,6 +4,7 @@ import { chain } from './chain';
 import { offChain } from './offchain';
 import { state } from './state';
 import { system } from './system';
+import { syncstate } from './syncstate';
 
 export * from './subscribe';
 
@@ -13,4 +14,5 @@ export const rpcTestConfig: RpcConsts = {
 	offChain,
 	state,
 	system,
+	syncstate,
 };
